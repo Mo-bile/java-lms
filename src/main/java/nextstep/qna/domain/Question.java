@@ -14,8 +14,8 @@ public class Question {
     private String contents;
 
     private NsUser writer;
-
-    private List<Answer> answers = new ArrayList<>();
+    
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -65,7 +65,7 @@ public class Question {
 
     public void addAnswer(Answer answer) {
         answer.toQuestion(this);
-        answers.add(answer);
+        answers.addAnswer(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
@@ -81,7 +81,7 @@ public class Question {
         return deleted;
     }
 
-    public List<Answer> getAnswers() {
+    public Answers getAnswers() {
         return answers;
     }
 
