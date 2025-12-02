@@ -78,7 +78,7 @@ public class Question {
     }
     
     public boolean delete() {
-        Question question = this.setDeleted(true);
+        Question question = this.deleteQuestion();
         return question.isDeleted();
     }
     
@@ -86,9 +86,8 @@ public class Question {
         return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
     }
     
-
-    public Question setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public Question deleteQuestion() {
+        this.deleted = true;
         return this;
     }
 

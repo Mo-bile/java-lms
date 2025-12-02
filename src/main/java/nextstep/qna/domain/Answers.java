@@ -31,7 +31,7 @@ public class Answers {
     
     public boolean deleteAll() {
         return this.answers.stream()
-            .map(answer -> answer.setDeleted(true))
+            .map(Answer::deleteAnswer)
             .allMatch(Answer::isDeleted);
     }
     
