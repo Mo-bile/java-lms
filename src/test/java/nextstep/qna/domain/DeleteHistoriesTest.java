@@ -1,10 +1,8 @@
 package nextstep.qna.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;

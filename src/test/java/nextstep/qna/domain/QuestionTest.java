@@ -8,11 +8,12 @@ import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 public class QuestionTest {
+    
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
     
     @Test
-    void 작성자가_아니면_질문을_삭제하면_에러전파() throws Exception{
+    void 작성자가_아니면_질문을_삭제하면_에러전파() throws Exception {
         assertThatThrownBy(() -> {
             Q1.isHaveAuthority(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
@@ -30,7 +31,7 @@ public class QuestionTest {
     }
     
     @Test
-    void 질문자와_답변자가_같으면_답변이_출력된다() throws Exception{
+    void 질문자와_답변자가_같으면_답변이_출력된다() throws Exception {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
         Q1.addAnswer(answer);
         

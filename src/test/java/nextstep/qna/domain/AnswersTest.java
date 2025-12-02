@@ -13,7 +13,7 @@ class AnswersTest {
     void 답변을_쓴_사람과_제거하는_사람이_다르면_에러전파() throws Exception {
         Answers answers = new Answers
             (new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"),
-            new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents2"));
+                new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents2"));
         
         assertThatThrownBy(() -> {
             answers.isHaveAuthority(NsUserTest.SANJIGI);
@@ -25,7 +25,7 @@ class AnswersTest {
     void 답변을_상태를_변경하여_삭제한다() {
         Answers answers = new Answers
             (new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"),
-            new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents2"));
+                new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents2"));
         
         assertThat(answers.deleteAll()).isTrue();
         assertThat(answers.isAllDelete()).isTrue();
