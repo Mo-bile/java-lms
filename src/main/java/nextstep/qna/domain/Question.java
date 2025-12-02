@@ -5,7 +5,7 @@ import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
 
-public class Question {
+public class Question extends Base{
     private Long id;
 
     private String title;
@@ -17,10 +17,6 @@ public class Question {
     private Answers answers = new Answers();
 
     private boolean deleted = false;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
 
     public Question() {
     }

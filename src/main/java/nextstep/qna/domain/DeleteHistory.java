@@ -5,7 +5,7 @@ import nextstep.users.domain.NsUser;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class DeleteHistory {
+public class DeleteHistory extends Base{
     private Long id;
 
     private ContentType contentType;
@@ -13,8 +13,6 @@ public class DeleteHistory {
     private Long contentId;
 
     private NsUser deletedBy;
-
-    private LocalDateTime createdDate = LocalDateTime.now();
 
     public DeleteHistory() {
     }
@@ -47,4 +45,6 @@ public class DeleteHistory {
         return "DeleteHistory [id=" + id + ", contentType=" + contentType + ", contentId=" + contentId + ", deletedBy="
                 + deletedBy + ", createdDate=" + createdDate + "]";
     }
+    
+    
 }
