@@ -4,16 +4,10 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
 public class Answer extends Base {
     private Long id;
-
-    private NsUser writer;
-
-    private Question question;
-
-    private String contents;
+    
+    private CreateAnswerCommand createAnswerCommand;
 
     private boolean deleted = false;
 
@@ -33,10 +27,8 @@ public class Answer extends Base {
         if(question == null) {
             throw new NotFoundException();
         }
-
-        this.writer = writer;
-        this.question = question;
-        this.contents = contents;
+        
+        createAnswerCommand = new CreateAnswerCommand(writer, question, contents);
     }
 
     public Long getId() {
@@ -53,23 +45,27 @@ public class Answer extends Base {
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.writer.equals(writer);
+        return this.createAnswerCommand.isOwner(writer);
     }
 
     public NsUser getWriter() {
-        return writer;
+        return this.createAnswerCommand.getWriter();
     }
 
     public String getContents() {
-        return contents;
+        return this.createAnswerCommand.getContents();
     }
 
     public void toQuestion(Question question) {
-        this.question = question;
+        this.createAnswerCommand.toQuestion(question);
     }
-
+    
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer{" +
+            "id=" + id +
+            ", createAnswerCommand=" + createAnswerCommand +
+            ", deleted=" + deleted +
+            '}';
     }
 }

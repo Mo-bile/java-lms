@@ -1,19 +1,14 @@
 package nextstep.qna.domain;
 
+import java.time.LocalDateTime;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-import java.time.LocalDateTime;
-
 public class Question extends Base{
     private Long id;
-
-    private String title;
-
-    private String contents;
-
-    private NsUser writer;
     
+    private CreateQuestionCommand createQuestionCommand;
+
     private Answers answers = new Answers();
 
     private boolean deleted = false;
@@ -27,9 +22,7 @@ public class Question extends Base{
 
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+        this.createQuestionCommand = new CreateQuestionCommand(title, contents, writer);
     }
 
     public Long getId() {
@@ -37,25 +30,25 @@ public class Question extends Base{
     }
 
     public String getTitle() {
-        return title;
+        return createQuestionCommand.getTitle();
     }
 
     public Question setTitle(String title) {
-        this.title = title;
+        createQuestionCommand.setTitle(title);
         return this;
     }
 
     public String getContents() {
-        return contents;
+        return createQuestionCommand.getContents();
     }
 
     public Question setContents(String contents) {
-        this.contents = contents;
+        createQuestionCommand.setContents(contents);
         return this;
     }
 
     public NsUser getWriter() {
-        return writer;
+        return createQuestionCommand.getWriter();
     }
 
     public void addAnswer(Answer answer) {
@@ -64,13 +57,9 @@ public class Question extends Base{
     }
     
     public void isHaveAuthority(NsUser loginUser) throws CannotDeleteException {
-        if (!this.isNotOwner(loginUser)) {
+        if(createQuestionCommand.isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
-    }
-
-    public boolean isNotOwner(NsUser loginUser) {
-        return writer.equals(loginUser);
     }
     
     public boolean delete() {
@@ -79,7 +68,7 @@ public class Question extends Base{
     }
     
     public DeleteHistory addInDeleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, this.id, this.writer, LocalDateTime.now());
+        return new DeleteHistory(ContentType.QUESTION, this.id, createQuestionCommand.getWriter(), LocalDateTime.now());
     }
     
     public Question deleteQuestion() {
@@ -96,12 +85,17 @@ public class Question extends Base{
     }
     
     public Answers sameUserQuestionAndAnswer() throws CannotDeleteException {
-        answers.isHaveAuthority(writer);
+        answers.isHaveAuthority(createQuestionCommand.getWriter());
         return answers;
     }
-
+    
     @Override
     public String toString() {
-        return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
+        return "Question{" +
+            "id=" + id +
+            ", createQuestionCommand=" + createQuestionCommand +
+            ", answers=" + answers +
+            ", deleted=" + deleted +
+            '}';
     }
 }
