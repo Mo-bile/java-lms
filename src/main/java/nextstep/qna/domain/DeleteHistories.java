@@ -3,6 +3,8 @@ package nextstep.qna.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DeleteHistories {
     
@@ -10,6 +12,10 @@ public class DeleteHistories {
     
     public DeleteHistories(DeleteHistory... deleteHistories) {
         this(Arrays.asList(deleteHistories));
+    }
+    
+    public DeleteHistories(DeleteHistory deleteHistory, List<DeleteHistory> deleteHistories) {
+        this (Stream.concat(Stream.of(deleteHistory), deleteHistories.stream()).collect(Collectors.toList()));
     }
     
     public DeleteHistories(List<DeleteHistory> deleteHistories) {

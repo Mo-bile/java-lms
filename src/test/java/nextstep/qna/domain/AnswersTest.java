@@ -16,7 +16,7 @@ class AnswersTest {
             new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents2"));
         
         assertThatThrownBy(() -> {
-            answers.isAllOwner(NsUserTest.SANJIGI);
+            answers.isHaveAuthority(NsUserTest.SANJIGI);
         }).isInstanceOf(CannotDeleteException.class)
             .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
@@ -37,6 +37,6 @@ class AnswersTest {
             (new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1"),
                 new Answer(NsUserTest.SANJIGI, QuestionTest.Q2, "Answers Contents2"));
         
-        assertThat(answers.isAllAddInDeleteHistory()).hasSize(2);
+        assertThat(answers.addInDeleteHistory()).hasSize(2);
     }
 }
