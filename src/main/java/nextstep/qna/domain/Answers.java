@@ -29,14 +29,17 @@ public class Answers {
         this.answers.add(answer);
     }
     
-    public boolean deleteAll() {
-        return this.answers.stream()
-            .map(Answer::deleteAnswer)
-            .allMatch(Answer::isDeleted);
+    public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
+        isHaveAuthority(loginUser);
+        if(allAnswersAreDeleted()) {
+            return addInDeleteHistory();
+        }
+        return List.of();
     }
     
-    public boolean isAllDelete() {
+    private boolean allAnswersAreDeleted() {
         return this.answers.stream()
+            .map(Answer::deleteAnswer)
             .allMatch(Answer::isDeleted);
     }
     

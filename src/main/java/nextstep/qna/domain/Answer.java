@@ -7,8 +7,12 @@ import nextstep.users.domain.NsUser;
 public class Answer extends Base {
     private Long id;
     
-    private CreateAnswerCommand createAnswerCommand;
-
+    private NsUser writer;
+    
+    private Question question;
+    
+    private String contents;
+    
     private boolean deleted = false;
 
     public Answer() {
@@ -27,8 +31,9 @@ public class Answer extends Base {
         if(question == null) {
             throw new NotFoundException();
         }
-        
-        createAnswerCommand = new CreateAnswerCommand(writer, question, contents);
+        this.writer = writer;
+        this.question = question;
+        this.contents = contents;
     }
 
     public Long getId() {
@@ -45,26 +50,28 @@ public class Answer extends Base {
     }
 
     public boolean isOwner(NsUser writer) {
-        return this.createAnswerCommand.isOwner(writer);
+        return this.writer.equals(writer);
     }
 
     public NsUser getWriter() {
-        return this.createAnswerCommand.getWriter();
+        return this.writer;
     }
 
     public String getContents() {
-        return this.createAnswerCommand.getContents();
+        return this.contents;
     }
 
     public void toQuestion(Question question) {
-        this.createAnswerCommand.toQuestion(question);
+        this.question = question;
     }
     
     @Override
     public String toString() {
         return "Answer{" +
             "id=" + id +
-            ", createAnswerCommand=" + createAnswerCommand +
+            ", writer=" + writer +
+            ", question=" + question +
+            ", contents='" + contents + '\'' +
             ", deleted=" + deleted +
             '}';
     }

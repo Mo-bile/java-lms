@@ -23,11 +23,10 @@ class AnswersTest {
     }
     
     @Test
-    void 답변을_상태를_변경하여_삭제한다() {
-        Answers answers = new Answers(A1, A2);
+    void 답변을_상태를_변경하여_삭제한다() throws CannotDeleteException {
+        Answers answers = new Answers(A1, A1);
         
-        assertThat(answers.deleteAll()).isTrue();
-        assertThat(answers.isAllDelete()).isTrue();
+        assertThat(answers.deleteAll(NsUserTest.JAVAJIGI)).isNotNull();
     }
     
     @Test

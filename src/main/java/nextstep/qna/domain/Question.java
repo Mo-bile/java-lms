@@ -7,7 +7,11 @@ import nextstep.users.domain.NsUser;
 public class Question extends Base{
     private Long id;
     
-    private CreateQuestionCommand createQuestionCommand;
+    private String title;
+    
+    private String contents;
+    
+    private NsUser writer;
 
     private Answers answers = new Answers();
 
@@ -22,7 +26,9 @@ public class Question extends Base{
 
     public Question(Long id, NsUser writer, String title, String contents) {
         this.id = id;
-        this.createQuestionCommand = new CreateQuestionCommand(title, contents, writer);
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
     }
 
     public Long getId() {
@@ -30,25 +36,25 @@ public class Question extends Base{
     }
 
     public String getTitle() {
-        return createQuestionCommand.getTitle();
+        return this.getTitle();
     }
 
     public Question setTitle(String title) {
-        createQuestionCommand.setTitle(title);
+        this.setTitle(title);
         return this;
     }
 
     public String getContents() {
-        return createQuestionCommand.getContents();
+        return this.getContents();
     }
 
     public Question setContents(String contents) {
-        createQuestionCommand.setContents(contents);
+        this.setContents(contents);
         return this;
     }
 
     public NsUser getWriter() {
-        return createQuestionCommand.getWriter();
+        return this.writer;
     }
 
     public void addAnswer(Answer answer) {
@@ -56,19 +62,27 @@ public class Question extends Base{
         answers.addAnswer(answer);
     }
     
+    public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
+        this.isHaveAuthority(loginUser);
+        Question question = this.deleteQuestion();
+        if(question.isDeleted()) {
+            return new DeleteHistories(addInDeleteHistory(), answers.deleteAll(loginUser));
+        }
+        return new DeleteHistories();
+    }
+    
     public void isHaveAuthority(NsUser loginUser) throws CannotDeleteException {
-        if(createQuestionCommand.isNotOwner(loginUser)) {
+        if(this.isNotOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
     }
     
-    public boolean delete() {
-        Question question = this.deleteQuestion();
-        return question.isDeleted();
+    public boolean isNotOwner(NsUser loginUser) {
+        return !writer.equals(loginUser);
     }
     
     public DeleteHistory addInDeleteHistory() {
-        return new DeleteHistory(ContentType.QUESTION, this.id, createQuestionCommand.getWriter(), LocalDateTime.now());
+        return new DeleteHistory(ContentType.QUESTION, this.id, this.getWriter(), LocalDateTime.now());
     }
     
     public Question deleteQuestion() {
@@ -85,7 +99,7 @@ public class Question extends Base{
     }
     
     public Answers sameUserQuestionAndAnswer() throws CannotDeleteException {
-        answers.isHaveAuthority(createQuestionCommand.getWriter());
+        answers.isHaveAuthority(this.getWriter());
         return answers;
     }
     
@@ -93,7 +107,9 @@ public class Question extends Base{
     public String toString() {
         return "Question{" +
             "id=" + id +
-            ", createQuestionCommand=" + createQuestionCommand +
+            ", title='" + title + '\'' +
+            ", contents='" + contents + '\'' +
+            ", writer=" + writer +
             ", answers=" + answers +
             ", deleted=" + deleted +
             '}';
