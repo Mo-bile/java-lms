@@ -31,10 +31,14 @@ public class Answers {
     
     public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
         isHaveAuthority(loginUser);
-        if(allAnswersAreDeleted()) {
-            return addInDeleteHistory();
+        arsAnswersDeleteDone();
+        return addInDeleteHistory();
+    }
+    
+    private void arsAnswersDeleteDone() throws CannotDeleteException {
+        if(!allAnswersAreDeleted()) {
+            throw new CannotDeleteException("답변 삭제를 실패했습니다.");
         }
-        return List.of();
     }
     
     private boolean allAnswersAreDeleted() {

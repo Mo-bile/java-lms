@@ -64,11 +64,15 @@ public class Question extends Base{
     
     public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
         this.isHaveAuthority(loginUser);
-        Question question = this.deleteQuestion();
-        if(question.isDeleted()) {
-            return new DeleteHistories(addInDeleteHistory(), answers.deleteAll(loginUser));
+        this.deleteQuestion();
+        this.isQuestionDeleteDone();
+        return new DeleteHistories(this.addInDeleteHistory(), answers.deleteAll(loginUser));
+    }
+    
+    private void isQuestionDeleteDone() throws CannotDeleteException {
+        if(!this.isDeleted()) {
+            throw new CannotDeleteException("질문 삭제를 실패했습니다.");
         }
-        return new DeleteHistories();
     }
     
     public void isHaveAuthority(NsUser loginUser) throws CannotDeleteException {
