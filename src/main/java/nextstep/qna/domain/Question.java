@@ -36,21 +36,11 @@ public class Question extends Base{
     }
 
     public String getTitle() {
-        return this.getTitle();
-    }
-
-    public Question setTitle(String title) {
-        this.setTitle(title);
-        return this;
+        return this.title;
     }
 
     public String getContents() {
-        return this.getContents();
-    }
-
-    public Question setContents(String contents) {
-        this.setContents(contents);
-        return this;
+        return this.contents;
     }
 
     public NsUser getWriter() {
@@ -65,14 +55,7 @@ public class Question extends Base{
     public DeleteHistories delete(NsUser loginUser) throws CannotDeleteException {
         this.isHaveAuthority(loginUser);
         this.deleteQuestion();
-        this.isQuestionDeleteDone();
         return new DeleteHistories(this.addInDeleteHistory(), answers.deleteAll(loginUser));
-    }
-    
-    private void isQuestionDeleteDone() throws CannotDeleteException {
-        if(!this.isDeleted()) {
-            throw new CannotDeleteException("질문 삭제를 실패했습니다.");
-        }
     }
     
     public void isHaveAuthority(NsUser loginUser) throws CannotDeleteException {

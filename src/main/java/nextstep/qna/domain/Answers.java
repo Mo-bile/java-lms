@@ -31,20 +31,7 @@ public class Answers {
     
     public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
         isHaveAuthority(loginUser);
-        arsAnswersDeleteDone();
         return addInDeleteHistory();
-    }
-    
-    private void arsAnswersDeleteDone() throws CannotDeleteException {
-        if(!allAnswersAreDeleted()) {
-            throw new CannotDeleteException("답변 삭제를 실패했습니다.");
-        }
-    }
-    
-    private boolean allAnswersAreDeleted() {
-        return this.answers.stream()
-            .map(Answer::deleteAnswer)
-            .allMatch(Answer::isDeleted);
     }
     
     public List<DeleteHistory> addInDeleteHistory() {
