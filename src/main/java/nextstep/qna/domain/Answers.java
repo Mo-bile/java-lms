@@ -30,8 +30,14 @@ public class Answers {
     }
     
     public List<DeleteHistory> deleteAll(NsUser loginUser) throws CannotDeleteException {
-        isHaveAuthority(loginUser);
+        deleteAllAnswers(loginUser);
         return addInDeleteHistory();
+    }
+    
+    private void deleteAllAnswers(NsUser loginUser) throws CannotDeleteException {
+        for(Answer answer: answers) {
+            answer.delete(loginUser);
+        }
     }
     
     public List<DeleteHistory> addInDeleteHistory() {
@@ -40,15 +46,9 @@ public class Answers {
             .collect(Collectors.toList());
     }
     
-    public void isHaveAuthority(NsUser loginUser) throws CannotDeleteException {
-        if(isNotAllMatch(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-        }
-    }
-    
     private boolean isNotAllMatch(NsUser loginUser) {
         return this.answers.stream()
-            .anyMatch(answer -> !answer.isOwner(loginUser));
+            .anyMatch(answer -> !answer.isNotOwner(loginUser));
     }
     
     @Override

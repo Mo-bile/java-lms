@@ -32,11 +32,4 @@ public class QuestionTest {
         assertThat(Q1.addInDeleteHistory()).isNotNull();
     }
     
-    @Test
-    void 질문자와_답변자가_같으면_답변이_출력된다() throws Exception {
-        Q1.addAnswer(A1);
-        
-        assertThat(Q1.sameUserQuestionAndAnswer()).isEqualTo(new Answers(A1));
-    }
-    
 }

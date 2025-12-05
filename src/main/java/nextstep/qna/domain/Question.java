@@ -72,9 +72,8 @@ public class Question extends Base{
         return new DeleteHistory(ContentType.QUESTION, this.id, this.getWriter(), LocalDateTime.now());
     }
     
-    public Question deleteQuestion() {
+    private void deleteQuestion() {
         this.deleted = true;
-        return this;
     }
 
     public boolean isDeleted() {
@@ -82,11 +81,6 @@ public class Question extends Base{
     }
 
     public Answers getAnswers() {
-        return answers;
-    }
-    
-    public Answers sameUserQuestionAndAnswer() throws CannotDeleteException {
-        answers.isHaveAuthority(this.getWriter());
         return answers;
     }
     
