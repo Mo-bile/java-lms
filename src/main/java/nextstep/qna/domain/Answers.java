@@ -46,11 +46,6 @@ public class Answers {
             .collect(Collectors.toList());
     }
     
-    private boolean isNotAllMatch(NsUser loginUser) {
-        return this.answers.stream()
-            .anyMatch(answer -> !answer.isNotOwner(loginUser));
-    }
-    
     @Override
     public boolean equals(Object o) {
         if(o == null || getClass() != o.getClass()) {
