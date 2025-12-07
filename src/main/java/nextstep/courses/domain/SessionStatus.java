@@ -1,0 +1,15 @@
+package nextstep.courses.domain;
+
+public class SessionStatus {
+    
+    private final SessionStatusType sessionStatusType;
+    
+    public SessionStatus(SessionStatusType sessionStatusType) {
+        this.sessionStatusType = sessionStatusType;
+    }
+    
+    public boolean isApplyStatus() {
+        return this.sessionStatusType == SessionStatusType.RECRUITING;
+    }
+    
+}
