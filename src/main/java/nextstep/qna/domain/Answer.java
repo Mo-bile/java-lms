@@ -60,7 +60,7 @@ public class Answer extends Base {
         }
     }
     
-    public boolean isNotOwner(NsUser writer) {
+    private boolean isNotOwner(NsUser writer) {
         return !this.writer.equals(writer);
     }
 

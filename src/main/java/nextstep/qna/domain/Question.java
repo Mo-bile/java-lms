@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Question extends Base{
+public class Question extends Base {
     private Long id;
     
     private String title;
