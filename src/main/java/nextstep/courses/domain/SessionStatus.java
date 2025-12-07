@@ -1,5 +1,7 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.enumerate.SessionStatusType;
+
 public class SessionStatus {
     
     private final SessionStatusType sessionStatusType;

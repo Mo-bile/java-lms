@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.enumerate;
 
 import nextstep.courses.CanNotCreateException;
 
@@ -11,7 +11,7 @@ public enum CoverImageType {
     
     CoverImageType(String type) {}
     
-    static CoverImageType valueOfIgnoreCase(String type) throws CanNotCreateException {
+    public static CoverImageType valueOfIgnoreCase(String type) throws CanNotCreateException {
         validate(type);
         return Enum.valueOf(CoverImageType.class, type);
     }

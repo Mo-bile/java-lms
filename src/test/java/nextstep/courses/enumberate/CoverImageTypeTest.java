@@ -1,8 +1,9 @@
-package nextstep.courses.domain;
+package nextstep.courses.enumberate;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.courses.CanNotCreateException;
+import nextstep.courses.enumerate.CoverImageType;
 import org.junit.jupiter.api.Test;
 
 class CoverImageTypeTest {

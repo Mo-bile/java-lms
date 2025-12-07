@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import java.util.Objects;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
+import nextstep.courses.enumerate.ProvideType;
 
 public class Provide {
     

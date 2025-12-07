@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CanNotCreateException;
+import nextstep.courses.enumerate.CoverImageType;
 
 public class CoverImage {
     

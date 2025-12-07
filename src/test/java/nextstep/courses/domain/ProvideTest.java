@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
+import nextstep.courses.enumerate.ProvideType;
 import org.junit.jupiter.api.Test;
 
 class ProvideTest {

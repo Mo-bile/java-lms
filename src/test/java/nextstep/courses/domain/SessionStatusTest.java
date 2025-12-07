@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import nextstep.courses.enumerate.SessionStatusType;
 import org.junit.jupiter.api.Test;
 
 class SessionStatusTest {

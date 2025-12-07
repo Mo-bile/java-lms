@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.enumerate;
 
 public enum ProvideType {
     PAID("paid", true),
