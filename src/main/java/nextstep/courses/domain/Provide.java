@@ -25,7 +25,7 @@ public class Provide {
         }
     }
     
-    public void applyPaid(int enrolledCount, int pay) throws CanNotJoinException {
+    public void applyPaid(int enrolledCount, Long pay) throws CanNotJoinException {
         if(this.type == ProvideType.FREE) {
             throw new CanNotJoinException("유료 강의는 결제를 해야한다");
         }

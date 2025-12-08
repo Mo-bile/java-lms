@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.enumerate.SessionStatusType;
 
@@ -37,9 +38,13 @@ public class Session extends Base {
         enrolledCount++;
     }
     
-    public void applyPaidSession(int amount) throws CanNotJoinException {
+    public void applyPaidSession(Long amount) throws CanNotJoinException {
         status.isApplyStatus();
         provide.applyPaid(this.enrolledCount, amount);
         enrolledCount++;
+    }
+    
+    public boolean isSameSessionId(Long id) {
+        return Objects.equals(this.id, id);
     }
 }

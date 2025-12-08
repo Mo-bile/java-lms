@@ -36,7 +36,7 @@ class SessionTest {
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new SessionStatus(SessionStatusType.RECRUITING),
-                new Provide(ProvideType.PAID, new ProvidePolicy(10, 10)),
+                new Provide(ProvideType.PAID, new ProvidePolicy(10, 10L)),
                 5,
                 LocalDateTime.now(),
                 null
@@ -68,7 +68,7 @@ class SessionTest {
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new Provide(ProvideType.PAID, new ProvidePolicy(10, 10))
+                new Provide(ProvideType.PAID, new ProvidePolicy(10, 10L))
             );
         });
     }
@@ -81,7 +81,7 @@ class SessionTest {
     @Test
     void 유료_session을_수강신청한다() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            paidSession.applyPaidSession(10);
+            paidSession.applyPaidSession(10L);
         });
     }
     

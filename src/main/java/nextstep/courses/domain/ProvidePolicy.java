@@ -7,19 +7,19 @@ import nextstep.courses.enumerate.ProvideType;
 public class ProvidePolicy {
     
     private final Integer maxEnrollment;
-    private final Integer tuitionFee;
+    private final Long tuitionFee;
     
     public ProvidePolicy() throws CanNotCreateException {
         this(null, null);
     }
     
-    public ProvidePolicy(Integer maxEnrollment, Integer tuitionFee) throws CanNotCreateException {
+    public ProvidePolicy(Integer maxEnrollment, Long tuitionFee) throws CanNotCreateException {
         validate(maxEnrollment, tuitionFee);
         this.maxEnrollment = maxEnrollment;
         this.tuitionFee = tuitionFee;
     }
     
-    private void validate(Integer maxEnrollment, Integer tuitionFee) throws CanNotCreateException {
+    private void validate(Integer maxEnrollment, Long tuitionFee) throws CanNotCreateException {
         if(IsMaxEnrollmentOnlyNull(maxEnrollment, tuitionFee)) {
             throw new CanNotCreateException("하나만 무료정책을 가질 수없다 (하나만 null 일 수 없다)");
         }
@@ -28,15 +28,15 @@ public class ProvidePolicy {
         }
     }
     
-    private static boolean isTuitionFeeOnlyNull(Integer maxEnrollment, Integer tuitionFee) {
+    private static boolean isTuitionFeeOnlyNull(Integer maxEnrollment, Long tuitionFee) {
         return maxEnrollment != null && tuitionFee == null;
     }
     
-    private static boolean IsMaxEnrollmentOnlyNull(Integer maxEnrollment, Integer tuitionFee) {
+    private static boolean IsMaxEnrollmentOnlyNull(Integer maxEnrollment, Long tuitionFee) {
         return maxEnrollment == null && tuitionFee != null;
     }
     
-    public void isCorrectPay(int pay) throws CanNotJoinException {
+    public void isCorrectPay(Long pay) throws CanNotJoinException {
         if(this.tuitionFee == null) {
             throw new CanNotJoinException("무료 강의는 지불할 수 없다");
         }
