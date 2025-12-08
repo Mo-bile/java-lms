@@ -32,11 +32,13 @@ public class Session extends Base {
     }
     
     public void applyFreeSession() throws CanNotJoinException {
+        status.isApplyStatus();
         provide.applyFree();
         enrolledCount++;
     }
     
     public void applyPaidSession(int amount) throws CanNotJoinException {
+        status.isApplyStatus();
         provide.applyPaid(this.enrolledCount, amount);
         enrolledCount++;
     }

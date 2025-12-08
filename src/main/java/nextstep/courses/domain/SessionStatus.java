@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import nextstep.courses.CanNotJoinException;
 import nextstep.courses.enumerate.SessionStatusType;
 
 public class SessionStatus {
@@ -10,8 +11,10 @@ public class SessionStatus {
         this.sessionStatusType = sessionStatusType;
     }
     
-    public boolean isApplyStatus() {
-        return this.sessionStatusType == SessionStatusType.RECRUITING;
+    public void isApplyStatus() throws CanNotJoinException {
+        if(this.sessionStatusType != SessionStatusType.RECRUITING) {
+            throw new CanNotJoinException("모집 중 일때만 신청 가능합니다");
+        }
     }
     
 }
