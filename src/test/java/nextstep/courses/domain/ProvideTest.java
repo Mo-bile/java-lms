@@ -31,16 +31,19 @@ class ProvideTest {
         assertThatThrownBy(() -> {
             assertThat(provide.applyPaid(8, 5));
         }).isInstanceOf(CanNotJoinException.class)
-            .hasMessage("무료 강의는 결제할 수 없다");
+            .hasMessage("유료 강의는 결제를 해야한다");
     }
     
     @Test
     void 무료강의에_지불_없이_수강신청한다() throws Exception {
         Provide provide = new Provide(ProvideType.FREE, new ProvidePolicy());
-        assertThatThrownBy(() -> {
-            assertThat(provide.applyFree());
-        }).isInstanceOf(CanNotJoinException.class)
-            .hasMessage("무료강의는 결제할 수 없다");
+        assertThat(provide.applyFree()).isTrue();
+    }
+    
+    @Test
+    void 무료강의이면_false를_전달한다() throws CanNotCreateException {
+        Provide provide = new Provide(ProvideType.FREE, new ProvidePolicy());
+        assertThat(provide.isFreeType()).isTrue();
     }
 
 }

@@ -9,6 +9,10 @@ public class Provide {
     private final ProvideType type;
     private final ProvidePolicy policy;
     
+    public Provide(ProvideType type) throws CanNotCreateException {
+        this(type, new ProvidePolicy());
+    }
+    
     public Provide(ProvideType type, ProvidePolicy policy) throws CanNotCreateException {
         validate(type, policy);
         this.type = type;
@@ -23,7 +27,7 @@ public class Provide {
     
     public boolean applyPaid(int enrolledCount, int pay) throws CanNotJoinException {
         if(this.type == ProvideType.FREE) {
-            throw new CanNotJoinException("무료 강의는 결제할 수 없다");
+            throw new CanNotJoinException("유료 강의는 결제를 해야한다");
         }
         policy.isAvailableEnroll(enrolledCount);
         policy.isCorrectPay(pay);
@@ -31,10 +35,14 @@ public class Provide {
     }
     
     public boolean applyFree() throws CanNotJoinException {
-        if(this.type == ProvideType.FREE) {
-            throw new CanNotJoinException("무료강의는 결제할 수 없다");
+        if(this.type == ProvideType.PAID) {
+            throw new CanNotJoinException("무료 강의는 결제할 수 없다");
         }
         return true;
+    }
+    
+    public boolean isFreeType() {
+        return this.type == ProvideType.FREE;
     }
     
 }
