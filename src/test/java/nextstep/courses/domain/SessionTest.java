@@ -1,6 +1,6 @@
 package nextstep.courses.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.time.LocalDate;
 import nextstep.courses.enumerate.CoverImageType;
@@ -58,15 +58,14 @@ class SessionTest {
     
     @Test
     void 무료_session을_수강신청한다() throws Exception {
-        assertThat(freeSession.applyFreeSession())
-            .isTrue();
+        assertThatNoException().isThrownBy(freeSession::applyFreeSession);
     }
     
     @Test
     void 유료_session을_수강신청한다() throws Exception {
-        assertThat(paidSession.applyPaidSession(10))
-            .isTrue();
-        
+        assertThatNoException().isThrownBy(() -> {
+            paidSession.applyPaidSession(10);
+        });
     }
     
 }

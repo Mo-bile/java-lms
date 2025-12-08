@@ -25,24 +25,18 @@ public class Provide {
         }
     }
     
-    public boolean applyPaid(int enrolledCount, int pay) throws CanNotJoinException {
+    public void applyPaid(int enrolledCount, int pay) throws CanNotJoinException {
         if(this.type == ProvideType.FREE) {
             throw new CanNotJoinException("유료 강의는 결제를 해야한다");
         }
         policy.isAvailableEnroll(enrolledCount);
         policy.isCorrectPay(pay);
-        return true;
     }
     
-    public boolean applyFree() throws CanNotJoinException {
+    public void applyFree() throws CanNotJoinException {
         if(this.type == ProvideType.PAID) {
             throw new CanNotJoinException("무료 강의는 결제할 수 없다");
         }
-        return true;
-    }
-    
-    public boolean isFreeType() {
-        return this.type == ProvideType.FREE;
     }
     
 }

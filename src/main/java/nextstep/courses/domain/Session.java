@@ -31,19 +31,13 @@ public class Session extends Base {
         this.enrolledCount = enrolledCount;
     }
     
-    public boolean applyFreeSession() throws CanNotJoinException {
-        if(provide.applyFree()) {
-            enrolledCount++;
-            return true;
-        }
-        return false;
+    public void applyFreeSession() throws CanNotJoinException {
+        provide.applyFree();
+        enrolledCount++;
     }
     
-    public boolean applyPaidSession(int amount) throws CanNotJoinException {
-        if(provide.applyPaid(this.enrolledCount, amount)) {
-            enrolledCount++;
-            return true;
-        }
-        return false;
+    public void applyPaidSession(int amount) throws CanNotJoinException {
+        provide.applyPaid(this.enrolledCount, amount);
+        enrolledCount++;
     }
 }
