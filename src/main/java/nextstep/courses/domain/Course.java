@@ -58,13 +58,13 @@ public class Course extends Base {
             '}';
     }
     
-    public void apply(long sessionId, Long amount) throws CanNotJoinException {
+    public void apply(long userId, long sessionId, Long amount) throws CanNotJoinException {
         Session session = findToApplySession(sessionId);
         if(amount == null) {
-            session.applyFreeSession();
+            session.applyFreeSession(userId);
             return;
         }
-        session.applyPaidSession(amount);
+        session.applyPaidSession(userId, amount);
     }
     
     private Session findToApplySession(long sessionId) throws CanNotJoinException {

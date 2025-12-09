@@ -10,6 +10,7 @@ import nextstep.courses.CanNotJoinException;
 import nextstep.courses.enumerate.CoverImageType;
 import nextstep.courses.enumerate.ProvideType;
 import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
 class CourseTest {
@@ -27,7 +28,7 @@ class CourseTest {
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new SessionStatus(SessionStatusType.RECRUITING),
                 new Provide(ProvideType.FREE),
-                5,
+                List.of(1L, 2L, 3L, 4L, 5L),
                 LocalDateTime.now(),
                 null
             );
@@ -40,7 +41,7 @@ class CourseTest {
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new SessionStatus(SessionStatusType.RECRUITING),
                 new Provide(ProvideType.PAID, new ProvidePolicy(10, 10L)),
-                5,
+                List.of(1L, 2L, 3L, 4L, 5L),
                 LocalDateTime.now(),
                 null
             );
@@ -53,7 +54,7 @@ class CourseTest {
     void 수강신청하는_session이_없으면_예외전파() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatThrownBy(() -> {
-            course.apply(3L, null);
+            course.apply(NsUserTest.JAVAJIGI.getId(), 3L, null);
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("신청하려는 강의가 존재하지 않습니다");
     }
@@ -62,7 +63,7 @@ class CourseTest {
     void 무료강의_수강신청() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatNoException().isThrownBy(() -> {
-            course.apply(1L, null);
+            course.apply(NsUserTest.JAVAJIGI.getId(), 1L, null);
         });
     }
     
@@ -70,7 +71,7 @@ class CourseTest {
     void 유료강의_수강신청() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatNoException().isThrownBy(() -> {
-            course.apply(2L, 10L);
+            course.apply(NsUserTest.SANJIGI.getId(), 2L, 10L);
         });
     }
     
