@@ -1,7 +1,6 @@
 package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import nextstep.courses.CanNotJoinException;
@@ -17,13 +16,17 @@ public class Session extends Base {
     private final CoverImage coverImage;
     private final SessionStatus status;
     private final Provide provide;
-    private final List<Long> enrolledUsers;
+    private final EnrolledUsers enrolledUsers;
     
     public Session(String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Provide provide) {
-        this(0L, creatorId, body, duration, coverImage, new SessionStatus(SessionStatusType.PREPARATION), provide, List.of(), LocalDateTime.now(), null);
+        this(0L, creatorId, body, duration, coverImage, new SessionStatus(SessionStatusType.PREPARATION), provide, new EnrolledUsers(), LocalDateTime.now(), null);
     }
     
-    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, SessionStatus status, Provide provide, List<Long> enrolledUsers, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public Session(Long id, String code, SessionBody body, Duration duration, CoverImage coverImage, SessionStatus status, Provide provide, List<Long> enrolledUserIds, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this(id, code, body, duration, coverImage, status, provide, new EnrolledUsers(enrolledUserIds), createdAt, updatedAt);
+    }
+    
+    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, SessionStatus status, Provide provide, EnrolledUsers enrolledUsers, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdDate, updatedDate);
         this.id = id;
         this.creatorId = creatorId;
@@ -32,28 +35,25 @@ public class Session extends Base {
         this.coverImage = coverImage;
         this.status = status;
         this.provide = provide;
-        this.enrolledUsers = new ArrayList<>(enrolledUsers);
+        this.enrolledUsers = enrolledUsers;
     }
     
     public void applyFreeSession(Long userId) throws CanNotJoinException {
         status.isApplyStatus();
         provide.applyFree();
-        registerUserId(userId);
+        enrolledUsers.registerUserId(userId);
     }
     
     public void applyPaidSession(Long userId, Payment payment) throws CanNotJoinException {
         status.isApplyStatus();
-        provide.applyPaid(this.enrolledUsers.size(), payment);
-        registerUserId(userId);
+        provide.applyPaid(this.enrolledUsers.getSize(), payment);
+        enrolledUsers.registerUserId(userId);
     }
     
     public boolean isSameSessionId(Long id) {
         return Objects.equals(this.id, id);
     }
     
-    private void registerUserId(Long userId) {
-        this.enrolledUsers.add(userId);
-    }
     
     public boolean isPaidSession() {
         return provide.isPaid();
