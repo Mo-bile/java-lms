@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.CanNotJoinException;
+import nextstep.payments.domain.Payment;
 
 public class Course extends Base {
     
@@ -58,13 +59,13 @@ public class Course extends Base {
             '}';
     }
     
-    public void apply(long userId, long sessionId, Long amount) throws CanNotJoinException {
+    public void apply(long userId, long sessionId, Payment payment) throws CanNotJoinException {
         Session session = findToApplySession(sessionId);
-        if(amount == null) {
+        if(payment == null) {
             session.applyFreeSession(userId);
             return;
         }
-        session.applyPaidSession(userId, amount);
+        session.applyPaidSession(userId, payment);
     }
     
     private Session findToApplySession(long sessionId) throws CanNotJoinException {
@@ -74,6 +75,11 @@ public class Course extends Base {
             }
         }
         throw new CanNotJoinException("신청하려는 강의가 존재하지 않습니다");
+    }
+    
+    public boolean isPaidSession(Long sessionId) throws CanNotJoinException {
+        Session session = findToApplySession(sessionId);
+        return session.isPaidSession();
     }
     
 }

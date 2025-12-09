@@ -8,6 +8,7 @@ import java.util.List;
 import nextstep.courses.enumerate.CoverImageType;
 import nextstep.courses.enumerate.ProvideType;
 import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -85,7 +86,7 @@ class SessionTest {
     @Test
     void 유료_session을_수강신청한다() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            paidSession.applyPaidSession(NsUserTest.JAVAJIGI.getId(), 10L);
+            paidSession.applyPaidSession(NsUserTest.JAVAJIGI.getId(), new Payment());
         });
     }
     

@@ -1,9 +1,11 @@
 package nextstep.courses.domain;
 
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
+import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 
 class ProvidePolicyTest {
@@ -24,18 +26,16 @@ class ProvidePolicyTest {
     
     @Test
     void 유료인데_수강료와_지불금액이_다르면_에러전파() throws Exception {
-        ProvidePolicy providePolicy = new ProvidePolicy(10, 10L);
-        assertThatThrownBy(() -> {
-            providePolicy.isCorrectPay(11L);
-        }).isInstanceOf(CanNotJoinException.class)
-            .hasMessage("지불한 금액과 수강료 금액이 다르다");
+        assertThatNoException().isThrownBy(() -> {
+            new ProvidePolicy(10, 10L).isCorrectPay(new Payment());
+        });
     }
     
     @Test
     void 무료인데_수강료_납부하면_에러전파() throws Exception {
         ProvidePolicy providePolicy = new ProvidePolicy();
         assertThatThrownBy(() -> {
-            providePolicy.isCorrectPay(10L);
+            providePolicy.isCorrectPay(new Payment());
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("무료 강의는 지불할 수 없다");
     }

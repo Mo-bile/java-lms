@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.payments.domain.Payment;
 
 public class Session extends Base {
     
@@ -40,9 +41,9 @@ public class Session extends Base {
         registerUserId(userId);
     }
     
-    public void applyPaidSession(Long userId, Long amount) throws CanNotJoinException {
+    public void applyPaidSession(Long userId, Payment payment) throws CanNotJoinException {
         status.isApplyStatus();
-        provide.applyPaid(this.enrolledUsers.size(), amount);
+        provide.applyPaid(this.enrolledUsers.size(), payment);
         registerUserId(userId);
     }
     
@@ -52,5 +53,9 @@ public class Session extends Base {
     
     private void registerUserId(Long userId) {
         this.enrolledUsers.add(userId);
+    }
+    
+    public boolean isPaidSession() {
+        return provide.isPaid();
     }
 }

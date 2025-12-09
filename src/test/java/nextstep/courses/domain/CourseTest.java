@@ -1,5 +1,6 @@
 package nextstep.courses.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -10,6 +11,7 @@ import nextstep.courses.CanNotJoinException;
 import nextstep.courses.enumerate.CoverImageType;
 import nextstep.courses.enumerate.ProvideType;
 import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
 
@@ -71,8 +73,14 @@ class CourseTest {
     void 유료강의_수강신청() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatNoException().isThrownBy(() -> {
-            course.apply(NsUserTest.SANJIGI.getId(), 2L, 10L);
+            course.apply(NsUserTest.SANJIGI.getId(), 2L, new Payment());
         });
+    }
+    
+    @Test
+    void 해당하는_강의가_유료_강의인지_찾는다() throws CanNotJoinException {
+        Course course = new Course("title", 1L, List.of(freeSession, paidSession));
+        assertThat(course.isPaidSession(2L)).isTrue();
     }
     
 }

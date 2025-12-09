@@ -3,6 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.enumerate.ProvideType;
+import nextstep.payments.domain.Payment;
 
 public class Provide {
     
@@ -25,12 +26,12 @@ public class Provide {
         }
     }
     
-    public void applyPaid(int enrolledCount, Long pay) throws CanNotJoinException {
+    public void applyPaid(int enrolledCount, Payment payment) throws CanNotJoinException {
         if(this.type == ProvideType.FREE) {
             throw new CanNotJoinException("유료 강의는 결제를 해야한다");
         }
         policy.isAvailableEnroll(enrolledCount);
-        policy.isCorrectPay(pay);
+        policy.isCorrectPay(payment);
     }
     
     public void applyFree() throws CanNotJoinException {
@@ -39,4 +40,7 @@ public class Provide {
         }
     }
     
+    public boolean isPaid() {
+        return this.type == ProvideType.PAID;
+    }
 }
