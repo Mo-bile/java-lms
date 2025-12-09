@@ -46,12 +46,12 @@ public class ProvidePolicy {
         }
     }
     
-    public void isAvailableEnroll(int enrolledCount) throws CanNotJoinException {
+    public void isAvailableEnroll(EnrolledUsers enrolledUsers) throws CanNotJoinException {
         if(this.maxEnrollment == null) {
             throw new CanNotJoinException("무료강의는 정원이 없다");
         }
         
-        if(this.maxEnrollment <= enrolledCount) {
+        if(enrolledUsers.isAlreadyExceed(maxEnrollment)) {
             throw new CanNotJoinException("이미 정원을 초과했다");
         }
     }

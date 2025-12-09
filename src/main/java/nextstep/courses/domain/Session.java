@@ -46,7 +46,7 @@ public class Session extends Base {
     
     public void applyPaidSession(Long userId, Payment payment) throws CanNotJoinException {
         status.isApplyStatus();
-        provide.applyPaid(this.enrolledUsers.getSize(), payment);
+        provide.applyPaid(this.enrolledUsers, payment);
         enrolledUsers.registerUserId(userId);
     }
     

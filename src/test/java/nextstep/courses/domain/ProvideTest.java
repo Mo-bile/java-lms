@@ -24,7 +24,7 @@ class ProvideTest {
         Provide provide = new Provide(ProvideType.PAID, new ProvidePolicy(10, 5L));
         
         assertThatNoException().isThrownBy(() -> {
-            provide.applyPaid(8, new Payment());
+            provide.applyPaid(new EnrolledUsers(8), new Payment());
         });
     }
     
@@ -32,7 +32,7 @@ class ProvideTest {
     void 무료강의에_지불_후_수강신청한다() throws Exception {
         Provide provide = new Provide(ProvideType.FREE, new ProvidePolicy());
         assertThatThrownBy(() -> {
-            provide.applyPaid(8, new Payment());
+            provide.applyPaid(new EnrolledUsers(8), new Payment());
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("유료 강의는 결제를 해야한다");
     }

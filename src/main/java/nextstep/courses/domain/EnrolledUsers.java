@@ -1,6 +1,7 @@
 package nextstep.courses.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import nextstep.courses.CanNotJoinException;
 
@@ -10,6 +11,10 @@ public class EnrolledUsers {
     
     public EnrolledUsers() {
         this(List.of());
+    }
+    
+    public EnrolledUsers(int size) {
+        this(new ArrayList<>(Collections.nCopies(size, null)));
     }
     
     public EnrolledUsers(Long... enrolledUserList) {
@@ -31,7 +36,8 @@ public class EnrolledUsers {
         }
     }
     
-    public int getSize() {
-        return this.enrolledUserList.size();
+    public boolean isAlreadyExceed(int maxEnrollment) {
+        return maxEnrollment <= this.enrolledUserList.size();
     }
+    
 }

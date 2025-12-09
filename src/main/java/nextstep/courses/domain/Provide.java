@@ -26,11 +26,11 @@ public class Provide {
         }
     }
     
-    public void applyPaid(int enrolledCount, Payment payment) throws CanNotJoinException {
+    public void applyPaid(EnrolledUsers enrolledUsers, Payment payment) throws CanNotJoinException {
         if(this.type == ProvideType.FREE) {
             throw new CanNotJoinException("유료 강의는 결제를 해야한다");
         }
-        policy.isAvailableEnroll(enrolledCount);
+        policy.isAvailableEnroll(enrolledUsers);
         policy.isCorrectPay(payment);
     }
     

@@ -44,7 +44,7 @@ class ProvidePolicyTest {
     void 수강신청_인원이_초과하면_에러전파() throws Exception {
         ProvidePolicy providePolicy = new ProvidePolicy(10, 10L);
         assertThatThrownBy(() -> {
-            providePolicy.isAvailableEnroll(10);
+            providePolicy.isAvailableEnroll(new EnrolledUsers(10));
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("이미 정원을 초과했다");
     }
@@ -53,7 +53,7 @@ class ProvidePolicyTest {
     void 무료강의인데_수강신청_시_정원체크하면_에러전파() throws Exception {
         ProvidePolicy providePolicy = new ProvidePolicy();
         assertThatThrownBy(() -> {
-            providePolicy.isAvailableEnroll(10);
+            providePolicy.isAvailableEnroll(new EnrolledUsers(10));
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("무료강의는 정원이 없다");
     }
