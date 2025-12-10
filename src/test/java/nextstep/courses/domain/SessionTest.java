@@ -85,14 +85,14 @@ class SessionTest {
     @Test
     void 무료_session을_수강신청한다() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            freeSession.applyFreeSession(NsUserTest.JAVAJIGI.getId());
+            freeSession.applySession(NsUserTest.JAVAJIGI.getId());
         });
     }
     
     @Test
     void 유료_session을_수강신청한다() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            paidSession.applyPaidSession(NsUserTest.JAVAJIGI.getId(), new Payment());
+            paidSession.applySession(NsUserTest.JAVAJIGI.getId(), new Payment());
         });
     }
     

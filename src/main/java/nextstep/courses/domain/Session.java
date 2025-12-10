@@ -28,12 +28,16 @@ public class Session extends Base {
         this.enrollment = enrollment;
     }
     
-    public void applyFreeSession(Long userId) throws CanNotJoinException {
-        enrollment.applyFree(userId);
+    public void applySession(SessionApply request) throws CanNotJoinException {
+        enrollment.apply(request);
     }
-
-    public void applyPaidSession(Long userId, Payment payment) throws CanNotJoinException {
-        enrollment.applyPaid(userId, payment);
+    
+    public void applySession(Long userid) throws CanNotJoinException {
+        applySession(new SessionApply(userid, null));
+    }
+    
+    public void applySession(Long userid, Payment payment) throws CanNotJoinException {
+        applySession(new SessionApply(userid, payment));
     }
     
     public boolean isSameSessionId(Long id) {

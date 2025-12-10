@@ -59,12 +59,12 @@ public class Course extends Base {
     }
     
     public void apply(long userId, long sessionId, Payment payment) throws CanNotJoinException {
+        this.apply(new SessionApply(userId, payment), sessionId);
+    }
+    
+    public void apply(SessionApply request, long sessionId) throws CanNotJoinException {
         Session session = sessions.findToApplySession(sessionId);
-        if(this.isFreeSession(sessionId)) {
-            session.applyFreeSession(userId);
-            return;
-        }
-        session.applyPaidSession(userId, payment);
+        session.applySession(request);
     }
     
     public boolean isPaidSession(Long sessionId) throws CanNotJoinException {

@@ -49,11 +49,11 @@ public class EnrollmentPolicy {
         return maxEnrollment == null && tuitionFee != null;
     }
     
-    public void validatePaidApply(Long userId, Payment payment) throws CanNotJoinException {
+    public void validatePaidApply(SessionApply sessionApply) throws CanNotJoinException {
         validateApplyStatus();
         validateEnrollment();
-        validatePayment(payment);
-        registerUser(userId);
+        validatePayment(sessionApply.getPayment());
+        registerUser(sessionApply.getUserId());
     }
     
     public void validateFreeApply(Long userId) throws CanNotJoinException {

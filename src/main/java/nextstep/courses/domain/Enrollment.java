@@ -26,18 +26,20 @@ public class Enrollment {
         }
     }
     
-    public void applyPaid(Long userId, Payment payment) throws CanNotJoinException {
-        if(this.type.isFree()) {
-            throw new CanNotJoinException("유료 강의는 결제를 해야한다");
+    public void apply(SessionApply sessionApply) throws CanNotJoinException {
+        if(isFree()) {
+            policy.validateFreeApply(sessionApply.getUserId());
+            return;
         }
-        policy.validatePaidApply(userId, payment);
+        policy.validatePaidApply(sessionApply);
     }
     
-    public void applyFree(Long userId) throws CanNotJoinException {
-        if(this.type.isPaid()) {
-            throw new CanNotJoinException("무료 강의는 결제할 수 없다");
-        }
-        policy.validateFreeApply(userId);
+    public void apply(Long userid) throws CanNotJoinException {
+        apply(new SessionApply(userid, null));
+    }
+    
+    public void apply(Long userid, Payment payment) throws CanNotJoinException {
+        apply(new SessionApply(userid, payment));
     }
     
     public boolean isPaid() {
