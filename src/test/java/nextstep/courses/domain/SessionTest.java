@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.courses.enumerate.CoverImageType;
-import nextstep.courses.enumerate.ProvideType;
+import nextstep.courses.enumerate.EnrollmentType;
 import nextstep.courses.enumerate.SessionStatusType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
@@ -25,9 +25,11 @@ class SessionTest {
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new SessionStatus(SessionStatusType.RECRUITING),
-                new Provide(ProvideType.FREE),
-                List.of(11L, 12L, 13L, 14L, 15L),
+                new Enrollment(
+                    EnrollmentType.FREE,
+                    new EnrollmentPolicy(
+                        new EnrolledUsers(List.of(11L, 12L, 13L, 14L, 15L)),
+                        new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
                 null
             );
@@ -38,9 +40,13 @@ class SessionTest {
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new SessionStatus(SessionStatusType.RECRUITING),
-                new Provide(ProvideType.PAID, new ProvidePolicy(10, 10L)),
-                List.of(11L, 12L, 13L, 14L, 15L),
+                new Enrollment(
+                    EnrollmentType.PAID,
+                    new EnrollmentPolicy(
+                        10L,
+                        10,
+                        new EnrolledUsers(List.of(11L, 12L, 13L, 14L, 15L)),
+                        new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
                 null
             );
@@ -58,7 +64,7 @@ class SessionTest {
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new Provide(ProvideType.FREE)
+                new Enrollment(EnrollmentType.FREE)
             );
         });
     }
@@ -71,7 +77,7 @@ class SessionTest {
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new Provide(ProvideType.PAID, new ProvidePolicy(10, 10L))
+                new Enrollment(EnrollmentType.PAID, new EnrollmentPolicy(10, 10L))
             );
         });
     }

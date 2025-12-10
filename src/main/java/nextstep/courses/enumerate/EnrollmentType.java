@@ -1,19 +1,19 @@
 package nextstep.courses.enumerate;
 
-public enum ProvideType {
+public enum EnrollmentType {
     PAID("paid", true),
     FREE("free", false);
     
     private String provideType;
     private boolean isExistTuitionFee;
     
-    ProvideType(String provideType, boolean isExistTuitionFee) {}
+    EnrollmentType(String provideType, boolean isExistTuitionFee) {}
     
     public boolean isFree() {
-        return this == ProvideType.FREE;
+        return this == EnrollmentType.FREE;
     }
     
     public boolean isPaid() {
-        return this == ProvideType.PAID;
+        return this == EnrollmentType.PAID;
     }
 }

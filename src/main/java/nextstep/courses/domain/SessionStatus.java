@@ -7,6 +7,10 @@ public class SessionStatus {
     
     private final SessionStatusType sessionStatusType;
     
+    public SessionStatus() {
+        this(SessionStatusType.PREPARATION);
+    }
+    
     public SessionStatus(SessionStatusType sessionStatusType) {
         this.sessionStatusType = sessionStatusType;
     }
