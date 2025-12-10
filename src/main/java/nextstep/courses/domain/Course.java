@@ -60,7 +60,7 @@ public class Course extends Base {
     
     public void apply(long userId, long sessionId, Payment payment) throws CanNotJoinException {
         Session session = sessions.findToApplySession(sessionId);
-        if(payment == null) {
+        if(this.isFreeSession(sessionId)) {
             session.applyFreeSession(userId);
             return;
         }
@@ -68,8 +68,11 @@ public class Course extends Base {
     }
     
     public boolean isPaidSession(Long sessionId) throws CanNotJoinException {
-        Session session = sessions.findToApplySession(sessionId);
-        return session.isPaidSession();
+        return sessions.findToApplySession(sessionId).isPaidSession();
+    }
+    
+    public boolean isFreeSession(Long sessionId) throws CanNotJoinException {
+        return sessions.findToApplySession(sessionId).isFreeSession();
     }
     
 }

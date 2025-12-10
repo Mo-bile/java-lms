@@ -58,4 +58,8 @@ public class Session extends Base {
     public boolean isPaidSession() {
         return provide.isPaid();
     }
+    
+    public boolean isFreeSession() {
+        return provide.isFree();
+    }
 }

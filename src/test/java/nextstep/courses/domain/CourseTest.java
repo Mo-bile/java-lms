@@ -83,4 +83,10 @@ class CourseTest {
         assertThat(course.isPaidSession(2L)).isTrue();
     }
     
+    @Test
+    void 해당하는_강의가_무료_강의인지_찾는다() throws CanNotJoinException {
+        Course course = new Course("title", 1L, List.of(freeSession, paidSession));
+        assertThat(course.isFreeSession(1L)).isTrue();
+    }
+    
 }

@@ -18,10 +18,7 @@ public class CourseService {
     public void apply(NsUser loginUser, long courseId, long sessionId) throws CanNotJoinException {
         Course course = courseRepository.findById(courseId);
         
-        Payment payment = null;
-        if(course.isPaidSession(sessionId)) {
-            payment = new PaymentService().payment("id");
-        }
+        Payment payment = new PaymentService().payment("id");
         course.apply(loginUser.getId(), sessionId, payment);
         courseRepository.save(course);
     }

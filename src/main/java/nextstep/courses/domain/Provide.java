@@ -43,4 +43,8 @@ public class Provide {
     public boolean isPaid() {
         return this.type.isPaid();
     }
+    
+    public boolean isFree() {
+        return this.type.isFree();
+    }
 }
