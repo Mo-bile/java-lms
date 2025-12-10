@@ -2,10 +2,10 @@ package nextstep.courses.domain;
 
 import java.time.LocalDateTime;
 
-public class Base {
+public abstract class Base {
     
-    protected LocalDateTime createdDate;
-    protected LocalDateTime updatedDate;
+    private final LocalDateTime createdDate;
+    private final LocalDateTime updatedDate;
     
     public Base() {
         this(LocalDateTime.now(), null);
@@ -14,5 +14,13 @@ public class Base {
     public Base(LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
+    }
+    
+    protected LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+    
+    protected LocalDateTime getUpdatedDate() {
+        return updatedDate;
     }
 }

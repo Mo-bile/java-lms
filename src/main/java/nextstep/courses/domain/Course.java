@@ -41,7 +41,7 @@ public class Course extends Base {
     }
 
     public LocalDateTime getCreatedAt() {
-        return super.createdDate;
+        return super.getCreatedDate();
     }
     
     public Sessions getSessions() {
