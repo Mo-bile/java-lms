@@ -8,4 +8,12 @@ public enum ProvideType {
     private boolean isExistTuitionFee;
     
     ProvideType(String provideType, boolean isExistTuitionFee) {}
+    
+    public boolean isFree() {
+        return this == ProvideType.FREE;
+    }
+    
+    public boolean isPaid() {
+        return this == ProvideType.PAID;
+    }
 }

@@ -27,20 +27,20 @@ public class Provide {
     }
     
     public void applyPaid(EnrolledUsers enrolledUsers, Payment payment) throws CanNotJoinException {
-        if(this.type == ProvideType.FREE) {
+        if(this.type.isFree()) {
             throw new CanNotJoinException("유료 강의는 결제를 해야한다");
         }
-        policy.isAvailableEnroll(enrolledUsers);
-        policy.isCorrectPay(payment);
+        policy.validateEnrollment(enrolledUsers);
+        policy.validatePayment(payment);
     }
     
     public void applyFree() throws CanNotJoinException {
-        if(this.type == ProvideType.PAID) {
+        if(this.type.isPaid()) {
             throw new CanNotJoinException("무료 강의는 결제할 수 없다");
         }
     }
     
     public boolean isPaid() {
-        return this.type == ProvideType.PAID;
+        return this.type.isPaid();
     }
 }

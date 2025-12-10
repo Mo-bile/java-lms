@@ -27,7 +27,7 @@ class ProvidePolicyTest {
     @Test
     void 유료인데_수강료와_지불금액이_다르면_에러전파() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            new ProvidePolicy(10, 10L).isCorrectPay(new Payment());
+            new ProvidePolicy(10, 10L).validatePayment(new Payment());
         });
     }
     
@@ -35,7 +35,7 @@ class ProvidePolicyTest {
     void 무료인데_수강료_납부하면_에러전파() throws Exception {
         ProvidePolicy providePolicy = new ProvidePolicy();
         assertThatThrownBy(() -> {
-            providePolicy.isCorrectPay(new Payment());
+            providePolicy.validatePayment(new Payment());
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("무료 강의는 지불할 수 없다");
     }
@@ -44,7 +44,7 @@ class ProvidePolicyTest {
     void 수강신청_인원이_초과하면_에러전파() throws Exception {
         ProvidePolicy providePolicy = new ProvidePolicy(10, 10L);
         assertThatThrownBy(() -> {
-            providePolicy.isAvailableEnroll(new EnrolledUsers(10));
+            providePolicy.validateEnrollment(new EnrolledUsers(10));
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("이미 정원을 초과했다");
     }
@@ -53,7 +53,7 @@ class ProvidePolicyTest {
     void 무료강의인데_수강신청_시_정원체크하면_에러전파() throws Exception {
         ProvidePolicy providePolicy = new ProvidePolicy();
         assertThatThrownBy(() -> {
-            providePolicy.isAvailableEnroll(new EnrolledUsers(10));
+            providePolicy.validateEnrollment(new EnrolledUsers(10));
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("무료강의는 정원이 없다");
     }

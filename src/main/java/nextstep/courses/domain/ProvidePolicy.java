@@ -37,7 +37,7 @@ public class ProvidePolicy {
         return maxEnrollment == null && tuitionFee != null;
     }
     
-    public void isCorrectPay(Payment payment) throws CanNotJoinException {
+    public void validatePayment(Payment payment) throws CanNotJoinException {
         if(this.tuitionFee == null) {
             throw new CanNotJoinException("무료 강의는 지불할 수 없다");
         }
@@ -46,7 +46,7 @@ public class ProvidePolicy {
         }
     }
     
-    public void isAvailableEnroll(EnrolledUsers enrolledUsers) throws CanNotJoinException {
+    public void validateEnrollment(EnrolledUsers enrolledUsers) throws CanNotJoinException {
         if(this.maxEnrollment == null) {
             throw new CanNotJoinException("무료강의는 정원이 없다");
         }
