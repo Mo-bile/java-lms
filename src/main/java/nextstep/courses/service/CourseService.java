@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
+import nextstep.courses.domain.SessionApply;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.domain.NsUser;
@@ -19,7 +20,7 @@ public class CourseService {
         Course course = courseRepository.findById(courseId);
         
         Payment payment = new PaymentService().payment("id");
-        course.apply(loginUser.getId(), sessionId, payment);
+        course.apply(new SessionApply(loginUser.getId(), payment), sessionId);
         courseRepository.save(course);
     }
     

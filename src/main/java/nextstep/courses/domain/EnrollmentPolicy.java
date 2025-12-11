@@ -41,11 +41,11 @@ public class EnrollmentPolicy {
         }
     }
     
-    private static boolean isTuitionFeeOnlyNull(Integer maxEnrollment, Long tuitionFee) {
+    private boolean isTuitionFeeOnlyNull(Integer maxEnrollment, Long tuitionFee) {
         return maxEnrollment != null && tuitionFee == null;
     }
     
-    private static boolean IsMaxEnrollmentOnlyNull(Integer maxEnrollment, Long tuitionFee) {
+    private boolean IsMaxEnrollmentOnlyNull(Integer maxEnrollment, Long tuitionFee) {
         return maxEnrollment == null && tuitionFee != null;
     }
     
@@ -89,10 +89,10 @@ public class EnrollmentPolicy {
     }
     
     public boolean isNotCorrectBetween(EnrollmentType type) {
-        if(type == EnrollmentType.FREE) {
+        if(type.isFree()) {
             return !(this.maxEnrollment == null && this.tuitionFee == null);
         }
-        if(type == EnrollmentType.PAID) {
+        if(type.isPaid()) {
             return !(this.maxEnrollment != null && this.tuitionFee != null);
         }
         return true;
