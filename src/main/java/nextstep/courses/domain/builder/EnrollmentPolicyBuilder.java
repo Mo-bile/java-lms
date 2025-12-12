@@ -1,12 +1,12 @@
 package nextstep.courses.domain.builder;
 
 import java.util.List;
-import nextstep.courses.domain.EnrolledUsers;
-import nextstep.courses.domain.EnrollmentPolicy;
-import nextstep.courses.domain.SessionStatus;
-import nextstep.courses.domain.enrollmentcondition.EnrollmentCondition;
-import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
-import nextstep.courses.domain.enrollmentcondition.PaidEnrollmentCondition;
+import nextstep.courses.domain.enrollment.EnrolledUsers;
+import nextstep.courses.domain.enrollment.EnrollmentPolicy;
+import nextstep.courses.domain.enrollment.SessionStatus;
+import nextstep.courses.domain.enrollment.enrollmentcondition.EnrollmentCondition;
+import nextstep.courses.domain.enrollment.enrollmentcondition.FreeEnrollmentCondition;
+import nextstep.courses.domain.enrollment.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.domain.enumerate.SessionStatusType;
 
 public class EnrollmentPolicyBuilder {

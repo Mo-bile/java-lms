@@ -4,8 +4,8 @@ import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aFreeEnrol
 import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
 
 import nextstep.courses.CanNotCreateException;
-import nextstep.courses.domain.Enrollment;
-import nextstep.courses.domain.EnrollmentPolicy;
+import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.EnrollmentPolicy;
 import nextstep.courses.domain.enumerate.EnrollmentType;
 
 public class EnrollmentBuilder {

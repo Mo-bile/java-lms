@@ -2,9 +2,9 @@ package nextstep.courses.service;
 
 import javax.annotation.Resource;
 import nextstep.courses.CanNotJoinException;
-import nextstep.courses.domain.Course;
-import nextstep.courses.domain.CourseRepository;
-import nextstep.courses.domain.SessionApply;
+import nextstep.courses.domain.course.Course;
+import nextstep.courses.domain.course.CourseRepository;
+import nextstep.courses.domain.course.SessionApply;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
 import nextstep.users.domain.NsUser;

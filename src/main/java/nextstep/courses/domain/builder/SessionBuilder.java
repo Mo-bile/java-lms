@@ -6,8 +6,12 @@ import static nextstep.courses.domain.builder.EnrollmentBuilder.aPaidEnrollmentB
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import nextstep.courses.CanNotCreateException;
-import nextstep.courses.domain.*;
+import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enumerate.CoverImageType;
+import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.Duration;
+import nextstep.courses.domain.session.Session;
+import nextstep.courses.domain.session.SessionBody;
 
 public class SessionBuilder {
     
