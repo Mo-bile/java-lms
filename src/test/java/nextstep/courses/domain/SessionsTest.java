@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.courses.CanNotJoinException;
+import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
+import nextstep.courses.domain.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.enumerate.CoverImageType;
 import nextstep.courses.enumerate.EnrollmentType;
 import nextstep.courses.enumerate.SessionStatusType;
@@ -27,6 +29,7 @@ class SessionsTest {
                 new Enrollment(
                     EnrollmentType.FREE,
                     new EnrollmentPolicy(
+                        FreeEnrollmentCondition.INSTANCE,
                         new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
@@ -41,8 +44,7 @@ class SessionsTest {
                 new Enrollment(
                     EnrollmentType.PAID,
                     new EnrollmentPolicy(
-                        10L,
-                        10,
+                        new PaidEnrollmentCondition(10L, 10),
                         new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
@@ -54,10 +56,10 @@ class SessionsTest {
     }
     
     @Test
-    void 찾고자하는_세션이_없으면_에러전파() throws CanNotJoinException {
+    void 찾고자하는_세션이_없으면_에러전파() {
         assertThatThrownBy(() -> {
             new Sessions(freeSession, paidSession)
-                .findToApplySession(3L);
+                .findEnrollSession(3L);
         })
             .isInstanceOf(CanNotJoinException.class)
             .hasMessage("신청하려는 강의가 존재하지 않습니다");

@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
+import nextstep.courses.domain.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.enumerate.CoverImageType;
 import nextstep.courses.enumerate.EnrollmentType;
 import nextstep.courses.enumerate.SessionStatusType;
@@ -28,6 +30,7 @@ class SessionTest {
                 new Enrollment(
                     EnrollmentType.FREE,
                     new EnrollmentPolicy(
+                        FreeEnrollmentCondition.INSTANCE,
                         new EnrolledUsers(List.of(11L, 12L, 13L, 14L, 15L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
@@ -43,8 +46,7 @@ class SessionTest {
                 new Enrollment(
                     EnrollmentType.PAID,
                     new EnrollmentPolicy(
-                        10L,
-                        10,
+                        new PaidEnrollmentCondition(5L, 10),
                         new EnrolledUsers(List.of(11L, 12L, 13L, 14L, 15L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
@@ -77,7 +79,7 @@ class SessionTest {
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new Enrollment(EnrollmentType.PAID, new EnrollmentPolicy(10, 10L))
+                new Enrollment(EnrollmentType.PAID, new EnrollmentPolicy(new PaidEnrollmentCondition(10L, 10)))
             );
         });
     }
@@ -85,14 +87,14 @@ class SessionTest {
     @Test
     void 무료_session을_수강신청한다() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            freeSession.applySession(NsUserTest.JAVAJIGI.getId());
+            freeSession.enrollSession(NsUserTest.JAVAJIGI.getId());
         });
     }
     
     @Test
     void 유료_session을_수강신청한다() throws Exception {
         assertThatNoException().isThrownBy(() -> {
-            paidSession.applySession(NsUserTest.JAVAJIGI.getId(), new Payment());
+            paidSession.enrollSession(NsUserTest.JAVAJIGI.getId(), new Payment());
         });
     }
     

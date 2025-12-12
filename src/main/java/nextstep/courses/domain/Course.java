@@ -58,21 +58,13 @@ public class Course extends Base {
             '}';
     }
     
-    public void apply(long userId, long sessionId, Payment payment) throws CanNotJoinException {
-        this.apply(new SessionApply(userId, payment), sessionId);
+    public void enrollCourse(long userId, long sessionId, Payment payment) throws CanNotJoinException {
+        this.enrollCourse(new SessionApply(userId, payment), sessionId);
     }
     
-    public void apply(SessionApply request, long sessionId) throws CanNotJoinException {
-        Session session = sessions.findToApplySession(sessionId);
-        session.applySession(request);
-    }
-    
-    public boolean isPaidSession(Long sessionId) throws CanNotJoinException {
-        return sessions.findToApplySession(sessionId).isPaidSession();
-    }
-    
-    public boolean isFreeSession(Long sessionId) throws CanNotJoinException {
-        return sessions.findToApplySession(sessionId).isFreeSession();
+    public void enrollCourse(SessionApply request, long sessionId) throws CanNotJoinException {
+        Session session = sessions.findEnrollSession(sessionId);
+        session.enrollSession(request);
     }
     
 }

@@ -2,6 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
+import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
 import nextstep.courses.enumerate.EnrollmentType;
 import nextstep.payments.domain.Payment;
 
@@ -11,7 +12,7 @@ public class Enrollment {
     private final EnrollmentPolicy policy;
     
     public Enrollment(EnrollmentType type) throws CanNotCreateException {
-        this(type, new EnrollmentPolicy());
+        this(type, new EnrollmentPolicy(FreeEnrollmentCondition.INSTANCE));
     }
     
     public Enrollment(EnrollmentType type, EnrollmentPolicy policy) throws CanNotCreateException {
@@ -26,20 +27,16 @@ public class Enrollment {
         }
     }
     
-    public void apply(SessionApply sessionApply) throws CanNotJoinException {
-        if(isFree()) {
-            policy.validateFreeApply(sessionApply.getUserId());
-            return;
-        }
-        policy.validatePaidApply(sessionApply);
+    public void enroll(SessionApply sessionApply) throws CanNotJoinException {
+        policy.enroll(sessionApply);
     }
     
-    public void apply(Long userid) throws CanNotJoinException {
-        apply(new SessionApply(userid, null));
+    public void enroll(Long userid) throws CanNotJoinException {
+        enroll(new SessionApply(userid, null));
     }
     
-    public void apply(Long userid, Payment payment) throws CanNotJoinException {
-        apply(new SessionApply(userid, payment));
+    public void enroll(Long userid, Payment payment) throws CanNotJoinException {
+        enroll(new SessionApply(userid, payment));
     }
     
     public boolean isPaid() {

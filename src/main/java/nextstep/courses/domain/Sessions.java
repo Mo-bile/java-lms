@@ -21,7 +21,7 @@ public class Sessions {
         this.sessions = sessions;
     }
     
-    public Session findToApplySession(long sessionId) throws CanNotJoinException {
+    public Session findEnrollSession(long sessionId) throws CanNotJoinException {
         for(Session session: this.sessions) {
             if(session.isSameSessionId(sessionId)) {
                 return session;

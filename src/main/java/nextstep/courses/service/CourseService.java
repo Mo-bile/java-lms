@@ -16,11 +16,11 @@ public class CourseService {
     private CourseRepository courseRepository;
     
     @Transactional
-    public void apply(NsUser loginUser, long courseId, long sessionId) throws CanNotJoinException {
+    public void enroll(NsUser loginUser, long courseId, long sessionId) throws CanNotJoinException {
         Course course = courseRepository.findById(courseId);
         
         Payment payment = new PaymentService().payment("id");
-        course.apply(new SessionApply(loginUser.getId(), payment), sessionId);
+        course.enrollCourse(new SessionApply(loginUser.getId(), payment), sessionId);
         courseRepository.save(course);
     }
     

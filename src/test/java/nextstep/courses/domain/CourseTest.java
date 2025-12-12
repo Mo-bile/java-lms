@@ -1,6 +1,5 @@
 package nextstep.courses.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,6 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.courses.CanNotJoinException;
+import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
+import nextstep.courses.domain.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.enumerate.CoverImageType;
 import nextstep.courses.enumerate.EnrollmentType;
 import nextstep.courses.enumerate.SessionStatusType;
@@ -31,6 +32,7 @@ class CourseTest {
                 new Enrollment(
                     EnrollmentType.FREE,
                     new EnrollmentPolicy(
+                        FreeEnrollmentCondition.INSTANCE,
                         new EnrolledUsers(List.of(4L, 5L, 6L, 7L, 8L, 9L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
@@ -46,8 +48,7 @@ class CourseTest {
                 new Enrollment(
                     EnrollmentType.PAID,
                     new EnrollmentPolicy(
-                        10L,
-                        10,
+                        new PaidEnrollmentCondition(10L, 10),
                         new EnrolledUsers(List.of(4L, 5L, 6L, 7L, 8L, 9L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
@@ -62,7 +63,7 @@ class CourseTest {
     void 수강신청하는_session이_없으면_예외전파() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatThrownBy(() -> {
-            course.apply(NsUserTest.JAVAJIGI.getId(), 3L, null);
+            course.enrollCourse(NsUserTest.JAVAJIGI.getId(), 3L, null);
         }).isInstanceOf(CanNotJoinException.class)
             .hasMessage("신청하려는 강의가 존재하지 않습니다");
     }
@@ -71,7 +72,7 @@ class CourseTest {
     void 무료강의_수강신청() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatNoException().isThrownBy(() -> {
-            course.apply(NsUserTest.JAVAJIGI.getId(), 1L, null);
+            course.enrollCourse(NsUserTest.JAVAJIGI.getId(), 1L, null);
         });
     }
     
@@ -79,20 +80,8 @@ class CourseTest {
     void 유료강의_수강신청() {
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
         assertThatNoException().isThrownBy(() -> {
-            course.apply(NsUserTest.SANJIGI.getId(), 2L, new Payment());
+            course.enrollCourse(NsUserTest.SANJIGI.getId(), 2L, new Payment());
         });
-    }
-    
-    @Test
-    void 해당하는_강의가_유료_강의인지_찾는다() throws CanNotJoinException {
-        Course course = new Course("title", 1L, List.of(freeSession, paidSession));
-        assertThat(course.isPaidSession(2L)).isTrue();
-    }
-    
-    @Test
-    void 해당하는_강의가_무료_강의인지_찾는다() throws CanNotJoinException {
-        Course course = new Course("title", 1L, List.of(freeSession, paidSession));
-        assertThat(course.isFreeSession(1L)).isTrue();
     }
     
 }
