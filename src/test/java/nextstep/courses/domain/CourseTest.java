@@ -1,17 +1,17 @@
 package nextstep.courses.domain;
 
+import static nextstep.courses.domain.builder.FreeEnrollmentBuilder.aFreeEnrollmentBuilder;
+import static nextstep.courses.domain.builder.FreeEnrollmentPolicyBuilder.aFreeEnrollmentPolicyBuilder;
+import static nextstep.courses.domain.builder.FreeSessionBuilder.aFreeSessionBuilder;
+import static nextstep.courses.domain.builder.PaidEnrollmentBuilder.aPaidEnrollmentBuilder;
+import static nextstep.courses.domain.builder.PaidEnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
+import static nextstep.courses.domain.builder.PaidSessionBuilder.aPaidSessionBuilder;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
-import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
-import nextstep.courses.domain.enrollmentcondition.PaidEnrollmentCondition;
-import nextstep.courses.domain.enumerate.CoverImageType;
-import nextstep.courses.domain.enumerate.EnrollmentType;
-import nextstep.courses.domain.enumerate.SessionStatusType;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUserTest;
 import org.junit.jupiter.api.Test;
@@ -23,37 +23,8 @@ class CourseTest {
     
     static {
         try {
-            freeSession = new Session(
-                1L,
-                "1",
-                new SessionBody("title", "content"),
-                new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
-                new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new Enrollment(
-                    EnrollmentType.FREE,
-                    new EnrollmentPolicy(
-                        FreeEnrollmentCondition.INSTANCE,
-                        new EnrolledUsers(List.of(4L, 5L, 6L, 7L, 8L, 9L)),
-                        new SessionStatus(SessionStatusType.RECRUITING))),
-                LocalDateTime.now(),
-                null
-            );
-            
-            paidSession = new Session(
-                2L,
-                "1",
-                new SessionBody("title", "content"),
-                new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
-                new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
-                new Enrollment(
-                    EnrollmentType.PAID,
-                    new EnrollmentPolicy(
-                        new PaidEnrollmentCondition(10L, 10),
-                        new EnrolledUsers(List.of(4L, 5L, 6L, 7L, 8L, 9L)),
-                        new SessionStatus(SessionStatusType.RECRUITING))),
-                LocalDateTime.now(),
-                null
-            );
+            freeSession = aFreeSessionBuilder().build();
+            paidSession = aPaidSessionBuilder().build();
         } catch(Exception e) {
             throw new RuntimeException(e);
         }
@@ -69,16 +40,59 @@ class CourseTest {
     }
     
     @Test
-    void 무료강의_수강신청() {
+    void 무료강의_수강신청() throws CanNotCreateException {
+        Session freeSession = aFreeSessionBuilder()
+            .withEnrollment(
+                aFreeEnrollmentBuilder()
+                    .withEnrollmentPolicy(
+                        aFreeEnrollmentPolicyBuilder()
+                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .build()
+                    ).build()
+            )
+            .build();
+        Session paidSession = aPaidSessionBuilder()
+            .withEnrollment(
+                aPaidEnrollmentBuilder()
+                    .withEnrollmentPolicy(
+                        aPaidEnrollmentPolicyBuilder()
+                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .build()
+                    ).build()
+            )
+            .build();
+        
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
+        
         assertThatNoException().isThrownBy(() -> {
             course.enrollCourse(NsUserTest.JAVAJIGI.getId(), 1L, null);
         });
     }
     
     @Test
-    void 유료강의_수강신청() {
+    void 유료강의_수강신청() throws CanNotCreateException {
+        Session freeSession = aFreeSessionBuilder()
+            .withEnrollment(
+                aFreeEnrollmentBuilder()
+                    .withEnrollmentPolicy(
+                        aFreeEnrollmentPolicyBuilder()
+                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .build()
+                    ).build()
+            )
+            .build();
+        Session paidSession = aPaidSessionBuilder()
+            .withEnrollment(
+                aPaidEnrollmentBuilder()
+                    .withEnrollmentPolicy(
+                        aPaidEnrollmentPolicyBuilder()
+                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .build()
+                    ).build()
+            )
+            .build();
         Course course = new Course("title", 1L, List.of(freeSession, paidSession));
+        
         assertThatNoException().isThrownBy(() -> {
             course.enrollCourse(NsUserTest.SANJIGI.getId(), 2L, new Payment());
         });
