@@ -44,11 +44,4 @@ public class Session extends Base {
         return Objects.equals(this.id, id);
     }
     
-    public boolean isPaidSession() {
-        return enrollment.isPaid();
-    }
-    
-    public boolean isFreeSession() {
-        return enrollment.isFree();
-    }
 }

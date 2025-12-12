@@ -1,11 +1,11 @@
 package nextstep.courses.domain;
 
-import static nextstep.courses.domain.builder.FreeEnrollmentBuilder.aFreeEnrollmentBuilder;
-import static nextstep.courses.domain.builder.FreeEnrollmentPolicyBuilder.aFreeEnrollmentPolicyBuilder;
-import static nextstep.courses.domain.builder.FreeSessionBuilder.aFreeSessionBuilder;
-import static nextstep.courses.domain.builder.PaidEnrollmentBuilder.aPaidEnrollmentBuilder;
-import static nextstep.courses.domain.builder.PaidEnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
-import static nextstep.courses.domain.builder.PaidSessionBuilder.aPaidSessionBuilder;
+import static nextstep.courses.domain.builder.EnrollmentBuilder.aFreeEnrollmentBuilder;
+import static nextstep.courses.domain.builder.EnrollmentBuilder.aPaidEnrollmentBuilder;
+import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aFreeEnrollmentPolicyBuilder;
+import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
+import static nextstep.courses.domain.builder.SessionBuilder.aFreeSessionBuilder;
+import static nextstep.courses.domain.builder.SessionBuilder.aPaidSessionBuilder;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -52,6 +52,7 @@ class CourseTest {
             )
             .build();
         Session paidSession = aPaidSessionBuilder()
+            .withId(2L)
             .withEnrollment(
                 aPaidEnrollmentBuilder()
                     .withEnrollmentPolicy(
@@ -82,6 +83,7 @@ class CourseTest {
             )
             .build();
         Session paidSession = aPaidSessionBuilder()
+            .withId(2L)
             .withEnrollment(
                 aPaidEnrollmentBuilder()
                     .withEnrollmentPolicy(

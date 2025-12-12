@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
-import static nextstep.courses.domain.builder.FreeEnrollmentPolicyBuilder.aFreeEnrollmentPolicyBuilder;
-import static nextstep.courses.domain.builder.PaidEnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
+import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aFreeEnrollmentPolicyBuilder;
+import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

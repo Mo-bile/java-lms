@@ -1,25 +1,34 @@
 package nextstep.courses.domain.builder;
 
+import static nextstep.courses.domain.builder.EnrollmentBuilder.aFreeEnrollmentBuilder;
+import static nextstep.courses.domain.builder.EnrollmentBuilder.aPaidEnrollmentBuilder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.*;
 import nextstep.courses.domain.enumerate.CoverImageType;
 
-public class PaidSessionBuilder {
+public class SessionBuilder {
     
-    private Long id = 2L;
+    private Long id = 1L;
     private String creatorId = "1";
     private SessionBody body = new SessionBody("title", "content");
     private Duration duration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3));
     private CoverImage coverImage = new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200);
-    private Enrollment enrollment = PaidEnrollmentBuilder.aPaidEnrollmentBuilder().build();
+    private Enrollment enrollment = aPaidEnrollmentBuilder().build();
     
-    public static PaidSessionBuilder aPaidSessionBuilder() throws CanNotCreateException {
-        return new PaidSessionBuilder();
+    public static SessionBuilder aPaidSessionBuilder() throws CanNotCreateException {
+        return new SessionBuilder()
+            .withEnrollment(aPaidEnrollmentBuilder().build());
     }
     
-    public PaidSessionBuilder(PaidSessionBuilder copy) throws CanNotCreateException {
+    public static SessionBuilder aFreeSessionBuilder() throws CanNotCreateException {
+        return new SessionBuilder()
+            .withEnrollment(aFreeEnrollmentBuilder().build());
+    }
+    
+    public SessionBuilder(SessionBuilder copy) throws CanNotCreateException {
         this.id = copy.id;
         this.creatorId = copy.creatorId;
         this.body = copy.body;
@@ -28,34 +37,34 @@ public class PaidSessionBuilder {
         this.enrollment = copy.enrollment;
     }
     
-    private PaidSessionBuilder() throws CanNotCreateException {}
+    private SessionBuilder() throws CanNotCreateException {}
     
-    public PaidSessionBuilder withId(Long id) {
+    public SessionBuilder withId(Long id) {
         this.id = id;
         return this;
     }
     
-    public PaidSessionBuilder withCreatorId(String creatorId) {
+    public SessionBuilder withCreatorId(String creatorId) {
         this.creatorId = creatorId;
         return this;
     }
     
-    public PaidSessionBuilder withBody(SessionBody body) {
+    public SessionBuilder withBody(SessionBody body) {
         this.body = body;
         return this;
     }
     
-    public PaidSessionBuilder withDuration(Duration duration) {
+    public SessionBuilder withDuration(Duration duration) {
         this.duration = duration;
         return this;
     }
     
-    public PaidSessionBuilder withCoverImage(CoverImage coverImage) {
+    public SessionBuilder withCoverImage(CoverImage coverImage) {
         this.coverImage = coverImage;
         return this;
     }
     
-    public PaidSessionBuilder withEnrollment(Enrollment enrollment) {
+    public SessionBuilder withEnrollment(Enrollment enrollment) {
         this.enrollment = enrollment;
         return this;
     }
@@ -64,7 +73,7 @@ public class PaidSessionBuilder {
         return new Session(id, creatorId, body, duration, coverImage, enrollment, LocalDateTime.now(), null);
     }
     
-    public PaidSessionBuilder but() throws CanNotCreateException {
-        return new PaidSessionBuilder(this);
+    public SessionBuilder but() throws CanNotCreateException {
+        return new SessionBuilder(this);
     }
 }
