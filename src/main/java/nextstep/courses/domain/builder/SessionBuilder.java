@@ -16,7 +16,7 @@ public class SessionBuilder {
     private SessionBody body = new SessionBody("title", "content");
     private Duration duration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3));
     private CoverImage coverImage = new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200);
-    private Enrollment enrollment = aPaidEnrollmentBuilder().build();
+    private Enrollment enrollment;
     
     public static SessionBuilder aPaidSessionBuilder() throws CanNotCreateException {
         return new SessionBuilder()
