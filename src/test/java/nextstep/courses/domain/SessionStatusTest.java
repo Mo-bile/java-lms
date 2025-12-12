@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import nextstep.courses.CanNotJoinException;
-import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.SessionStatusType;
 import org.junit.jupiter.api.Test;
 
 class SessionStatusTest {

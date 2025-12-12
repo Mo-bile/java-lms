@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 import nextstep.courses.CanNotJoinException;
-import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.SessionStatusType;
 
 public class SessionStatus {
     

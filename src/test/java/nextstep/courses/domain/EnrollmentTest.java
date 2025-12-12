@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
 import nextstep.courses.domain.enrollmentcondition.PaidEnrollmentCondition;
-import nextstep.courses.enumerate.EnrollmentType;
-import nextstep.courses.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.EnrollmentType;
+import nextstep.courses.domain.enumerate.SessionStatusType;
 import nextstep.payments.domain.Payment;
 import org.junit.jupiter.api.Test;
 

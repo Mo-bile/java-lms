@@ -3,7 +3,7 @@ package nextstep.courses.domain;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollmentcondition.FreeEnrollmentCondition;
-import nextstep.courses.enumerate.EnrollmentType;
+import nextstep.courses.domain.enumerate.EnrollmentType;
 import nextstep.payments.domain.Payment;
 
 public class Enrollment {

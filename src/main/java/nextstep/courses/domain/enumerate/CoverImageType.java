@@ -1,4 +1,4 @@
-package nextstep.courses.enumerate;
+package nextstep.courses.domain.enumerate;
 
 import nextstep.courses.CanNotCreateException;
 

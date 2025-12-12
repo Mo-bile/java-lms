@@ -2,7 +2,7 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollmentcondition.EnrollmentCondition;
-import nextstep.courses.enumerate.EnrollmentType;
+import nextstep.courses.domain.enumerate.EnrollmentType;
 
 public class EnrollmentPolicy {
     
