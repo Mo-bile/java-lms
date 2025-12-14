@@ -40,10 +40,14 @@ public class EnrollmentMapper {
     }
     
     public static EnrollmentEntity toEntity(Long sessionId, Enrollment enrollment) {
+        return toEntity(sessionId, null, enrollment);
+    }
+    
+    public static EnrollmentEntity toEntity(Long sessionId, Long id, Enrollment enrollment) {
         EnrollmentPolicy policy = enrollment.getPolicy();
         return new EnrollmentEntity(
             sessionId,
-            null,
+            id,
             enrollment.getType().toString(),
             policy.getEnrollmentCondition().tuitionFee().orElse(0L),
             policy.getEnrollmentCondition().maxEnrollment().orElse(0),
