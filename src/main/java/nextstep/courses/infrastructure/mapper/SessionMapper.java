@@ -63,10 +63,10 @@ public class SessionMapper {
         
     }
     
-    public static List<Long> toEntities(List<Session> sessions) {
-        List<Long> sessionEntities = new ArrayList<>();
+    public static List<SessionEntity> toEntities(Long courseId, List<Session> sessions) {
+        List<SessionEntity> sessionEntities = new ArrayList<>();
         for(Session session: sessions) {
-            sessionEntities.add(session.getId());
+            sessionEntities.add(toEntity(courseId, session));
         }
         return sessionEntities;
     }
