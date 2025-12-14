@@ -14,11 +14,15 @@ public class EnrolledUserMapper {
         return new EnrolledUsers(userIdList);
     }
     
-    public static List<EnrolledUserEntity> toEntity(Long enrollmentId, EnrolledUsers enrolledUsers) {
-        return toEntity(enrollmentId, null, enrolledUsers);
+    public static EnrolledUserEntity toEntity(Long enrollmentId, Long userId) {
+        return new EnrolledUserEntity(enrollmentId, null, userId, null, null);
     }
     
-    public static List<EnrolledUserEntity> toEntity(Long enrollmentId, Long id, EnrolledUsers enrolledUsers) {
+    public static List<EnrolledUserEntity> toEntities(Long enrollmentId, EnrolledUsers enrolledUsers) {
+        return toEntities(enrollmentId, null, enrolledUsers);
+    }
+    
+    public static List<EnrolledUserEntity> toEntities(Long enrollmentId, Long id, EnrolledUsers enrolledUsers) {
         return enrolledUsers.getEnrolledUserList()
             .stream()
             .map(enrolledUser -> new EnrolledUserEntity(
