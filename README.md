@@ -238,3 +238,85 @@ Duration → CoverImage → SessionStatus → ProvideType → Session → Course
     - 테스트 데이터 생성 시 방법 탐색해서 적용 후 앞으로 활용하기
     - 테스트 픽스쳐를 '오브젝트 마더 패턴' + 빌더패턴'(기본 값 숨기기, 빌더 덜쓰기, 팩토리 메서드를 이용해 도메인 강조, 비슷한 객체를 이용 시 코드 줄이기위한 but 사용)
         - 이용해서 축소
+
+# 3단계 : 수강신청(DB 적용)
+
+## 기존 Object Graph
+
+```mermaid
+ flowchart TB
+    Course[Course] --> Sessions[Sessions] --> ListSessions[List<Session>] --> Session[Session]
+    Session --> Body[SessionBody]
+    Session --> Dur[Duration]
+    Session --> Cover[CoverImage] --> Dim[Dimensions]
+    Cover --> CoverType[CoverImageType]
+    Session --> Enroll[Enrollment] --> EnrollType[EnrollmentType]
+    Enroll --> Policy[EnrollmentPolicy]
+    Policy --> Status[SessionStatus] --> StatusType[SessionStatusType]
+    Policy --> Users[EnrolledUsers]
+    Policy --> Cond[EnrollmentCondition]
+    Cond --> Free[FreeEnrollmentCondition]
+    Cond --> Paid[PaidEnrollmentCondition]
+```
+
+## 영상에서 DB 만들기
+
+- 목적 : 빠른 지식축적 -> 도메인에 최적화된 설계 -> 요구사항에 변화 대응
+
+### 객체와 DB 고려
+
+- 인터페이스로 Repository 만들어서 특정 조건일 때 인터페이스로 CRUD 하기
+- 자바 오브젝트가 DB에 의존해서 setter, getter 되는경우는 안됨
+    - 빈도(tag수) 의 ++, -- 를 DB 로 하는게 아닌 객체의 변화로 이용
+
+### 객체와 테이블 매핑
+
+1. 이제 @Entity 를 이용해서 구현
+    - 이 시점에 성능을 고려함
+        - 관계형 VS 객체지향형간의 관계!!!
+2. 이후 하이버네이트의 create 옵션으로 테이블 자동생성하게 함
+
+- 개발 시 자기 만족할 수준까지 비즈니스 로직, 설계하면 스키마나 속성이 바뀌어도 테이블이 자동으로 만들어서 이용
+- 스키마 만들고 한 관리 할 필요없음 ,피드백을 빨리 주고 받으면서 가능해짐
+
+3. 안정화 되면 이제 이용
+    - DB 마이그레이션으로 도구로 스키마 관리
+    - db/migration 디렉토리에 schema_version 테이블이 있음
+
+### 실제 절차
+
+@Entity 구현 -> 하이버네이트로 create 테이블 생성 -> 변경되면 db/migration 에 넣기
+
+## 프로그래밍 요구사항
+
+- 앞단계 구현한 도메인 모델을 DB 테이블과 매핑하고 데이터 저장
+    - 테이블 설계와 객체 매핑에 초점둘 것 / CRUD 쿼리, 코드 구현은 차치
+    - Payment 테이블 매핑은 고려 안해도 됨
+
+## 애그리거트 경계 나누기
+
+- Course : 하나의 기수 관리하는 테이블
+- Session : 하나의 강의 관리하는 테이블
+    - SessionBody : 제목, 내용
+    - Duration : 강의 기간
+    - CoverImage : 섬네일 이미지
+- Enrollment : 해당 강의 수강 신청을 관리하는 테이블
+    - EnrollmentUsers : 수강 신청자 관리
+    - EnrollmentCondition : 수강 신청 조건 관리
+    - SessionStatus : 강의 상태 관리
+
+## 관계형 DB 사고에 익숙해져서 생기는 고민
+
+- 두개 객체 나눠서 그냥 별개 테이블로 두고 외래키 잡으면안되나?
+- 테이블의 컬럼이 많아지면안된다. -> 테이블 분리 고민
+- 공통의 규칙이 뭐야
+    - 객체간의 관계 고민 VS 수강신청이라는 행동의 관점
+
+## 과제 수행
+
+- [x] : 도메인 모델과 테이블을 매핑한다
+    - mapper을 이렇게 만드는게 오버엔지니어링?
+    - 하이버네이트 옵션으로 자동생성?
+    - [x] : 데이터를 저장한다
+- [x] : repository에 CRUD 코드를 추가 하고 테스트 코드를 만든다
+- [x] : 수강신청을 시도한다
