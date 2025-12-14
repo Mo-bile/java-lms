@@ -6,8 +6,8 @@ import java.util.List;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
 import nextstep.courses.infrastructure.mapper.EnrolledUserMapper;
-import nextstep.courses.infrastructure.repository.enrolledUserRepository.EnrolledUserRepository;
-import nextstep.courses.infrastructure.repository.enrolledUserRepository.JdbcEnrolledUserRepository;
+import nextstep.courses.infrastructure.repository.enrolleduser.EnrolledUserRepository;
+import nextstep.courses.infrastructure.repository.enrolleduser.JdbcEnrolledUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ class EnrolledUserRepositoryTest {
     void curd() {
         Long enrollmentId = 1L;
         EnrolledUsers enrolledUsers = new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L));
-        List<EnrolledUserEntity> enrolledUserEntities = EnrolledUserMapper.toEntity(enrollmentId, enrolledUsers);
+        List<EnrolledUserEntity> enrolledUserEntities = EnrolledUserMapper.toEntities(enrollmentId, enrolledUsers);
         
         int saveCount = enrolledUserRepository.saveAll(enrolledUserEntities);
         assertThat(saveCount).isEqualTo(1);

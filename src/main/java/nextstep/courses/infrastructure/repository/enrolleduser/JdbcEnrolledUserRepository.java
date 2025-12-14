@@ -1,4 +1,4 @@
-package nextstep.courses.infrastructure.repository.enrolledUserRepository;
+package nextstep.courses.infrastructure.repository.enrolleduser;
 
 import java.sql.PreparedStatement;
 import java.time.LocalDateTime;

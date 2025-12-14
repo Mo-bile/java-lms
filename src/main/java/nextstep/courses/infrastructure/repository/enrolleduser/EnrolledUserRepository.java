@@ -1,4 +1,4 @@
-package nextstep.courses.infrastructure.repository.enrolledUserRepository;
+package nextstep.courses.infrastructure.repository.enrolleduser;
 
 import java.util.List;
 import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
