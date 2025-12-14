@@ -320,3 +320,4 @@ Duration → CoverImage → SessionStatus → ProvideType → Session → Course
     - [x] : 데이터를 저장한다
 - [x] : repository에 CRUD 코드를 추가 하고 테스트 코드를 만든다
 - [x] : 수강신청을 시도한다
+- [x] : Repository 와 Service 사이에 계층 추가
