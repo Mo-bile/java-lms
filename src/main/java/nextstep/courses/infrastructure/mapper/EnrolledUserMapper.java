@@ -9,7 +9,7 @@ public class EnrolledUserMapper {
     
     public static EnrolledUsers toModel(List<EnrolledUserEntity> enrolledUserEntity) {
         List<Long> userIdList = enrolledUserEntity.stream()
-            .map(EnrolledUserEntity::getId)
+            .map(EnrolledUserEntity::getUserId)
             .collect(Collectors.toList());
         return new EnrolledUsers(userIdList);
     }
@@ -19,6 +19,7 @@ public class EnrolledUserMapper {
             .stream()
             .map(enrolledUser -> new EnrolledUserEntity(
                 enrollmentId,
+                null,
                 enrolledUser,
                 null,
                 null

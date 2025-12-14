@@ -6,12 +6,14 @@ public class EnrolledUserEntity {
     
     private final Long enrollmentId;
     private final Long id;
+    private final Long userId;
     private final LocalDateTime createdDate;
     private final LocalDateTime updatedDate;
     
-    public EnrolledUserEntity(Long enrollmentId, Long id, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public EnrolledUserEntity(Long enrollmentId, Long id, Long userId, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.enrollmentId = enrollmentId;
         this.id = id;
+        this.userId = userId;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
@@ -22,6 +24,10 @@ public class EnrolledUserEntity {
     
     public Long getId() {
         return id;
+    }
+    
+    public Long getUserId() {
+        return userId;
     }
     
     public LocalDateTime getCreatedDate() {
