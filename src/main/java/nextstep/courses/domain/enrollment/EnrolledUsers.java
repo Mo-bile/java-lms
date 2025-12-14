@@ -40,4 +40,7 @@ public class EnrolledUsers {
         return maxEnrollment <= this.enrolledUserList.size();
     }
     
+    public List<Long> getEnrolledUserList() {
+        return enrolledUserList;
+    }
 }

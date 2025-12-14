@@ -47,4 +47,37 @@ public class Session extends Base {
         return Objects.equals(this.id, id);
     }
     
+    public Long getId() {
+        return id;
+    }
+    
+    public String getCreatorId() {
+        return creatorId;
+    }
+    
+    public SessionBody getBody() {
+        return body;
+    }
+    
+    public Duration getDuration() {
+        return duration;
+    }
+    
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+    
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+    
+    public LocalDateTime getCreatedDate() {
+        return super.getCreatedDate();
+    }
+    
+    public LocalDateTime getUpdatedDate() {
+        return super.getUpdatedDate();
+    }
+    
+    
 }

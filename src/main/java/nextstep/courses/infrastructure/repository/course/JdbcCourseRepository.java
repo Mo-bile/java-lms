@@ -1,9 +1,8 @@
-package nextstep.courses.infrastructure;
+package nextstep.courses.infrastructure.repository.course;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.course.CourseRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

@@ -21,4 +21,12 @@ public class SessionBody {
             throw new CanNotCreateException("컨텐츠에 내용이 없다");
         }
     }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public String getContent() {
+        return content;
+    }
 }

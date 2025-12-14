@@ -45,4 +45,16 @@ public class EnrollmentPolicy {
         }
         return true;
     }
+    
+    public EnrollmentCondition getEnrollmentCondition() {
+        return enrollmentCondition;
+    }
+    
+    public EnrolledUsers getEnrolledUsers() {
+        return enrolledUsers;
+    }
+    
+    public SessionStatus getStatus() {
+        return status;
+    }
 }

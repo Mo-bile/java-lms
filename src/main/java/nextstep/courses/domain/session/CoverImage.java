@@ -31,4 +31,15 @@ public class CoverImage {
         }
     }
     
+    public int getSize() {
+        return size;
+    }
+    
+    public CoverImageType getType() {
+        return type;
+    }
+    
+    public Dimensions getDimensions() {
+        return dimensions;
+    }
 }

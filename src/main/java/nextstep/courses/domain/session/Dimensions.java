@@ -29,4 +29,16 @@ public class Dimensions {
             throw new CanNotCreateException("이미지의 너비(width)와 높이(height)의 비율은 3:2 이어야 한다");
         }
     }
+    
+    public double getWidth() {
+        return width;
+    }
+    
+    public double getHeight() {
+        return height;
+    }
+    
+    public double getRatio() {
+        return ratio;
+    }
 }
