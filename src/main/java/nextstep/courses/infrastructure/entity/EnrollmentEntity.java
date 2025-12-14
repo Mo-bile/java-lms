@@ -1,21 +1,19 @@
 package nextstep.courses.infrastructure.entity;
 
 import java.time.LocalDateTime;
-import nextstep.courses.domain.enumerate.EnrollmentType;
-import nextstep.courses.domain.enumerate.SessionStatusType;
 
 public class EnrollmentEntity {
     
     private final Long sessionId;
     private final Long id;
-    private final EnrollmentType type;
+    private final String type;
     private final long tuitionFee;
     private final int maxEnrollment;
-    private final SessionStatusType sessionStatus;
+    private final String sessionStatus;
     private final LocalDateTime createdDate;
     private final LocalDateTime updatedDate;
     
-    public EnrollmentEntity(Long sessionId, Long id, EnrollmentType type, long tuitionFee, int maxEnrollment, SessionStatusType sessionStatus, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public EnrollmentEntity(Long sessionId, Long id, String type, long tuitionFee, int maxEnrollment, String sessionStatus, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.sessionId = sessionId;
         this.id = id;
         this.type = type;
@@ -34,7 +32,7 @@ public class EnrollmentEntity {
         return id;
     }
     
-    public EnrollmentType getType() {
+    public String getType() {
         return type;
     }
     
@@ -46,7 +44,7 @@ public class EnrollmentEntity {
         return maxEnrollment;
     }
     
-    public SessionStatusType getSessionStatus() {
+    public String getSessionStatus() {
         return sessionStatus;
     }
     

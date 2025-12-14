@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import nextstep.courses.domain.enumerate.CoverImageType;
 
 public class SessionEntity {
     
@@ -14,14 +13,14 @@ public class SessionEntity {
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final int coverImageSize; // byte
-    private final CoverImageType coverImageType;
+    private final String coverImageType;
     private final double dimensionsWidth;
     private final double dimensionsHeight;
     private final double dimensionsRatio;
     private final LocalDateTime createdDate;
     private final LocalDateTime updatedDate;
     
-    public SessionEntity(Long courseId, Long id, String creatorId, String title, String content, LocalDate startDate, LocalDate endDate, int coverImageSize, CoverImageType coverImageType, double dimensionsWidth, double dimensionsHeight, double dimensionsRatio, LocalDateTime createdDate, LocalDateTime updatedDate) {
+    public SessionEntity(Long courseId, Long id, String creatorId, String title, String content, LocalDate startDate, LocalDate endDate, int coverImageSize, String coverImageType, double dimensionsWidth, double dimensionsHeight, double dimensionsRatio, LocalDateTime createdDate, LocalDateTime updatedDate) {
         this.courseId = courseId;
         this.id = id;
         this.creatorId = creatorId;
@@ -70,7 +69,7 @@ public class SessionEntity {
         return coverImageSize;
     }
     
-    public CoverImageType getCoverImageType() {
+    public String getCoverImageType() {
         return coverImageType;
     }
     

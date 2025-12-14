@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import java.util.Objects;
 import nextstep.courses.CanNotCreateException;
 
 public class SessionBody {
@@ -28,5 +29,19 @@ public class SessionBody {
     
     public String getContent() {
         return content;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SessionBody that = (SessionBody) o;
+        return Objects.equals(title, that.title) && Objects.equals(content, that.content);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, content);
     }
 }

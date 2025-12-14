@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.mapper;
 import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.CanNotCreateException;
+import nextstep.courses.domain.enumerate.CoverImageType;
 import nextstep.courses.domain.session.CoverImage;
 import nextstep.courses.domain.session.Duration;
 import nextstep.courses.domain.session.Session;
@@ -29,7 +30,7 @@ public class SessionMapper {
             new Duration(entity.getStartDate(), entity.getEndDate()),
             new CoverImage(
                 entity.getCoverImageSize(),
-                entity.getCoverImageType(),
+                CoverImageType.valueOf(entity.getCoverImageType()),
                 entity.getDimensionsWidth(),
                 entity.getDimensionsHeight()),
             EnrollmentMapper.toModelByJoin(enrollmentEntity, enrolledUserList),
@@ -54,7 +55,7 @@ public class SessionMapper {
             new Duration(entity.getStartDate(), entity.getEndDate()),
             new CoverImage(
                 entity.getCoverImageSize(),
-                entity.getCoverImageType(),
+                CoverImageType.valueOf(entity.getCoverImageType()),
                 entity.getDimensionsWidth(),
                 entity.getDimensionsHeight()),
             entity.getCreatedDate(),
@@ -80,7 +81,7 @@ public class SessionMapper {
             session.getDuration().getStartDate(),
             session.getDuration().getEndDate(),
             session.getCoverImage().getSize(),
-            session.getCoverImage().getType(),
+            session.getCoverImage().getType().toString(),
             session.getCoverImage().getDimensions().getWidth(),
             session.getCoverImage().getDimensions().getHeight(),
             session.getCoverImage().getDimensions().getRatio(),

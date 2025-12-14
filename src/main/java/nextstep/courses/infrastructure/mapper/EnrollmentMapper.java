@@ -9,15 +9,16 @@ import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.enrollmentcondition.FreeEnrollmentCondition;
 import nextstep.courses.domain.enrollment.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.domain.enumerate.EnrollmentType;
+import nextstep.courses.domain.enumerate.SessionStatusType;
 import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
 import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 
 public class EnrollmentMapper {
     
     public static Enrollment toModelByJoin(EnrollmentEntity entity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
-        EnrollmentType type = entity.getType();
+        EnrollmentType type = EnrollmentType.valueOf(entity.getType());
         EnrolledUsers enrolledUsers = EnrolledUserMapper.toModel(enrolledUserList);
-        SessionStatus sessionStatus = new SessionStatus(entity.getSessionStatus());
+        SessionStatus sessionStatus = new SessionStatus(SessionStatusType.valueOf(entity.getSessionStatus()));
         EnrollmentPolicy enrollmentPolicy = new EnrollmentPolicy(
             type == EnrollmentType.FREE
                 ? FreeEnrollmentCondition.INSTANCE
@@ -28,8 +29,8 @@ public class EnrollmentMapper {
     }
     
     public static Enrollment toModel(EnrollmentEntity entity) throws CanNotCreateException {
-        EnrollmentType type = entity.getType();
-        SessionStatus sessionStatus = new SessionStatus(entity.getSessionStatus());
+        EnrollmentType type = EnrollmentType.valueOf(entity.getType());
+        SessionStatus sessionStatus = new SessionStatus(SessionStatusType.valueOf(entity.getSessionStatus()));
         EnrollmentPolicy enrollmentPolicy = new EnrollmentPolicy(
             type == EnrollmentType.FREE
                 ? FreeEnrollmentCondition.INSTANCE
@@ -43,10 +44,10 @@ public class EnrollmentMapper {
         return new EnrollmentEntity(
             sessionId,
             null,
-            enrollment.getType(),
+            enrollment.getType().toString(),
             policy.getEnrollmentCondition().tuitionFee().orElse(0L),
             policy.getEnrollmentCondition().maxEnrollment().orElse(0),
-            policy.getStatus().getSessionStatusType(),
+            policy.getStatus().getSessionStatusType().toString(),
             null,
             null
         );
