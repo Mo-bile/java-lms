@@ -14,7 +14,7 @@ import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 
 public class EnrollmentMapper {
     
-    public static Enrollment toModel(EnrollmentEntity entity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
+    public static Enrollment toModelByJoin(EnrollmentEntity entity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
         EnrollmentType type = entity.getType();
         EnrolledUsers enrolledUsers = EnrolledUserMapper.toModel(enrolledUserList);
         SessionStatus sessionStatus = new SessionStatus(entity.getSessionStatus());
@@ -23,6 +23,17 @@ public class EnrollmentMapper {
                 ? FreeEnrollmentCondition.INSTANCE
                 : new PaidEnrollmentCondition(entity.getTuitionFee(), entity.getMaxEnrollment()),
             enrolledUsers,
+            sessionStatus);
+        return new Enrollment(type, enrollmentPolicy);
+    }
+    
+    public static Enrollment toModel(EnrollmentEntity entity) throws CanNotCreateException {
+        EnrollmentType type = entity.getType();
+        SessionStatus sessionStatus = new SessionStatus(entity.getSessionStatus());
+        EnrollmentPolicy enrollmentPolicy = new EnrollmentPolicy(
+            type == EnrollmentType.FREE
+                ? FreeEnrollmentCondition.INSTANCE
+                : new PaidEnrollmentCondition(entity.getTuitionFee(), entity.getMaxEnrollment()),
             sessionStatus);
         return new Enrollment(type, enrollmentPolicy);
     }

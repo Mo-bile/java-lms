@@ -13,15 +13,15 @@ import nextstep.courses.infrastructure.entity.SessionEntity;
 
 public class SessionMapper {
     
-    public static List<Session> toModels(List<SessionEntity> sessionEntities, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
+    public static List<Session> toModelsByJoin(List<SessionEntity> sessionEntities, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
         List<Session> sessions = new ArrayList<>();
         for(SessionEntity sessionEntity: sessionEntities) {
-            sessions.add(toModel(sessionEntity, enrollmentEntity, enrolledUserList));
+            sessions.add(toModelByJoin(sessionEntity, enrollmentEntity, enrolledUserList));
         }
         return sessions;
     }
     
-    public static Session toModel(SessionEntity entity, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
+    public static Session toModelByJoin(SessionEntity entity, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
         return new Session(
             entity.getId(),
             entity.getCreatorId(),
@@ -32,13 +32,37 @@ public class SessionMapper {
                 entity.getCoverImageType(),
                 entity.getDimensionsWidth(),
                 entity.getDimensionsHeight()),
-            EnrollmentMapper.toModel(enrollmentEntity, enrolledUserList),
+            EnrollmentMapper.toModelByJoin(enrollmentEntity, enrolledUserList),
             entity.getCreatedDate(),
             entity.getUpdatedDate());
         
     }
     
-    public static List<Long> toEntitys(List<Session> sessions) {
+    public static List<Session> toModels(List<SessionEntity> sessionEntities) throws CanNotCreateException {
+        List<Session> sessions = new ArrayList<>();
+        for(SessionEntity sessionEntity: sessionEntities) {
+            sessions.add(toModel(sessionEntity));
+        }
+        return sessions;
+    }
+    
+    public static Session toModel(SessionEntity entity) throws CanNotCreateException {
+        return new Session(
+            entity.getId(),
+            entity.getCreatorId(),
+            new SessionBody(entity.getTitle(), entity.getContent()),
+            new Duration(entity.getStartDate(), entity.getEndDate()),
+            new CoverImage(
+                entity.getCoverImageSize(),
+                entity.getCoverImageType(),
+                entity.getDimensionsWidth(),
+                entity.getDimensionsHeight()),
+            entity.getCreatedDate(),
+            entity.getUpdatedDate());
+        
+    }
+    
+    public static List<Long> toEntities(List<Session> sessions) {
         List<Long> sessionEntities = new ArrayList<>();
         for(Session session: sessions) {
             sessionEntities.add(session.getId());

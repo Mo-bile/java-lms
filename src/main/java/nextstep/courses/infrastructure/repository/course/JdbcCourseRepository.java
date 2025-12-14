@@ -2,7 +2,7 @@ package nextstep.courses.infrastructure.repository.course;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import nextstep.courses.domain.course.Course;
+import nextstep.courses.infrastructure.entity.CourseEntity;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -16,15 +16,15 @@ public class JdbcCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int save(Course course) {
+    public int save(CourseEntity course) {
         String sql = "insert into course (title, creator_id, created_at) values(?, ?, ?)";
-        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedAt());
+        return jdbcTemplate.update(sql, course.getTitle(), course.getCreatorId(), course.getCreatedDate());
     }
 
     @Override
-    public Course findById(Long id) {
+    public CourseEntity findById(Long id) {
         String sql = "select id, title, creator_id, created_at, updated_at from course where id = ?";
-        RowMapper<Course> rowMapper = (rs, rowNum) -> new Course(
+        RowMapper<CourseEntity> rowMapper = (rs, rowNum) -> new CourseEntity(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getLong(3),

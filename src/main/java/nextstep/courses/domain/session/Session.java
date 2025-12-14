@@ -21,6 +21,10 @@ public class Session extends Base {
         this(0L, creatorId, body, duration, coverImage, enrollment, LocalDateTime.now(), null);
     }
     
+    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, LocalDateTime createdDate, LocalDateTime updatedDate) {
+        this(id, creatorId, body, duration, coverImage, null, createdDate, updatedDate);
+    }
+    
     public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Enrollment enrollment, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdDate, updatedDate);
         this.id = id;

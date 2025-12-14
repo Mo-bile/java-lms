@@ -11,6 +11,10 @@ public class EnrollmentPolicy {
     private final EnrolledUsers enrolledUsers;
     private final SessionStatus status;
     
+    public EnrollmentPolicy(EnrollmentCondition enrollmentCondition, SessionStatus status) {
+        this(enrollmentCondition, null, status);
+    }
+    
     public EnrollmentPolicy(EnrollmentCondition enrollmentCondition) {
         this(enrollmentCondition, new EnrolledUsers(), new SessionStatus());
     }

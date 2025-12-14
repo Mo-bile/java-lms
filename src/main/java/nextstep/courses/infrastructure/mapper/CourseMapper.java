@@ -11,7 +11,7 @@ import nextstep.courses.infrastructure.entity.SessionEntity;
 
 public class CourseMapper {
     
-    public static Course toModel(
+    public static Course toModelByJoin(
         CourseEntity entity,
         List<SessionEntity> sessionEntities,
         EnrollmentEntity enrollmentEntity,
@@ -21,7 +21,17 @@ public class CourseMapper {
             entity.getId(),
             entity.getTitle(),
             entity.getCreatorId(),
-            new Sessions(SessionMapper.toModels(sessionEntities, enrollmentEntity, enrolledUserList)),
+            new Sessions(SessionMapper.toModelsByJoin(sessionEntities, enrollmentEntity, enrolledUserList)),
+            entity.getCreatedDate(),
+            entity.getUpdatedDate()
+        );
+    }
+    
+    public static Course toModel(CourseEntity entity) {
+        return new Course(
+            entity.getId(),
+            entity.getTitle(),
+            entity.getCreatorId(),
             entity.getCreatedDate(),
             entity.getUpdatedDate()
         );

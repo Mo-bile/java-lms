@@ -4,6 +4,8 @@ import javax.annotation.Resource;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.course.SessionApply;
+import nextstep.courses.infrastructure.entity.CourseEntity;
+import nextstep.courses.infrastructure.mapper.CourseMapper;
 import nextstep.courses.infrastructure.repository.course.CourseRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
@@ -17,11 +19,12 @@ public class CourseService {
     
     @Transactional
     public void enroll(NsUser loginUser, long courseId, long sessionId) throws CanNotJoinException {
-        Course course = courseRepository.findById(courseId);
+        CourseEntity courseEntity = courseRepository.findById(courseId);
+        Course course = CourseMapper.toModel(courseEntity);
         
         Payment payment = new PaymentService().payment("id");
         course.enrollCourse(new SessionApply(loginUser.getId(), payment), sessionId);
-        courseRepository.save(course);
+        courseRepository.save(CourseMapper.toEntity(course));
     }
     
 }
