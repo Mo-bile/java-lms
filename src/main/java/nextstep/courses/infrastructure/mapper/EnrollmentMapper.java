@@ -46,7 +46,9 @@ public class EnrollmentMapper {
             enrollment.getType(),
             policy.getEnrollmentCondition().tuitionFee().orElse(0L),
             policy.getEnrollmentCondition().maxEnrollment().orElse(0),
-            policy.getStatus().getSessionStatusType()
+            policy.getStatus().getSessionStatusType(),
+            null,
+            null
         );
     }
 }
