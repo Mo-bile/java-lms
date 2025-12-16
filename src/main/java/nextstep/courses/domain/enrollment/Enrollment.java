@@ -47,4 +47,12 @@ public class Enrollment {
     public boolean isFree() {
         return this.type.isFree();
     }
+    
+    public EnrollmentType getType() {
+        return type;
+    }
+    
+    public EnrollmentPolicy getPolicy() {
+        return policy;
+    }
 }

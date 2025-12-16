@@ -37,4 +37,12 @@ public class Duration {
         LocalDate currentDate = LocalDate.now();
         return startDate.isBefore(currentDate) || endDate.isBefore(currentDate);
     }
+    
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+    
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }

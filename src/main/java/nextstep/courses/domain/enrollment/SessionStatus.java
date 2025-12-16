@@ -21,4 +21,7 @@ public class SessionStatus {
         }
     }
     
+    public SessionStatusType getSessionStatusType() {
+        return sessionStatusType;
+    }
 }

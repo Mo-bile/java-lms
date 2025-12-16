@@ -3,6 +3,7 @@ package nextstep.courses.domain.enrollment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import nextstep.courses.CanNotJoinException;
 
 public class EnrolledUsers {
@@ -40,4 +41,21 @@ public class EnrolledUsers {
         return maxEnrollment <= this.enrolledUserList.size();
     }
     
+    public List<Long> getEnrolledUserList() {
+        return enrolledUserList;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EnrolledUsers that = (EnrolledUsers) o;
+        return Objects.equals(enrolledUserList, that.enrolledUserList);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(enrolledUserList);
+    }
 }

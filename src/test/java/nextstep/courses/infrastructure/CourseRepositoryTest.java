@@ -1,9 +1,9 @@
 package nextstep.courses.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.course.CourseRepository;
+import nextstep.courses.infrastructure.repository.course.CourseRepository;
+import nextstep.courses.infrastructure.repository.course.JdbcCourseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

@@ -21,6 +21,10 @@ public class Session extends Base {
         this(0L, creatorId, body, duration, coverImage, enrollment, LocalDateTime.now(), null);
     }
     
+    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, LocalDateTime createdDate, LocalDateTime updatedDate) {
+        this(id, creatorId, body, duration, coverImage, null, createdDate, updatedDate);
+    }
+    
     public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Enrollment enrollment, LocalDateTime createdDate, LocalDateTime updatedDate) {
         super(createdDate, updatedDate);
         this.id = id;
@@ -46,5 +50,38 @@ public class Session extends Base {
     public boolean isSameSessionId(Long id) {
         return Objects.equals(this.id, id);
     }
+    
+    public Long getId() {
+        return id;
+    }
+    
+    public String getCreatorId() {
+        return creatorId;
+    }
+    
+    public SessionBody getBody() {
+        return body;
+    }
+    
+    public Duration getDuration() {
+        return duration;
+    }
+    
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+    
+    public Enrollment getEnrollment() {
+        return enrollment;
+    }
+    
+    public LocalDateTime getCreatedDate() {
+        return super.getCreatedDate();
+    }
+    
+    public LocalDateTime getUpdatedDate() {
+        return super.getUpdatedDate();
+    }
+    
     
 }

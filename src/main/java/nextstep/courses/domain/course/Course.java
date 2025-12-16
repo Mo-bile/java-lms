@@ -34,7 +34,11 @@ public class Course extends Base {
         this.creatorId = creatorId;
         this.sessions = sessions;
     }
-
+    
+    public Long getId() {
+        return id;
+    }
+    
     public String getTitle() {
         return title;
     }
@@ -49,6 +53,14 @@ public class Course extends Base {
     
     public Sessions getSessions() {
         return sessions;
+    }
+    
+    public LocalDateTime getUpdatedAt() {
+        return super.getUpdatedDate();
+    }
+    
+    public LocalDateTime getUpdatedDate() {
+        return super.getUpdatedDate();
     }
     
     @Override

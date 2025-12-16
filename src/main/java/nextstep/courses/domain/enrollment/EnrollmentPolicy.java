@@ -11,6 +11,10 @@ public class EnrollmentPolicy {
     private final EnrolledUsers enrolledUsers;
     private final SessionStatus status;
     
+    public EnrollmentPolicy(EnrollmentCondition enrollmentCondition, SessionStatus status) {
+        this(enrollmentCondition, null, status);
+    }
+    
     public EnrollmentPolicy(EnrollmentCondition enrollmentCondition) {
         this(enrollmentCondition, new EnrolledUsers(), new SessionStatus());
     }
@@ -44,5 +48,17 @@ public class EnrollmentPolicy {
             return !(this.enrollmentCondition.maxEnrollment().isPresent() && this.enrollmentCondition.tuitionFee().isPresent());
         }
         return true;
+    }
+    
+    public EnrollmentCondition getEnrollmentCondition() {
+        return enrollmentCondition;
+    }
+    
+    public EnrolledUsers getEnrolledUsers() {
+        return enrolledUsers;
+    }
+    
+    public SessionStatus getStatus() {
+        return status;
     }
 }
