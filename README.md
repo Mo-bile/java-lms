@@ -321,3 +321,14 @@ Duration → CoverImage → SessionStatus → ProvideType → Session → Course
 - [x] : repository에 CRUD 코드를 추가 하고 테스트 코드를 만든다
 - [x] : 수강신청을 시도한다
 - [x] : Repository 와 Service 사이에 계층 추가
+
+## 첫번째 피드백
+
+- [x] : 수강신청 로직이 잘못 구현됨
+- [x] : mapper 을 좀 더 단순하게
+    - mapStruct 사용도 권장
+    - [x] : entity 를 domain 변환은 entity가 담당하는 것을 고려할 것
+- [x] : CourseDataAccess 는 과하다고 볼 수있음 -> 대신에 sessionService 같은 service가 담당하는것이 어떤가?
+- [x] : Course와 Session 간에는 1:N 인데 매번 모든 Session을 조회할 필요는 없다
+    - [x] : 구현위치 또한 SessionService에서 하는 것이 좋음
+- [x] : `courseDataAccess.updateEnrolledUsers()` 는 loginUser가 수강신청 하므로 loginUser 를 인자로 전달이 좋지 않은가?  
