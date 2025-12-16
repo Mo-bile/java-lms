@@ -12,12 +12,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-
 import java.util.List;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.infrastructure.repository.CourseDataAccess;
+import nextstep.courses.infrastructure.repository.course.CourseRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +27,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CourseServiceTest {
     
     @Mock
-    private CourseDataAccess courseDataAccess;
+    private SessionService sessionService;
+
+    @Mock
+    private EnrolledUserService enrolledUserService;
+
+    @Mock
+    private CourseRepository courseRepository;
     
     @InjectMocks
     private CourseService courseService;
@@ -61,14 +66,16 @@ class CourseServiceTest {
             .build();
         long courseId = 1L;
         Course course = new Course("course title", courseId, List.of(freeSession, paidSession));
-        given(courseDataAccess.findById(courseId, freeSessionId)).willReturn(course);
-        given(courseDataAccess.findById(courseId, paidSessionId)).willReturn(course);
+
+//        given(courseRepository.findById(courseId)).willReturn(course);
+        given(sessionService.findById(freeSessionId)).willReturn(freeSession);
+        given(sessionService.findById(paidSessionId)).willReturn(paidSession);
         
         courseService.enroll(JAVAJIGI, courseId, freeSessionId);
         courseService.enroll(SANJIGI, courseId, paidSessionId);
-        
-        verify(courseDataAccess).updateEnrolledUsers(any(Course.class), eq(freeSessionId));
-        verify(courseDataAccess).updateEnrolledUsers(any(Course.class), eq(paidSessionId));
+
+        verify(enrolledUserService).updateEnrolledUsers(any(Session.class), eq(JAVAJIGI.getId()));
+        verify(enrolledUserService).updateEnrolledUsers(any(Session.class), eq(SANJIGI.getId()));
     }
     
 }

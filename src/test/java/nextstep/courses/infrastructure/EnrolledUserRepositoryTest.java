@@ -1,7 +1,6 @@
 package nextstep.courses.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.List;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
@@ -35,13 +34,13 @@ class EnrolledUserRepositoryTest {
     void curd() {
         Long enrollmentId = 1L;
         EnrolledUsers enrolledUsers = new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L));
-        List<EnrolledUserEntity> enrolledUserEntities = EnrolledUserMapper.toEntities(enrollmentId, enrolledUsers);
+        List<EnrolledUserEntity> enrolledUserEntities = EnrolledUserMapper.toEntityList(enrollmentId, enrolledUsers);
         
         int saveCount = enrolledUserRepository.saveAll(enrolledUserEntities);
         assertThat(saveCount).isEqualTo(1);
         
         List<EnrolledUserEntity> byEnrollmentId = enrolledUserRepository.findByEnrollmentId(enrollmentId);
-        EnrolledUsers model = EnrolledUserMapper.toModel(byEnrollmentId);
+        EnrolledUsers model = EnrolledUserMapper.toDomain(byEnrollmentId);
         
         assertThat(model.getEnrolledUserList()).isEqualTo(enrolledUsers.getEnrolledUserList());
         

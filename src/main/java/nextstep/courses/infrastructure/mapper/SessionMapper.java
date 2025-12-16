@@ -1,10 +1,11 @@
 package nextstep.courses.infrastructure.mapper;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.enumerate.CoverImageType;
 import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.Dimensions;
 import nextstep.courses.domain.session.Duration;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionBody;
@@ -12,63 +13,81 @@ import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
 import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 import nextstep.courses.infrastructure.entity.SessionEntity;
 
-public class SessionMapper {
-    
-    public static List<Session> toModelsByJoin(List<SessionEntity> sessionEntities, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
-        List<Session> sessions = new ArrayList<>();
-        for(SessionEntity sessionEntity: sessionEntities) {
-            sessions.add(toModelByJoin(sessionEntity, enrollmentEntity, enrolledUserList));
+public final class SessionMapper {
+
+    public static List<Session> toModelsWithEnrollment(
+        List<SessionEntity> sessionEntities,
+        EnrollmentEntity enrollmentEntity,
+        List<EnrolledUserEntity> enrolledUserList
+    ) {
+        return sessionEntities.stream()
+            .map(entity -> toModelWithEnrollment(entity, enrollmentEntity, enrolledUserList))
+            .collect(Collectors.toList());
+    }
+
+    public static Session toModelWithEnrollment(
+        SessionEntity entity,
+        EnrollmentEntity enrollmentEntity,
+        List<EnrolledUserEntity> enrolledUserList
+    ) {
+        try {
+            return new Session(
+                entity.getId(),
+                entity.getCreatorId(),
+                new SessionBody(entity.getTitle(), entity.getContent()),
+                new Duration(entity.getStartDate(), entity.getEndDate()),
+                createCoverImage(entity),
+                EnrollmentMapper.toModelWithEnrolledUsers(enrollmentEntity, enrolledUserList),
+                entity.getCreatedDate(),
+                entity.getUpdatedDate()
+            );
+        } catch (CanNotCreateException e) {
+            throw new MappingException("Failed to map SessionEntity to Session", e);
         }
-        return sessions;
     }
-    
-    public static Session toModelByJoin(SessionEntity entity, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) throws CanNotCreateException {
-        return new Session(
-            entity.getId(),
-            entity.getCreatorId(),
-            new SessionBody(entity.getTitle(), entity.getContent()),
-            new Duration(entity.getStartDate(), entity.getEndDate()),
-            new CoverImage(
-                entity.getCoverImageSize(),
-                CoverImageType.valueOf(entity.getCoverImageType()),
-                entity.getDimensionsWidth(),
-                entity.getDimensionsHeight()),
-            EnrollmentMapper.toModelByJoin(enrollmentEntity, enrolledUserList),
-            entity.getCreatedDate(),
-            entity.getUpdatedDate());
-        
+
+    public static Session toModelByJoin(
+        SessionEntity entity,
+        EnrollmentEntity enrollmentEntity,
+        List<EnrolledUserEntity> enrolledUserList
+    ) {
+        return toModelWithEnrollment(entity, enrollmentEntity, enrolledUserList);
     }
-    
-    public static List<Session> toModels(List<SessionEntity> sessionEntities) throws CanNotCreateException {
-        List<Session> sessions = new ArrayList<>();
-        for(SessionEntity sessionEntity: sessionEntities) {
-            sessions.add(toModel(sessionEntity));
+
+    public static List<Session> toModels(List<SessionEntity> sessionEntities) {
+        return sessionEntities.stream()
+            .map(SessionMapper::toModel)
+            .collect(Collectors.toList());
+    }
+
+    public static Session toModel(SessionEntity entity) {
+        try {
+            return new Session(
+                entity.getId(),
+                entity.getCreatorId(),
+                new SessionBody(entity.getTitle(), entity.getContent()),
+                new Duration(entity.getStartDate(), entity.getEndDate()),
+                createCoverImage(entity),
+                entity.getCreatedDate(),
+                entity.getUpdatedDate()
+            );
+        } catch (CanNotCreateException e) {
+            throw new MappingException("Failed to map SessionEntity to Session", e);
         }
-        return sessions;
     }
-    
-    public static Session toModel(SessionEntity entity) throws CanNotCreateException {
-        return new Session(
-            entity.getId(),
-            entity.getCreatorId(),
-            new SessionBody(entity.getTitle(), entity.getContent()),
-            new Duration(entity.getStartDate(), entity.getEndDate()),
-            new CoverImage(
-                entity.getCoverImageSize(),
-                CoverImageType.valueOf(entity.getCoverImageType()),
-                entity.getDimensionsWidth(),
-                entity.getDimensionsHeight()),
-            entity.getCreatedDate(),
-            entity.getUpdatedDate());
-        
+
+    private static CoverImage createCoverImage(SessionEntity entity) throws CanNotCreateException {
+        return new CoverImage(
+            entity.getCoverImageSize(),
+            CoverImageType.valueOf(entity.getCoverImageType()),
+            new Dimensions(entity.getDimensionsWidth(), entity.getDimensionsHeight())
+        );
     }
-    
-    public static List<SessionEntity> toEntities(Long courseId, List<Session> sessions) {
-        List<SessionEntity> sessionEntities = new ArrayList<>();
-        for(Session session: sessions) {
-            sessionEntities.add(toEntity(courseId, session));
-        }
-        return sessionEntities;
+
+    public static List<SessionEntity> toEntityList(Long courseId, List<Session> sessions) {
+        return sessions.stream()
+            .map(session -> toEntity(courseId, session))
+            .collect(Collectors.toList());
     }
     
     public static SessionEntity toEntity(Long courseId, Session session) {

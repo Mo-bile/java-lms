@@ -5,10 +5,10 @@ import java.util.stream.Collectors;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
 
-public class EnrolledUserMapper {
-    
-    public static EnrolledUsers toModel(List<EnrolledUserEntity> enrolledUserEntity) {
-        List<Long> userIdList = enrolledUserEntity.stream()
+public final class EnrolledUserMapper {
+
+    public static EnrolledUsers toDomain(List<EnrolledUserEntity> enrolledUserEntities) {
+        List<Long> userIdList = enrolledUserEntities.stream()
             .map(EnrolledUserEntity::getUserId)
             .collect(Collectors.toList());
         return new EnrolledUsers(userIdList);
@@ -17,12 +17,12 @@ public class EnrolledUserMapper {
     public static EnrolledUserEntity toEntity(Long enrollmentId, Long userId) {
         return new EnrolledUserEntity(enrollmentId, null, userId, null, null);
     }
-    
-    public static List<EnrolledUserEntity> toEntities(Long enrollmentId, EnrolledUsers enrolledUsers) {
-        return toEntities(enrollmentId, null, enrolledUsers);
+
+    public static List<EnrolledUserEntity> toEntityList(Long enrollmentId, EnrolledUsers enrolledUsers) {
+        return toEntityList(enrollmentId, null, enrolledUsers);
     }
-    
-    public static List<EnrolledUserEntity> toEntities(Long enrollmentId, Long id, EnrolledUsers enrolledUsers) {
+
+    public static List<EnrolledUserEntity> toEntityList(Long enrollmentId, Long id, EnrolledUsers enrolledUsers) {
         return enrolledUsers.getEnrolledUserList()
             .stream()
             .map(enrolledUser -> new EnrolledUserEntity(
