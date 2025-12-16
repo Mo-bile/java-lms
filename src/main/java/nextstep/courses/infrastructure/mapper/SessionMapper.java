@@ -15,21 +15,7 @@ import nextstep.courses.infrastructure.entity.SessionEntity;
 
 public final class SessionMapper {
 
-    public static List<Session> toModelsWithEnrollment(
-        List<SessionEntity> sessionEntities,
-        EnrollmentEntity enrollmentEntity,
-        List<EnrolledUserEntity> enrolledUserList
-    ) {
-        return sessionEntities.stream()
-            .map(entity -> toModelWithEnrollment(entity, enrollmentEntity, enrolledUserList))
-            .collect(Collectors.toList());
-    }
-
-    public static Session toModelWithEnrollment(
-        SessionEntity entity,
-        EnrollmentEntity enrollmentEntity,
-        List<EnrolledUserEntity> enrolledUserList
-    ) {
+    public static Session toModelWithEnrollment(SessionEntity entity, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) {
         try {
             return new Session(
                 entity.getId(),

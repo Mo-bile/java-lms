@@ -16,10 +16,7 @@ import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 
 public final class EnrollmentMapper {
 
-    public static Enrollment toModelWithEnrolledUsers(
-        EnrollmentEntity entity,
-        List<EnrolledUserEntity> enrolledUserList
-    ) {
+    public static Enrollment toModelWithEnrolledUsers(EnrollmentEntity entity, List<EnrolledUserEntity> enrolledUserList) {
         try {
             EnrollmentType type = EnrollmentType.valueOf(entity.getType());
             EnrolledUsers enrolledUsers = EnrolledUserMapper.toDomain(enrolledUserList);
@@ -37,8 +34,7 @@ public final class EnrollmentMapper {
         }
     }
 
-    public static Enrollment toModelWithEnrolledUsers(EnrollmentEntity entity, EnrolledUsers enrolledUsers
-    ) {
+    public static Enrollment toModelWithEnrolledUsers(EnrollmentEntity entity, EnrolledUsers enrolledUsers) {
         try {
             EnrollmentType type = EnrollmentType.valueOf(entity.getType());
             SessionStatus sessionStatus = new SessionStatus(SessionStatusType.valueOf(entity.getSessionStatus()));
