@@ -8,10 +8,13 @@ import static nextstep.courses.domain.builder.SessionBuilder.aFreeSessionBuilder
 import static nextstep.courses.domain.builder.SessionBuilder.aPaidSessionBuilder;
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import java.util.List;
+import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.session.Session;
@@ -28,13 +31,9 @@ class CourseServiceTest {
     
     @Mock
     private SessionService sessionService;
-
-    @Mock
-    private EnrolledUserService enrolledUserService;
-
     @Mock
     private CourseRepository courseRepository;
-    
+
     @InjectMocks
     private CourseService courseService;
     
@@ -65,16 +64,28 @@ class CourseServiceTest {
             )
             .build();
         long courseId = 1L;
-        Course course = new Course("course title", courseId, List.of(freeSession, paidSession));
 
-        given(courseRepository.findById(courseId)).willReturn(course);
-        given(sessionService.findById(freeSessionId)).willReturn(freeSession);
-        given(sessionService.findById(paidSessionId)).willReturn(paidSession);
+        given(courseRepository.findById(courseId)).willReturn(new Course("title", JAVAJIGI.getId()));
+        given(sessionService.enroll(eq(JAVAJIGI.getId()), eq(freeSessionId), any())).willReturn(freeSession);
+        given(sessionService.enroll(eq(SANJIGI.getId()), eq(paidSessionId), any())).willReturn(paidSession);
         
         courseService.enroll(JAVAJIGI, courseId, freeSessionId);
         courseService.enroll(SANJIGI, courseId, paidSessionId);
 
-        verify(enrolledUserService, Mockito.times(2)).updateEnrolledUsers(any(Session.class));
+        verify(sessionService, Mockito.times(1)).enroll(eq(JAVAJIGI.getId()), eq(freeSessionId), any());
+        verify(sessionService, Mockito.times(1)).enroll(eq(SANJIGI.getId()), eq(paidSessionId), any());
+    }
+
+    @Test
+    void enrollThrowsWhenCourseNotFound() {
+        long courseId = 1L;
+        long sessionId = 1L;
+
+        given(courseRepository.findById(courseId)).willReturn(null);
+
+        assertThatThrownBy(() -> courseService.enroll(JAVAJIGI, courseId, sessionId))
+            .isInstanceOf(CanNotJoinException.class)
+            .hasMessage("기수가 존재하지 않습니다");
     }
     
 }

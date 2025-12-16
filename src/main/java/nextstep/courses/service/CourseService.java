@@ -1,10 +1,8 @@
 package nextstep.courses.service;
 
+import java.util.Optional;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
-import nextstep.courses.domain.course.Course;
-import nextstep.courses.domain.course.SessionApply;
-import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.repository.course.CourseRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.payments.service.PaymentService;
@@ -17,23 +15,17 @@ public class CourseService {
 
     private final SessionService sessionService;
 
-    private final EnrolledUserService enrolledUserService;
-
     private final CourseRepository courseRepository;
 
-    public CourseService(SessionService sessionService, EnrolledUserService enrolledUserService, CourseRepository courseRepository) {
+    public CourseService(SessionService sessionService, CourseRepository courseRepository) {
         this.sessionService = sessionService;
-        this.enrolledUserService = enrolledUserService;
         this.courseRepository = courseRepository;
     }
     
     @Transactional
     public void enroll(NsUser loginUser, long courseId, long sessionId) throws CanNotJoinException, CanNotCreateException {
-        Course course = courseRepository.findById(courseId);
-        Session session = sessionService.findById(sessionId);
+        Optional.ofNullable(courseRepository.findById(courseId)).orElseThrow(() -> new CanNotJoinException("기수가 존재하지 않습니다"));
         Payment payment = new PaymentService().payment("0");
-
-        course.enrollCourse(new SessionApply(loginUser.getId(), payment), sessionId);
-        enrolledUserService.updateEnrolledUsers(session);
+        sessionService.enroll(loginUser.getId(), sessionId, payment);
     }
 }

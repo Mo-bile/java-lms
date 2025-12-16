@@ -37,6 +37,24 @@ public final class EnrollmentMapper {
         }
     }
 
+    public static Enrollment toModelWithEnrolledUsers(EnrollmentEntity entity, EnrolledUsers enrolledUsers
+    ) {
+        try {
+            EnrollmentType type = EnrollmentType.valueOf(entity.getType());
+            SessionStatus sessionStatus = new SessionStatus(SessionStatusType.valueOf(entity.getSessionStatus()));
+
+            EnrollmentPolicy enrollmentPolicy = new EnrollmentPolicy(
+                createEnrollmentCondition(type, entity),
+                enrolledUsers,
+                sessionStatus
+            );
+            
+            return new Enrollment(type, enrollmentPolicy);
+        } catch (CanNotCreateException e) {
+            throw new MappingException("Failed to map EnrollmentEntity to Enrollment", e);
+        }
+    }
+
     public static Enrollment toModel(EnrollmentEntity entity) {
         try {
             EnrollmentType type = EnrollmentType.valueOf(entity.getType());
