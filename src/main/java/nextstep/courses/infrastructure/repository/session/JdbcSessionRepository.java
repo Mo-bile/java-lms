@@ -3,7 +3,9 @@ package nextstep.courses.infrastructure.repository.session;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.entity.SessionEntity;
+import nextstep.courses.infrastructure.mapper.SessionMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -16,17 +18,19 @@ public class JdbcSessionRepository implements SessionRepository {
     public JdbcSessionRepository(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
     
     @Override
-    public int save(SessionEntity session) {
+    public int save(Long courseId, Session session) {
+        SessionEntity entity = SessionMapper.toEntity(courseId, session);
         String sql = "INSERT INTO session (course_id, creator_id, title, contents, start_date, end_date, cover_image_size, cover_image_type, dimensions_width, dimensions_height, dimensions_ratio, created_date, updated_date) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, session.getCourseId(), session.getCreatorId(), session.getTitle(), session.getContent(), session.getStartDate(), session.getEndDate(), session.getCoverImageSize(), session.getCoverImageType(), session.getDimensionsWidth(), session.getDimensionsHeight(), session.getDimensionsRatio(), session.getCreatedDate(), session.getUpdatedDate());
+        return jdbcTemplate.update(sql, entity.getCourseId(), entity.getCreatorId(), entity.getTitle(), entity.getContent(), entity.getStartDate(), entity.getEndDate(), entity.getCoverImageSize(),
+            entity.getCoverImageType(), entity.getDimensionsWidth(), entity.getDimensionsHeight(), entity.getDimensionsRatio(), entity.getCreatedDate(), entity.getUpdatedDate());
     }
     
     @Override
-    public SessionEntity findById(Long id) {
+    public Session findById(Long id) {
         String sql = "SELECT * FROM session WHERE id = ?";
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> new SessionEntity(
-            rs.getLong("id"),
             rs.getLong("course_id"),
+            rs.getLong("id"),
             rs.getString("creator_id"),
             rs.getString("title"),
             rs.getString("contents"),
@@ -40,15 +44,16 @@ public class JdbcSessionRepository implements SessionRepository {
             toLocalDateTime(rs.getTimestamp("created_date")),
             toLocalDateTime(rs.getTimestamp("updated_date"))
         );
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        SessionEntity entity = jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return SessionMapper.toModel(entity);
     }
     
     @Override
-    public List<SessionEntity> findAllByCourseId(Long courseId) {
+    public List<Session> findAllByCourseId(Long courseId) {
         String sql = "SELECT * FROM session WHERE course_id = ?";
         RowMapper<SessionEntity> rowMapper = (rs, rowNum) -> new SessionEntity(
-            rs.getLong("id"),
             rs.getLong("course_id"),
+            rs.getLong("id"),
             rs.getString("creator_id"),
             rs.getString("title"),
             rs.getString("contents"),
@@ -62,7 +67,10 @@ public class JdbcSessionRepository implements SessionRepository {
             toLocalDateTime(rs.getTimestamp("created_date")),
             toLocalDateTime(rs.getTimestamp("updated_date"))
         );
-        return jdbcTemplate.query(sql, rowMapper, courseId);
+        return jdbcTemplate.query(sql, rowMapper, courseId)
+            .stream()
+            .map(SessionMapper::toModel)
+            .collect(java.util.stream.Collectors.toList());
     }
     
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

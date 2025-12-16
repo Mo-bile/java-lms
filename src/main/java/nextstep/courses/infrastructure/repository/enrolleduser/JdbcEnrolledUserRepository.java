@@ -3,7 +3,9 @@ package nextstep.courses.infrastructure.repository.enrolleduser;
 import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
 import java.util.List;
+import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
+import nextstep.courses.infrastructure.mapper.EnrolledUserMapper;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,8 @@ public class JdbcEnrolledUserRepository implements EnrolledUserRepository {
     }
     
     @Override
-    public int saveAll(List<EnrolledUserEntity> enrolledUserEntities) {
+    public int saveAll(Long enrollmentId, EnrolledUsers enrolledUsers) {
+        List<EnrolledUserEntity> enrolledUserEntities = EnrolledUserMapper.toEntityList(enrollmentId, enrolledUsers);
         String sql = "INSERT INTO enrolled_user (enrollment_id, user_id, created_date, updated_date) VALUES (?, ?, ?, ?)";
         int[][] ints = jdbcTemplate.batchUpdate(sql, enrolledUserEntities, enrolledUserEntities.size(),
             (PreparedStatement ps, EnrolledUserEntity entity) -> {
@@ -31,7 +34,8 @@ public class JdbcEnrolledUserRepository implements EnrolledUserRepository {
     }
     
     @Override
-    public int save(EnrolledUserEntity enrolledUserEntity) {
+    public int save(Long enrollmentId, Long userId) {
+        EnrolledUserEntity enrolledUserEntity = EnrolledUserMapper.toEntity(enrollmentId, userId);
         String sql = "INSERT INTO enrolled_user (enrollment_id, user_id, created_date, updated_date) VALUES (?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             enrolledUserEntity.getEnrollmentId(),
@@ -42,29 +46,31 @@ public class JdbcEnrolledUserRepository implements EnrolledUserRepository {
     }
     
     @Override
-    public EnrolledUserEntity findById(Long id) {
+    public EnrolledUsers findById(Long id) {
         String sql = "SELECT * FROM enrolled_user WHERE id = ?";
         RowMapper<EnrolledUserEntity> rowMapper = (rs, rowNum) -> new EnrolledUserEntity(
-            rs.getLong("id"),
             rs.getLong("enrollment_id"),
+            rs.getLong("id"),
             rs.getLong("user_id"),
             rs.getTimestamp("created_date").toLocalDateTime(),
             rs.getTimestamp("updated_date").toLocalDateTime()
         );
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        EnrolledUserEntity entity = jdbcTemplate.queryForObject(sql, rowMapper, id);
+        return EnrolledUserMapper.toDomain(List.of(entity));
     }
     
     @Override
-    public List<EnrolledUserEntity> findByEnrollmentId(Long enrollmentId) {
+    public EnrolledUsers findByEnrollmentId(Long enrollmentId) {
         String sql = "SELECT * FROM enrolled_user WHERE enrollment_id = ?";
         RowMapper<EnrolledUserEntity> rowMapper = (rs, rowNum) -> new EnrolledUserEntity(
-            rs.getLong("id"),
             rs.getLong("enrollment_id"),
+            rs.getLong("id"),
             rs.getLong("user_id"),
             rs.getTimestamp("created_date").toLocalDateTime(),
             rs.getTimestamp("updated_date").toLocalDateTime()
         );
-        return jdbcTemplate.query(sql, rowMapper, enrollmentId);
+        List<EnrolledUserEntity> entities = jdbcTemplate.query(sql, rowMapper, enrollmentId);
+        return EnrolledUserMapper.toDomain(entities);
     }
     
 }

@@ -1,15 +1,14 @@
 package nextstep.courses.infrastructure.repository.enrolleduser;
 
-import java.util.List;
-import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
+import nextstep.courses.domain.enrollment.EnrolledUsers;
 
 public interface EnrolledUserRepository {
-    
-    int saveAll(List<EnrolledUserEntity> enrolledUserEntities);
-    
-    int save(EnrolledUserEntity enrolledUserEntity);
-    
-    EnrolledUserEntity findById(Long id);
-    
-    List<EnrolledUserEntity> findByEnrollmentId(Long enrollmentId);
+
+    int saveAll(Long enrollmentId, EnrolledUsers enrolledUsers);
+
+    int save(Long enrollmentId, Long userId);
+
+    EnrolledUsers findById(Long id);
+
+    EnrolledUsers findByEnrollmentId(Long enrollmentId);
 }

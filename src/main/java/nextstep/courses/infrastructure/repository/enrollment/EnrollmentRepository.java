@@ -1,12 +1,14 @@
 package nextstep.courses.infrastructure.repository.enrollment;
 
-import nextstep.courses.infrastructure.entity.EnrollmentEntity;
+import nextstep.courses.domain.enrollment.Enrollment;
 
 public interface EnrollmentRepository {
-    
-    int save(EnrollmentEntity enrollmentEntity);
-    
-    EnrollmentEntity findById(Long id);
-    
-    EnrollmentEntity findBySessionId(Long sessionId);
+
+    int save(Long sessionId, Enrollment enrollment);
+
+    Enrollment findById(Long id);
+
+    Enrollment findBySessionId(Long sessionId);
+
+    Long findIdBySessionId(Long sessionId);
 }

@@ -1,10 +1,11 @@
 package nextstep.courses.service;
 
+import java.util.HashSet;
 import java.util.List;
-import javax.annotation.Resource;
+import java.util.Set;
+import java.util.stream.Collectors;
+import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.session.Session;
-import nextstep.courses.infrastructure.entity.EnrollmentEntity;
-import nextstep.courses.infrastructure.mapper.EnrolledUserMapper;
 import nextstep.courses.infrastructure.repository.enrolleduser.EnrolledUserRepository;
 import nextstep.courses.infrastructure.repository.enrollment.EnrollmentRepository;
 import org.springframework.stereotype.Service;
@@ -12,18 +13,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class EnrolledUserService {
 
-    @Resource(name = "enrollmentRepository")
-    private EnrollmentRepository enrollmentRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
-    @Resource(name = "enrolledUserRepository")
-    private EnrolledUserRepository enrolledUserRepository;
+    private final EnrolledUserRepository enrolledUserRepository;
 
-    public void updateEnrolledUsers(Session session, Long enrolledUserId) {
+    public EnrolledUserService(EnrollmentRepository enrollmentRepository, EnrolledUserRepository enrolledUserRepository) {
+        this.enrollmentRepository = enrollmentRepository;
+        this.enrolledUserRepository = enrolledUserRepository;
+    }
+
+    public void updateEnrolledUsers(Session session) {
+        Long enrollmentId = enrollmentRepository.findIdBySessionId(session.getId());
+        EnrolledUsers savedUsers = enrolledUserRepository.findByEnrollmentId(enrollmentId);
+
+        Set<Long> savedUserIds = new HashSet<>(savedUsers.getEnrolledUserList());
+        
         List<Long> currentUserIds = extractEnrolledUserIds(session);
-        EnrollmentEntity enrollmentEntity = enrollmentRepository.findBySessionId(session.getId());
+        List<Long> newUserIds = currentUserIds.stream()
+            .filter(userId -> !savedUserIds.contains(userId))
+            .collect(Collectors.toList());
 
-        if (!currentUserIds.contains(enrolledUserId)) {
-            enrolledUserRepository.save(EnrolledUserMapper.toEntity(enrollmentEntity.getId(), enrolledUserId));
+        if (!newUserIds.isEmpty()) {
+            enrolledUserRepository.saveAll(enrollmentId, new EnrolledUsers(newUserIds));
         }
     }
 

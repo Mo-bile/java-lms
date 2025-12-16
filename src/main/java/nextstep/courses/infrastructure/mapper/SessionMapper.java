@@ -76,6 +76,19 @@ public final class SessionMapper {
         }
     }
 
+    public static Session attachEnrollment(Session session, nextstep.courses.domain.enrollment.Enrollment enrollment) {
+        return new Session(
+            session.getId(),
+            session.getCreatorId(),
+            session.getBody(),
+            session.getDuration(),
+            session.getCoverImage(),
+            enrollment,
+            session.getCreatedDate(),
+            session.getUpdatedDate()
+        );
+    }
+
     private static CoverImage createCoverImage(SessionEntity entity) throws CanNotCreateException {
         return new CoverImage(
             entity.getCoverImageSize(),

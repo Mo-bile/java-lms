@@ -9,7 +9,6 @@ import static nextstep.courses.domain.builder.SessionBuilder.aPaidSessionBuilder
 import static nextstep.users.domain.NsUserTest.JAVAJIGI;
 import static nextstep.users.domain.NsUserTest.SANJIGI;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import java.util.List;
@@ -21,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,15 +67,14 @@ class CourseServiceTest {
         long courseId = 1L;
         Course course = new Course("course title", courseId, List.of(freeSession, paidSession));
 
-//        given(courseRepository.findById(courseId)).willReturn(course);
+        given(courseRepository.findById(courseId)).willReturn(course);
         given(sessionService.findById(freeSessionId)).willReturn(freeSession);
         given(sessionService.findById(paidSessionId)).willReturn(paidSession);
         
         courseService.enroll(JAVAJIGI, courseId, freeSessionId);
         courseService.enroll(SANJIGI, courseId, paidSessionId);
 
-        verify(enrolledUserService).updateEnrolledUsers(any(Session.class), eq(JAVAJIGI.getId()));
-        verify(enrolledUserService).updateEnrolledUsers(any(Session.class), eq(SANJIGI.getId()));
+        verify(enrolledUserService, Mockito.times(2)).updateEnrolledUsers(any(Session.class));
     }
     
 }

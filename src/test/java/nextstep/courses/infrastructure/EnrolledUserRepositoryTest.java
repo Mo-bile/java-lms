@@ -3,22 +3,16 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
-import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
-import nextstep.courses.infrastructure.mapper.EnrolledUserMapper;
 import nextstep.courses.infrastructure.repository.enrolleduser.EnrolledUserRepository;
 import nextstep.courses.infrastructure.repository.enrolleduser.JdbcEnrolledUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @JdbcTest
 class EnrolledUserRepositoryTest {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(EnrolledUserRepositoryTest.class);
     
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,13 +28,11 @@ class EnrolledUserRepositoryTest {
     void curd() {
         Long enrollmentId = 1L;
         EnrolledUsers enrolledUsers = new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L));
-        List<EnrolledUserEntity> enrolledUserEntities = EnrolledUserMapper.toEntityList(enrollmentId, enrolledUsers);
-        
-        int saveCount = enrolledUserRepository.saveAll(enrolledUserEntities);
+
+        int saveCount = enrolledUserRepository.saveAll(enrollmentId, enrolledUsers);
         assertThat(saveCount).isEqualTo(1);
-        
-        List<EnrolledUserEntity> byEnrollmentId = enrolledUserRepository.findByEnrollmentId(enrollmentId);
-        EnrolledUsers model = EnrolledUserMapper.toDomain(byEnrollmentId);
+
+        EnrolledUsers model = enrolledUserRepository.findByEnrollmentId(enrollmentId);
         
         assertThat(model.getEnrolledUserList()).isEqualTo(enrolledUsers.getEnrolledUserList());
         
