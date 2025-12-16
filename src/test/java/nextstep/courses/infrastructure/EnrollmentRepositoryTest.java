@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.builder.EnrollmentBuilder;
 import nextstep.courses.domain.enrollment.Enrollment;
-import nextstep.courses.infrastructure.repository.enrolleduser.JdbcEnrolledUserRepository;
 import nextstep.courses.infrastructure.repository.enrollment.EnrollmentRepository;
 import nextstep.courses.infrastructure.repository.enrollment.JdbcEnrollmentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ class EnrollmentRepositoryTest {
     
     @BeforeEach
     void setUp() {
-        enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate, new JdbcEnrolledUserRepository(jdbcTemplate));
+        enrollmentRepository = new JdbcEnrollmentRepository(jdbcTemplate);
     }
     
     @Test
