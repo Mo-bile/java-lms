@@ -51,10 +51,8 @@ class SessionServiceTest {
             )
             .build();
 
-        Enrollment enrollment = session.getEnrollment();
-
         given(sessionRepository.findById(sessionId)).willReturn(session);
-        given(enrollmentRepository.findBySessionId(sessionId)).willReturn(enrollment);
+        given(enrollmentRepository.findBySessionId(sessionId)).willReturn(session.getEnrollment());
 
         Session found = sessionService.findById(sessionId);
 

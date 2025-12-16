@@ -28,8 +28,8 @@ public class SessionService {
 
     public Session findById(Long id) throws CanNotCreateException {
         Session session = sessionRepository.findById(id);
-        Enrollment enrollment = enrollmentRepository.findBySessionId(id);
-        return SessionMapper.attachEnrollment(session, enrollment);
+        Enrollment enrollmentAndUserList = enrollmentRepository.findBySessionId(id);
+        return SessionMapper.attachEnrollment(session, enrollmentAndUserList);
     }
 
     public Session enroll(Long userId, Long sessionId, Payment payment) throws CanNotCreateException, CanNotJoinException {
