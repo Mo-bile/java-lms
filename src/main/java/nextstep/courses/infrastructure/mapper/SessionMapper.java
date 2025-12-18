@@ -9,36 +9,9 @@ import nextstep.courses.domain.session.Dimensions;
 import nextstep.courses.domain.session.Duration;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionBody;
-import nextstep.courses.infrastructure.entity.EnrolledUserEntity;
-import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 import nextstep.courses.infrastructure.entity.SessionEntity;
 
 public final class SessionMapper {
-
-    public static Session toModelWithEnrollment(SessionEntity entity, EnrollmentEntity enrollmentEntity, List<EnrolledUserEntity> enrolledUserList) {
-        try {
-            return new Session(
-                entity.getId(),
-                entity.getCreatorId(),
-                new SessionBody(entity.getTitle(), entity.getContent()),
-                new Duration(entity.getStartDate(), entity.getEndDate()),
-                createCoverImage(entity),
-                EnrollmentMapper.toModelWithEnrolledUsers(enrollmentEntity, enrolledUserList),
-                entity.getCreatedDate(),
-                entity.getUpdatedDate()
-            );
-        } catch (CanNotCreateException e) {
-            throw new MappingException("Failed to map SessionEntity to Session", e);
-        }
-    }
-
-    public static Session toModelByJoin(
-        SessionEntity entity,
-        EnrollmentEntity enrollmentEntity,
-        List<EnrolledUserEntity> enrolledUserList
-    ) {
-        return toModelWithEnrollment(entity, enrollmentEntity, enrolledUserList);
-    }
 
     public static List<Session> toModels(List<SessionEntity> sessionEntities) {
         return sessionEntities.stream()
