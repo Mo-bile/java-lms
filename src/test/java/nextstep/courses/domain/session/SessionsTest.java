@@ -37,7 +37,11 @@ class SessionsTest {
                         new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
-                null
+                null,
+                new CoverImages(
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200)
+                )
             );
             paidSession = new Session(
                 2L,
@@ -53,7 +57,11 @@ class SessionsTest {
                         new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
                         new SessionStatus(SessionStatusType.RECRUITING))),
                 LocalDateTime.now(),
-                null
+                null,
+                new CoverImages(
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200)
+                )
             );
         } catch(Exception e) {
             throw new RuntimeException(e);

@@ -15,23 +15,26 @@ public class Session extends Base {
     private final SessionBody body;
     private final Duration duration;
     private final CoverImage coverImage;
+    private final CoverImages coverImages;
     private final Enrollment enrollment;
-    
-    public Session(String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Enrollment enrollment) {
-        this(0L, creatorId, body, duration, coverImage, enrollment, LocalDateTime.now(), null);
+
+    public Session(String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Enrollment enrollment, CoverImages coverImages) {
+        this(0L, creatorId, body, duration, coverImage, enrollment, LocalDateTime.now(), null, coverImages);
     }
-    
-    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, LocalDateTime createdDate, LocalDateTime updatedDate) {
-        this(id, creatorId, body, duration, coverImage, null, createdDate, updatedDate);
+
+    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, LocalDateTime createdDate, LocalDateTime updatedDate, CoverImages coverImages) {
+        this(id, creatorId, body, duration, coverImage, null, createdDate, updatedDate, coverImages);
     }
-    
-    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Enrollment enrollment, LocalDateTime createdDate, LocalDateTime updatedDate) {
+
+    public Session(Long id, String creatorId, SessionBody body, Duration duration, CoverImage coverImage, Enrollment enrollment, LocalDateTime createdDate, LocalDateTime updatedDate,
+        CoverImages coverImages) {
         super(createdDate, updatedDate);
         this.id = id;
         this.creatorId = creatorId;
         this.body = body;
         this.duration = duration;
         this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.enrollment = enrollment;
     }
     
@@ -67,10 +70,6 @@ public class Session extends Base {
         return duration;
     }
     
-    public CoverImage getCoverImage() {
-        return coverImage;
-    }
-    
     public Enrollment getEnrollment() {
         return enrollment;
     }
@@ -82,6 +81,12 @@ public class Session extends Base {
     public LocalDateTime getUpdatedDate() {
         return super.getUpdatedDate();
     }
-    
-    
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
+
+    public CoverImages getCoverImages() {
+        return coverImages;
+    }
 }

@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.repository.session;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.entity.SessionEntity;
 import nextstep.courses.infrastructure.mapper.SessionMapper;
@@ -70,7 +71,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return jdbcTemplate.query(sql, rowMapper, courseId)
             .stream()
             .map(SessionMapper::toModel)
-            .collect(java.util.stream.Collectors.toList());
+            .collect(Collectors.toList());
     }
     
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

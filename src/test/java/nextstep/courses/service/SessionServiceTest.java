@@ -14,6 +14,7 @@ import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.session.Session;
+import nextstep.courses.infrastructure.repository.coverimages.CoverImagesRepository;
 import nextstep.courses.infrastructure.repository.enrollment.EnrollmentRepository;
 import nextstep.courses.infrastructure.repository.session.SessionRepository;
 import nextstep.payments.domain.Payment;
@@ -30,6 +31,8 @@ class SessionServiceTest {
     private SessionRepository sessionRepository;
     @Mock
     private EnrollmentRepository enrollmentRepository;
+    @Mock
+    private CoverImagesRepository coverImagesRepository;
     @Mock
     private EnrolledUserService enrolledUserService;
 
@@ -55,6 +58,7 @@ class SessionServiceTest {
 
         given(sessionRepository.findById(sessionId)).willReturn(session);
         given(enrollmentRepository.findBySessionId(sessionId)).willReturn(session.getEnrollment());
+        given(coverImagesRepository.findBySessionId(sessionId)).willReturn(session.getCoverImages());
 
         Session found = sessionService.findById(sessionId);
 
@@ -74,6 +78,7 @@ class SessionServiceTest {
 
         given(sessionRepository.findById(sessionId)).willReturn(session);
         given(enrollmentRepository.findBySessionId(sessionId)).willReturn(enrollment);
+        given(coverImagesRepository.findBySessionId(sessionId)).willReturn(session.getCoverImages());
 
         Session enrolled = sessionService.enroll(userId, sessionId, new Payment());
 

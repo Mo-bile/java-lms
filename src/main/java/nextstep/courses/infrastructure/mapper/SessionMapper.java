@@ -3,8 +3,10 @@ package nextstep.courses.infrastructure.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import nextstep.courses.CanNotCreateException;
+import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enumerate.CoverImageType;
 import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.CoverImages;
 import nextstep.courses.domain.session.Dimensions;
 import nextstep.courses.domain.session.Duration;
 import nextstep.courses.domain.session.Session;
@@ -13,13 +15,11 @@ import nextstep.courses.infrastructure.entity.SessionEntity;
 
 public final class SessionMapper {
 
-    public static List<Session> toModels(List<SessionEntity> sessionEntities) {
-        return sessionEntities.stream()
-            .map(SessionMapper::toModel)
-            .collect(Collectors.toList());
+    public static Session toModel(SessionEntity entity) {
+        return toModel(entity, null);
     }
 
-    public static Session toModel(SessionEntity entity) {
+    public static Session toModel(SessionEntity entity, CoverImages coverImages) {
         try {
             return new Session(
                 entity.getId(),
@@ -28,14 +28,15 @@ public final class SessionMapper {
                 new Duration(entity.getStartDate(), entity.getEndDate()),
                 createCoverImage(entity),
                 entity.getCreatedDate(),
-                entity.getUpdatedDate()
+                entity.getUpdatedDate(),
+                coverImages
             );
         } catch (CanNotCreateException e) {
             throw new MappingException("Failed to map SessionEntity to Session", e);
         }
     }
 
-    public static Session attachEnrollment(Session session, nextstep.courses.domain.enrollment.Enrollment enrollment) {
+    public static Session attachEnrollment(Session session, Enrollment enrollment, CoverImages coverImages) {
         return new Session(
             session.getId(),
             session.getCreatorId(),
@@ -44,7 +45,8 @@ public final class SessionMapper {
             session.getCoverImage(),
             enrollment,
             session.getCreatedDate(),
-            session.getUpdatedDate()
+            session.getUpdatedDate(),
+            coverImages
         );
     }
 
