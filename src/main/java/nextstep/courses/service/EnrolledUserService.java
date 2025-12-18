@@ -1,6 +1,5 @@
 package nextstep.courses.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,19 +21,13 @@ public class EnrolledUserService {
         this.enrolledUserRepository = enrolledUserRepository;
     }
 
-    public void updateEnrolledUsers(Session session) {
-        Long enrollmentId = enrollmentRepository.findIdBySessionId(session.getId());
-        EnrolledUsers savedUsers = enrolledUserRepository.findByEnrollmentId(enrollmentId);
-
-        Set<Long> savedUserIds = new HashSet<>(savedUsers.getEnrolledUserList());
-        
+    public void updateEnrolledUsers(Session session, Set<Long> originalUsers) {
         List<Long> currentUserIds = extractEnrolledUserIds(session);
         List<Long> newUserIds = currentUserIds.stream()
-            .filter(userId -> !savedUserIds.contains(userId))
+            .filter(userId -> !originalUsers.contains(userId))
             .collect(Collectors.toList());
-
         if (!newUserIds.isEmpty()) {
-            enrolledUserRepository.saveAll(enrollmentId, new EnrolledUsers(newUserIds));
+            enrolledUserRepository.saveAll(session.getEnrollment().getId(), new EnrolledUsers(newUserIds));
         }
     }
 

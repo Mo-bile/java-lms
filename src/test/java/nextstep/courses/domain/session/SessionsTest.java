@@ -1,7 +1,6 @@
 package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,6 +30,7 @@ class SessionsTest {
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new Enrollment(
+                    1L,
                     EnrollmentType.FREE,
                     new EnrollmentPolicy(
                         FreeEnrollmentCondition.INSTANCE,
@@ -46,6 +46,7 @@ class SessionsTest {
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
                 new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new Enrollment(
+                    2L,
                     EnrollmentType.PAID,
                     new EnrollmentPolicy(
                         new PaidEnrollmentCondition(10L, 10),

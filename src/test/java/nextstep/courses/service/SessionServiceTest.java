@@ -6,7 +6,9 @@ import static nextstep.courses.domain.builder.SessionBuilder.aFreeSessionBuilder
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
@@ -68,6 +70,7 @@ class SessionServiceTest {
         Long userId = 99L;
         Session session = aFreeSessionBuilder().withId(sessionId).build();
         Enrollment enrollment = session.getEnrollment();
+        Set<Long> originalUsers = new HashSet<>(session.getEnrollment().getPolicy().getEnrolledUsers().getEnrolledUserList());
 
         given(sessionRepository.findById(sessionId)).willReturn(session);
         given(enrollmentRepository.findBySessionId(sessionId)).willReturn(enrollment);
@@ -75,6 +78,6 @@ class SessionServiceTest {
         Session enrolled = sessionService.enroll(userId, sessionId, new Payment());
 
         assertThat(enrolled.getEnrollment().getPolicy().getEnrolledUsers().getEnrolledUserList()).contains(userId);
-        verify(enrolledUserService).updateEnrolledUsers(enrolled);
+        verify(enrolledUserService).updateEnrolledUsers(enrolled, originalUsers);
     }
 }

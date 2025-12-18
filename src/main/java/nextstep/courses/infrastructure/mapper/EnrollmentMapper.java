@@ -24,8 +24,8 @@ public final class EnrollmentMapper {
                 enrolledUsers,
                 sessionStatus
             );
-            
-            return new Enrollment(type, enrollmentPolicy);
+
+            return new Enrollment(entity.getId(), type, enrollmentPolicy);
         } catch (CanNotCreateException e) {
             throw new MappingException("Failed to map EnrollmentEntity to Enrollment", e);
         }
@@ -41,7 +41,7 @@ public final class EnrollmentMapper {
                 sessionStatus
             );
 
-            return new Enrollment(type, enrollmentPolicy);
+            return new Enrollment(entity.getId(), type, enrollmentPolicy);
         } catch (CanNotCreateException e) {
             throw new MappingException("Failed to map EnrollmentEntity to Enrollment", e);
         }

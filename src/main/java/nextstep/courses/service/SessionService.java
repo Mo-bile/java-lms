@@ -1,5 +1,7 @@
 package nextstep.courses.service;
 
+import java.util.HashSet;
+import java.util.Set;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.course.SessionApply;
@@ -34,8 +36,17 @@ public class SessionService {
 
     public Session enroll(Long userId, Long sessionId, Payment payment) throws CanNotCreateException, CanNotJoinException {
         Session session = findById(sessionId);
+        Set<Long> originalUsers = originalUserCache(session);
         session.enrollSession(new SessionApply(userId, payment));
-        enrolledUserService.updateEnrolledUsers(session);
+        enrolledUserService.updateEnrolledUsers(session, originalUsers);
         return session;
+    }
+
+    private Set<Long> originalUserCache(Session session) {
+        return new HashSet<>(session.getEnrollment()
+            .getPolicy()
+            .getEnrolledUsers()
+            .getEnrolledUserList()
+        );
     }
 }
