@@ -2,13 +2,13 @@ package nextstep.courses.domain.builder;
 
 import static nextstep.courses.domain.builder.EnrollmentBuilder.aFreeEnrollmentBuilder;
 import static nextstep.courses.domain.builder.EnrollmentBuilder.aPaidEnrollmentBuilder;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enumerate.CoverImageType;
 import nextstep.courses.domain.session.CoverImage;
+import nextstep.courses.domain.session.CoverImages;
 import nextstep.courses.domain.session.Duration;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionBody;
@@ -19,7 +19,11 @@ public class SessionBuilder {
     private String creatorId = "1";
     private SessionBody body = new SessionBody("title", "content");
     private Duration duration = new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3));
-    private CoverImage coverImage = new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200);
+    private CoverImages coverImages =
+        new CoverImages(
+            new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
+            new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200)
+        );
     private Enrollment enrollment;
     
     public static SessionBuilder aPaidSessionBuilder() throws CanNotCreateException {
@@ -37,7 +41,7 @@ public class SessionBuilder {
         this.creatorId = copy.creatorId;
         this.body = copy.body;
         this.duration = copy.duration;
-        this.coverImage = copy.coverImage;
+        this.coverImages = copy.coverImages;
         this.enrollment = copy.enrollment;
     }
     
@@ -62,19 +66,19 @@ public class SessionBuilder {
         this.duration = duration;
         return this;
     }
-    
-    public SessionBuilder withCoverImage(CoverImage coverImage) {
-        this.coverImage = coverImage;
+
+    public SessionBuilder withCoverImages(CoverImages coverImages) {
+        this.coverImages = coverImages;
         return this;
     }
-    
+
     public SessionBuilder withEnrollment(Enrollment enrollment) {
         this.enrollment = enrollment;
         return this;
     }
     
     public Session build() {
-        return new Session(id, creatorId, body, duration, coverImage, enrollment, LocalDateTime.now(), null);
+        return new Session(id, creatorId, body, duration, enrollment, LocalDateTime.now(), null, coverImages);
     }
     
     public SessionBuilder but() throws CanNotCreateException {
