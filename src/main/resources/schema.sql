@@ -91,7 +91,8 @@ create table enrollment
     type           varchar(30) not null,
     tuition_fee    bigint      not null,
     max_enrollment int         not null,
-    session_status varchar(30) not null,
+    progress_status    varchar(30) not null,
+    recruitment_status varchar(30) not null,
 
     created_date   timestamp   not null,
     updated_date   timestamp,

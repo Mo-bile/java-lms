@@ -26,13 +26,14 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     @Override
     public int save(Long sessionId, Enrollment enrollment) {
         EnrollmentEntity enrollmentEntity = EnrollmentMapper.toEntity(sessionId, enrollment);
-        String sql = "INSERT INTO enrollment (session_id, type, tuition_fee, max_enrollment, session_status, created_date, updated_date) values (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO enrollment (session_id, type, tuition_fee, max_enrollment, progress_status, recruitment_status, created_date, updated_date) values (?,?,?,?,?,?,?,?)";
         return jdbcTemplate.update(sql,
             enrollmentEntity.getSessionId(),
             enrollmentEntity.getType(),
             enrollmentEntity.getTuitionFee(),
             enrollmentEntity.getMaxEnrollment(),
-            enrollmentEntity.getSessionStatus(),
+            enrollmentEntity.getProgressStatus(),
+            enrollmentEntity.getRecruitmentStatus(),
             LocalDateTime.now(),
             LocalDateTime.now());
     }
@@ -76,7 +77,8 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
                     rs.getString("type"),
                     rs.getLong("tuition_fee"),
                     rs.getInt("max_enrollment"),
-                    rs.getString("session_status"),
+                    rs.getString("progress_status"),
+                    rs.getString("recruitment_status"),
                     toLocalDateTime(rs.getTimestamp("created_date")),
                     toLocalDateTime(rs.getTimestamp("updated_date"))
                 );

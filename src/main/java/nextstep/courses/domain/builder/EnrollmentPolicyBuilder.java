@@ -7,13 +7,14 @@ import nextstep.courses.domain.enrollment.SessionStatus;
 import nextstep.courses.domain.enrollment.enrollmentcondition.EnrollmentCondition;
 import nextstep.courses.domain.enrollment.enrollmentcondition.FreeEnrollmentCondition;
 import nextstep.courses.domain.enrollment.enrollmentcondition.PaidEnrollmentCondition;
-import nextstep.courses.domain.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.ProgressStatus;
+import nextstep.courses.domain.enumerate.RecruitmentStatus;
 
 public class EnrollmentPolicyBuilder {
     
     private EnrollmentCondition enrollmentCondition;
     private EnrolledUsers enrolledUsers = new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L));
-    private SessionStatus status = new SessionStatus(SessionStatusType.RECRUITING);
+    private SessionStatus status = new SessionStatus(ProgressStatus.IN_PROGRESS, RecruitmentStatus.OPEN);
     
     public static EnrollmentPolicyBuilder aFreeEnrollmentPolicyBuilder() {
         return new EnrollmentPolicyBuilder()

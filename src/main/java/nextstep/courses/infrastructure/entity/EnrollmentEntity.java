@@ -9,17 +9,20 @@ public class EnrollmentEntity {
     private final String type;
     private final long tuitionFee;
     private final int maxEnrollment;
-    private final String sessionStatus;
+    private final String progressStatus;
+    private final String recruitmentStatus;
     private final LocalDateTime createdDate;
     private final LocalDateTime updatedDate;
-    
-    public EnrollmentEntity(Long sessionId, Long id, String type, long tuitionFee, int maxEnrollment, String sessionStatus, LocalDateTime createdDate, LocalDateTime updatedDate) {
+
+    public EnrollmentEntity(Long sessionId, Long id, String type, long tuitionFee, int maxEnrollment, String progressStatus, String recruitmentStatus, LocalDateTime createdDate,
+        LocalDateTime updatedDate) {
         this.sessionId = sessionId;
         this.id = id;
         this.type = type;
         this.tuitionFee = tuitionFee;
         this.maxEnrollment = maxEnrollment;
-        this.sessionStatus = sessionStatus;
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }
@@ -43,9 +46,9 @@ public class EnrollmentEntity {
     public int getMaxEnrollment() {
         return maxEnrollment;
     }
-    
-    public String getSessionStatus() {
-        return sessionStatus;
+
+    public String getProgressStatus() {
+        return progressStatus;
     }
     
     public LocalDateTime getCreatedDate() {
@@ -54,5 +57,9 @@ public class EnrollmentEntity {
     
     public LocalDateTime getUpdatedDate() {
         return updatedDate;
+    }
+
+    public String getRecruitmentStatus() {
+        return recruitmentStatus;
     }
 }

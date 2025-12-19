@@ -13,7 +13,7 @@ import nextstep.courses.domain.enrollment.enrollmentcondition.FreeEnrollmentCond
 import nextstep.courses.domain.enrollment.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.domain.enumerate.CoverImageType;
 import nextstep.courses.domain.enumerate.EnrollmentType;
-import nextstep.courses.domain.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.ProgressStatus;
 import org.junit.jupiter.api.Test;
 
 class SessionsTest {
@@ -34,7 +34,7 @@ class SessionsTest {
                     new EnrollmentPolicy(
                         FreeEnrollmentCondition.INSTANCE,
                         new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
-                        new SessionStatus(SessionStatusType.RECRUITING))),
+                        new SessionStatus(ProgressStatus.IN_PROGRESS))),
                 LocalDateTime.now(),
                 null,
                 new CoverImages(
@@ -53,7 +53,7 @@ class SessionsTest {
                     new EnrollmentPolicy(
                         new PaidEnrollmentCondition(10L, 10),
                         new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
-                        new SessionStatus(SessionStatusType.RECRUITING))),
+                        new SessionStatus(ProgressStatus.IN_PROGRESS))),
                 LocalDateTime.now(),
                 null,
                 new CoverImages(

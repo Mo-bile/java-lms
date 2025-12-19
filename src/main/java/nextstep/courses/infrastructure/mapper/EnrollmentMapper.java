@@ -9,7 +9,7 @@ import nextstep.courses.domain.enrollment.enrollmentcondition.EnrollmentConditio
 import nextstep.courses.domain.enrollment.enrollmentcondition.FreeEnrollmentCondition;
 import nextstep.courses.domain.enrollment.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.domain.enumerate.EnrollmentType;
-import nextstep.courses.domain.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.ProgressStatus;
 import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 
 public final class EnrollmentMapper {
@@ -17,7 +17,7 @@ public final class EnrollmentMapper {
     public static Enrollment toModelWithEnrolledUsers(EnrollmentEntity entity, EnrolledUsers enrolledUsers) {
         try {
             EnrollmentType type = EnrollmentType.valueOf(entity.getType());
-            SessionStatus sessionStatus = new SessionStatus(SessionStatusType.valueOf(entity.getSessionStatus()));
+            SessionStatus sessionStatus = new SessionStatus(ProgressStatus.valueOf(entity.getProgressStatus()));
 
             EnrollmentPolicy enrollmentPolicy = new EnrollmentPolicy(
                 createEnrollmentCondition(type, entity),
@@ -34,7 +34,7 @@ public final class EnrollmentMapper {
     public static Enrollment toModel(EnrollmentEntity entity) {
         try {
             EnrollmentType type = EnrollmentType.valueOf(entity.getType());
-            SessionStatus sessionStatus = new SessionStatus(SessionStatusType.valueOf(entity.getSessionStatus()));
+            SessionStatus sessionStatus = new SessionStatus(ProgressStatus.valueOf(entity.getProgressStatus()));
 
             EnrollmentPolicy enrollmentPolicy = new EnrollmentPolicy(
                 createEnrollmentCondition(type, entity),
@@ -66,6 +66,7 @@ public final class EnrollmentMapper {
             policy.getEnrollmentCondition().tuitionFee().orElse(0L),
             policy.getEnrollmentCondition().maxEnrollment().orElse(0),
             policy.getStatus().getSessionStatusType().toString(),
+            policy.getStatus().getRecruitmentStatus().toString(),
             null,
             null
         );
