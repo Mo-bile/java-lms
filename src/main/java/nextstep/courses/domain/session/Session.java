@@ -67,7 +67,7 @@ public class Session extends Base {
     public Duration getDuration() {
         return duration;
     }
-    
+
     public Enrollment getEnrollment() {
         return enrollment;
     }
