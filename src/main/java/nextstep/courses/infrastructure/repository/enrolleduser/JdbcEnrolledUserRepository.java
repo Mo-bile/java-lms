@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
+import nextstep.courses.domain.enrollment.Student;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,24 +20,26 @@ public class JdbcEnrolledUserRepository implements EnrolledUserRepository {
     
     @Override
     public int saveAll(Long enrollmentId, EnrolledUsers enrolledUsers) {
-        List<Long> enrolledUserList = enrolledUsers.getEnrolledUserList();
-        String sql = "INSERT INTO enrolled_user (enrollment_id, user_id, created_date, updated_date) VALUES (?, ?, ?, ?)";
+        List<Student> enrolledUserList = enrolledUsers.getStudents();
+        String sql = "INSERT INTO enrolled_user (enrollment_id, user_id, approval_status, created_date, updated_date) VALUES (?, ?, ?, ?, ?)";
         int[][] ints = jdbcTemplate.batchUpdate(sql, enrolledUserList, enrolledUserList.size(),
-            (PreparedStatement ps, Long userId) -> {
+            (PreparedStatement ps, Student student) -> {
                 ps.setLong(1, enrollmentId);
-                ps.setLong(2, userId);
-                ps.setObject(3, LocalDateTime.now());
+                ps.setLong(2, student.getId());
+                ps.setString(3, student.getApprovalStatus().name());
                 ps.setObject(4, LocalDateTime.now());
+                ps.setObject(5, LocalDateTime.now());
             });
         return ints.length;
     }
     
     @Override
-    public int save(Long enrollmentId, Long userId) {
-        String sql = "INSERT INTO enrolled_user (enrollment_id, user_id, created_date, updated_date) VALUES (?, ?, ?, ?)";
+    public int save(Long enrollmentId, Long userId, Student student) {
+        String sql = "INSERT INTO enrolled_user (enrollment_id, user_id, approval_status, created_date, updated_date) VALUES (?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
             enrollmentId,
             userId,
+            student.getApprovalStatus().name(),
             LocalDateTime.now(),
             LocalDateTime.now()
         );

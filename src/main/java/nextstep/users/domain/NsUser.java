@@ -1,9 +1,8 @@
 package nextstep.users.domain;
 
-import nextstep.qna.UnAuthorizedException;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
+import nextstep.qna.UnAuthorizedException;
 
 public class NsUser {
     public static final GuestNsUser GUEST_USER = new GuestNsUser();
@@ -90,6 +89,10 @@ public class NsUser {
 
         this.name = target.name;
         this.email = target.email;
+    }
+
+    public boolean isNotSelected() {
+        return false;
     }
 
     public boolean matchUser(NsUser target) {
