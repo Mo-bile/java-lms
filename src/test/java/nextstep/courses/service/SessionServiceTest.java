@@ -6,13 +6,13 @@ import static nextstep.courses.domain.builder.SessionBuilder.aFreeSessionBuilder
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.repository.coverimages.CoverImagesRepository;
 import nextstep.courses.infrastructure.repository.enrollment.EnrollmentRepository;
@@ -42,14 +42,14 @@ class SessionServiceTest {
     @Test
     void sessionFindByIdTest() throws CanNotCreateException {
         Long sessionId = 1L;
-        List<Long> enrolledUserIds = List.of(10L, 11L, 12L, 13L, 14L, 15L);
+        EnrolledUsers enrolledUsers = new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L);
 
         Session session = aFreeSessionBuilder()
             .withEnrollment(
                 aFreeEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aFreeEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(enrolledUserIds))
+                            .withEnrolledUsers(enrolledUsers)
                             .build()
                     )
                     .build()
@@ -63,8 +63,9 @@ class SessionServiceTest {
         Session found = sessionService.findById(sessionId);
 
         assertThat(found.getId()).isEqualTo(session.getId());
-        assertThat(found.getEnrollment().getPolicy().getEnrolledUsers().getEnrolledUserList())
-            .containsExactlyElementsOf(enrolledUserIds);
+        assertThat(found.getEnrollment().getPolicy().getEnrolledUsers().getStudents())
+            .extracting(Student::getId)
+            .containsExactly(10L, 11L, 12L, 13L, 14L, 15L);
         assertThat(found.getBody().getTitle()).isEqualTo(session.getBody().getTitle());
     }
 
@@ -74,7 +75,7 @@ class SessionServiceTest {
         Long userId = 99L;
         Session session = aFreeSessionBuilder().withId(sessionId).build();
         Enrollment enrollment = session.getEnrollment();
-        Set<Long> originalUsers = new HashSet<>(session.getEnrollment().getPolicy().getEnrolledUsers().getEnrolledUserList());
+        Set<Long> originalUsers = session.getEnrollment().getPolicy().getEnrolledUsers().getStudents().stream().map(Student::getId).collect(Collectors.toSet());
 
         given(sessionRepository.findById(sessionId)).willReturn(session);
         given(enrollmentRepository.findBySessionId(sessionId)).willReturn(enrollment);
@@ -82,7 +83,7 @@ class SessionServiceTest {
 
         Session enrolled = sessionService.enroll(userId, sessionId, new Payment());
 
-        assertThat(enrolled.getEnrollment().getPolicy().getEnrolledUsers().getEnrolledUserList()).contains(userId);
+        assertThat(enrolled.getEnrollment().getPolicy().getEnrolledUsers().getStudents().stream().map(Student::getId).collect(Collectors.toSet()).contains(userId));
         verify(enrolledUserService).updateEnrolledUsers(enrolled, originalUsers);
     }
 }

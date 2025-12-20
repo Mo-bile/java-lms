@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.enrollment.Enrollment;
@@ -33,7 +32,7 @@ class SessionsTest {
                     EnrollmentType.FREE,
                     new EnrollmentPolicy(
                         FreeEnrollmentCondition.INSTANCE,
-                        new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
+                        new EnrolledUsers(1L, 2L, 3L, 4L, 5L),
                         new SessionStatus(ProgressStatus.IN_PROGRESS))),
                 LocalDateTime.now(),
                 null,
@@ -52,7 +51,7 @@ class SessionsTest {
                     EnrollmentType.PAID,
                     new EnrollmentPolicy(
                         new PaidEnrollmentCondition(10L, 10),
-                        new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
+                        new EnrolledUsers(1L, 2L, 3L, 4L, 5L),
                         new SessionStatus(ProgressStatus.IN_PROGRESS))),
                 LocalDateTime.now(),
                 null,

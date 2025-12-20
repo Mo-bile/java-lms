@@ -10,31 +10,21 @@ import nextstep.courses.CanNotJoinException;
 
 public class EnrolledUsers {
     
-    private final List<Long> enrolledUserList;
     private final List<Student> students;
     
     public EnrolledUsers() {
-        this(List.of(), List.of());
+        this(List.of());
     }
-    
+
     public EnrolledUsers(int size) {
-        this(new ArrayList<>(Collections.nCopies(size, null)), new ArrayList<>(Collections.nCopies(size, null)));
-    }
-
-    public EnrolledUsers(List<Student> students, Long... enrolledUserList) {
-        this(List.of(enrolledUserList), students);
-    }
-
-    public EnrolledUsers(List<Long> enrolledUserList) {
-        this(enrolledUserList, ofIds(enrolledUserList));
+        this(new ArrayList<>(Collections.nCopies(size, null)));
     }
 
     public EnrolledUsers(Long... enrolledUserList) {
-        this(List.of(enrolledUserList), ofIds(enrolledUserList));
+        this(ofIds(enrolledUserList));
     }
 
-    public EnrolledUsers(List<Long> enrolledUserList, List<Student> students) {
-        this.enrolledUserList = new ArrayList<>(enrolledUserList);
+    public EnrolledUsers(List<Student> students) {
         this.students = new ArrayList<>(students);
     }
 
@@ -52,22 +42,19 @@ public class EnrolledUsers {
     
     public void registerUserId(Long userId) throws CanNotJoinException {
         this.alreadyRegisterUser(userId);
-        this.enrolledUserList.add(userId);
+        this.students.add(new Student(userId));
     }
     
     private void alreadyRegisterUser(Long userId) throws CanNotJoinException {
-        if(enrolledUserList.contains(userId)) {
+        if (students.stream().anyMatch(s -> s.getId().equals(userId))) {
             throw new CanNotJoinException("이미 수강신청이 완료된 유저입니다");
         }
     }
     
     public boolean isAlreadyExceed(int maxEnrollment) {
-        return maxEnrollment <= this.enrolledUserList.size();
+        return maxEnrollment == this.students.size();
     }
     
-    public List<Long> getEnrolledUserList() {
-        return enrolledUserList;
-    }
 
     public List<Student> getStudents() {
         return students;
@@ -79,11 +66,11 @@ public class EnrolledUsers {
             return false;
         }
         EnrolledUsers that = (EnrolledUsers) o;
-        return Objects.equals(enrolledUserList, that.enrolledUserList) && Objects.equals(students, that.students);
+        return Objects.equals(students, that.students);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(enrolledUserList, students);
+        return Objects.hashCode(students);
     }
 }

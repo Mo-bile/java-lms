@@ -12,6 +12,10 @@ public class Student {
         this(id, ApprovalStatus.PENDING);
     }
 
+    public Student(Long id, String approvalStatus) {
+        this(id, ApprovalStatus.valueOf(approvalStatus));
+    }
+
     public Student(Long id, ApprovalStatus approvalStatus) {
         this.id = id;
         this.approvalStatus = approvalStatus;

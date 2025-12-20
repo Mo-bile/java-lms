@@ -57,12 +57,15 @@ public class JdbcEnrolledUserRepository implements EnrolledUserRepository {
     @Override
     public EnrolledUsers findByEnrollmentId(Long enrollmentId) {
         String sql = "SELECT * FROM enrolled_user WHERE enrollment_id = ?";
-        List<Long> userIds = jdbcTemplate.query(
+        List<Student> students = jdbcTemplate.query(
             sql,
-            (rs, rowNum) -> rs.getLong("user_id"),
+            (rs, rowNum) -> new Student(
+                rs.getLong("user_id"),
+                rs.getString("approval_status")
+            ),
             enrollmentId
         );
-        return new EnrolledUsers(userIds);
+        return new EnrolledUsers(students);
     }
     
 }

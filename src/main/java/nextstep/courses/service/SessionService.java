@@ -2,10 +2,12 @@ package nextstep.courses.service;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.course.SessionApply;
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.domain.session.CoverImages;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.mapper.SessionMapper;
@@ -53,7 +55,10 @@ public class SessionService {
         return new HashSet<>(session.getEnrollment()
             .getPolicy()
             .getEnrolledUsers()
-            .getEnrolledUserList()
+            .getStudents()
+            .stream()
+            .map(Student::getId)
+            .collect(Collectors.toSet())
         );
     }
 }
