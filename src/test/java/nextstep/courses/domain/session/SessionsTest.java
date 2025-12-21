@@ -1,10 +1,8 @@
 package nextstep.courses.domain.session;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.enrollment.Enrollment;
@@ -14,7 +12,7 @@ import nextstep.courses.domain.enrollment.enrollmentcondition.FreeEnrollmentCond
 import nextstep.courses.domain.enrollment.enrollmentcondition.PaidEnrollmentCondition;
 import nextstep.courses.domain.enumerate.CoverImageType;
 import nextstep.courses.domain.enumerate.EnrollmentType;
-import nextstep.courses.domain.enumerate.SessionStatusType;
+import nextstep.courses.domain.enumerate.ProgressStatus;
 import org.junit.jupiter.api.Test;
 
 class SessionsTest {
@@ -29,30 +27,38 @@ class SessionsTest {
                 "1",
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
-                new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new Enrollment(
+                    1L,
                     EnrollmentType.FREE,
                     new EnrollmentPolicy(
                         FreeEnrollmentCondition.INSTANCE,
-                        new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
-                        new SessionStatus(SessionStatusType.RECRUITING))),
+                        new EnrolledUsers(1L, 2L, 3L, 4L, 5L),
+                        new SessionStatus(ProgressStatus.IN_PROGRESS))),
                 LocalDateTime.now(),
-                null
+                null,
+                new CoverImages(
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200)
+                )
             );
             paidSession = new Session(
                 2L,
                 "1",
                 new SessionBody("title", "content"),
                 new Duration(LocalDate.now().plusDays(1), LocalDate.now().plusDays(3)),
-                new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
                 new Enrollment(
+                    2L,
                     EnrollmentType.PAID,
                     new EnrollmentPolicy(
                         new PaidEnrollmentCondition(10L, 10),
-                        new EnrolledUsers(List.of(1L, 2L, 3L, 4L, 5L)),
-                        new SessionStatus(SessionStatusType.RECRUITING))),
+                        new EnrolledUsers(1L, 2L, 3L, 4L, 5L),
+                        new SessionStatus(ProgressStatus.IN_PROGRESS))),
                 LocalDateTime.now(),
-                null
+                null,
+                new CoverImages(
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200),
+                    new CoverImage(1_500_000, CoverImageType.JPEG, 300, 200)
+                )
             );
         } catch(Exception e) {
             throw new RuntimeException(e);

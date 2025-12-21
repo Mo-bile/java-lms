@@ -8,16 +8,18 @@ import nextstep.courses.domain.enumerate.EnrollmentType;
 import nextstep.payments.domain.Payment;
 
 public class Enrollment {
-    
+
+    private final Long id;
     private final EnrollmentType type;
     private final EnrollmentPolicy policy;
-    
-    public Enrollment(EnrollmentType type) throws CanNotCreateException {
-        this(type, new EnrollmentPolicy(FreeEnrollmentCondition.INSTANCE));
+
+    public Enrollment(Long id, EnrollmentType type) throws CanNotCreateException {
+        this(id, type, new EnrollmentPolicy(FreeEnrollmentCondition.INSTANCE));
     }
-    
-    public Enrollment(EnrollmentType type, EnrollmentPolicy policy) throws CanNotCreateException {
+
+    public Enrollment(Long id, EnrollmentType type, EnrollmentPolicy policy) throws CanNotCreateException {
         validate(type, policy);
+        this.id = id;
         this.type = type;
         this.policy = policy;
     }
@@ -47,7 +49,11 @@ public class Enrollment {
     public boolean isFree() {
         return this.type.isFree();
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
     public EnrollmentType getType() {
         return type;
     }

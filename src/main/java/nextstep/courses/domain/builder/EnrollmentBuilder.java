@@ -2,14 +2,14 @@ package nextstep.courses.domain.builder;
 
 import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aFreeEnrollmentPolicyBuilder;
 import static nextstep.courses.domain.builder.EnrollmentPolicyBuilder.aPaidEnrollmentPolicyBuilder;
-
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.enrollment.Enrollment;
 import nextstep.courses.domain.enrollment.EnrollmentPolicy;
 import nextstep.courses.domain.enumerate.EnrollmentType;
 
 public class EnrollmentBuilder {
-    
+
+    private Long id;
     private EnrollmentType enrollmentType;
     private EnrollmentPolicy enrollmentPolicy;
     
@@ -31,6 +31,11 @@ public class EnrollmentBuilder {
         this.enrollmentType = copy.enrollmentType;
         this.enrollmentPolicy = copy.enrollmentPolicy;
     }
+
+    public EnrollmentBuilder withId(Long id) {
+        this.id = id;
+        return this;
+    }
     
     public EnrollmentBuilder withEnrollmentType(EnrollmentType enrollmentType) {
         this.enrollmentType = enrollmentType;
@@ -43,7 +48,7 @@ public class EnrollmentBuilder {
     }
     
     public Enrollment build() throws CanNotCreateException {
-        return new Enrollment(enrollmentType, enrollmentPolicy);
+        return new Enrollment(id, enrollmentType, enrollmentPolicy);
     }
     
     public EnrollmentBuilder but() {

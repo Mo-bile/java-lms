@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import java.util.Objects;
 import nextstep.courses.CanNotCreateException;
 
 public class Dimensions {
@@ -40,5 +41,19 @@ public class Dimensions {
     
     public double getRatio() {
         return ratio;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Dimensions that = (Dimensions) o;
+        return Double.compare(width, that.width) == 0 && Double.compare(height, that.height) == 0 && Double.compare(ratio, that.ratio) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height, ratio);
     }
 }

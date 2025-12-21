@@ -8,7 +8,6 @@ import static nextstep.courses.domain.builder.SessionBuilder.aFreeSessionBuilder
 import static nextstep.courses.domain.builder.SessionBuilder.aPaidSessionBuilder;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import java.util.List;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.CanNotJoinException;
@@ -48,7 +47,7 @@ class CourseTest {
                 aFreeEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aFreeEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .withEnrolledUsers(new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L))
                             .build()
                     ).build()
             )
@@ -59,7 +58,7 @@ class CourseTest {
                 aPaidEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aPaidEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .withEnrolledUsers(new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L))
                             .build()
                     ).build()
             )
@@ -79,7 +78,7 @@ class CourseTest {
                 aFreeEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aFreeEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .withEnrolledUsers(new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L))
                             .build()
                     ).build()
             )
@@ -90,7 +89,7 @@ class CourseTest {
                 aPaidEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aPaidEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .withEnrolledUsers(new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L))
                             .build()
                     ).build()
             )

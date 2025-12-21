@@ -13,7 +13,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import java.util.List;
 import nextstep.courses.CanNotJoinException;
 import nextstep.courses.domain.course.Course;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
@@ -47,7 +46,7 @@ class CourseServiceTest {
                 aFreeEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aFreeEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .withEnrolledUsers(new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L))
                             .build()
                     ).build()
             )
@@ -58,7 +57,7 @@ class CourseServiceTest {
                 aPaidEnrollmentBuilder()
                     .withEnrollmentPolicy(
                         aPaidEnrollmentPolicyBuilder()
-                            .withEnrolledUsers(new EnrolledUsers(List.of(10L, 11L, 12L, 13L, 14L, 15L)))
+                            .withEnrolledUsers(new EnrolledUsers(10L, 11L, 12L, 13L, 14L, 15L))
                             .build()
                     ).build()
             )

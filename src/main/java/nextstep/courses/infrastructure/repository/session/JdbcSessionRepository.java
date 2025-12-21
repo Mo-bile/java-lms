@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure.repository.session;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.entity.SessionEntity;
 import nextstep.courses.infrastructure.mapper.SessionMapper;
@@ -20,9 +21,9 @@ public class JdbcSessionRepository implements SessionRepository {
     @Override
     public int save(Long courseId, Session session) {
         SessionEntity entity = SessionMapper.toEntity(courseId, session);
-        String sql = "INSERT INTO session (course_id, creator_id, title, contents, start_date, end_date, cover_image_size, cover_image_type, dimensions_width, dimensions_height, dimensions_ratio, created_date, updated_date) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, entity.getCourseId(), entity.getCreatorId(), entity.getTitle(), entity.getContent(), entity.getStartDate(), entity.getEndDate(), entity.getCoverImageSize(),
-            entity.getCoverImageType(), entity.getDimensionsWidth(), entity.getDimensionsHeight(), entity.getDimensionsRatio(), entity.getCreatedDate(), entity.getUpdatedDate());
+        String sql = "INSERT INTO session (course_id, creator_id, title, contents, start_date, end_date, created_date, updated_date) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, entity.getCourseId(), entity.getCreatorId(), entity.getTitle(), entity.getContent(), entity.getStartDate(), entity.getEndDate(), entity.getCreatedDate(),
+            entity.getUpdatedDate());
     }
     
     @Override
@@ -36,11 +37,6 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getString("contents"),
             rs.getDate("start_date").toLocalDate(),
             rs.getDate("end_date").toLocalDate(),
-            rs.getInt("cover_image_size"),
-            rs.getString("cover_image_type"),
-            rs.getDouble("dimensions_width"),
-            rs.getDouble("dimensions_height"),
-            rs.getDouble("dimensions_ratio"),
             toLocalDateTime(rs.getTimestamp("created_date")),
             toLocalDateTime(rs.getTimestamp("updated_date"))
         );
@@ -59,18 +55,13 @@ public class JdbcSessionRepository implements SessionRepository {
             rs.getString("contents"),
             rs.getDate("start_date").toLocalDate(),
             rs.getDate("end_date").toLocalDate(),
-            rs.getInt("cover_image_size"),
-            rs.getString("cover_image_type"),
-            rs.getDouble("dimensions_width"),
-            rs.getDouble("dimensions_height"),
-            rs.getDouble("dimensions_ratio"),
             toLocalDateTime(rs.getTimestamp("created_date")),
             toLocalDateTime(rs.getTimestamp("updated_date"))
         );
         return jdbcTemplate.query(sql, rowMapper, courseId)
             .stream()
             .map(SessionMapper::toModel)
-            .collect(java.util.stream.Collectors.toList());
+            .collect(Collectors.toList());
     }
     
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {

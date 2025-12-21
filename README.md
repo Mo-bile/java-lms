@@ -331,4 +331,68 @@ Duration → CoverImage → SessionStatus → ProvideType → Session → Course
 - [x] : CourseDataAccess 는 과하다고 볼 수있음 -> 대신에 sessionService 같은 service가 담당하는것이 어떤가?
 - [x] : Course와 Session 간에는 1:N 인데 매번 모든 Session을 조회할 필요는 없다
     - [x] : 구현위치 또한 SessionService에서 하는 것이 좋음
-- [x] : `courseDataAccess.updateEnrolledUsers()` 는 loginUser가 수강신청 하므로 loginUser 를 인자로 전달이 좋지 않은가?  
+- [x] : `courseDataAccess.updateEnrolledUsers()` 는 loginUser가 수강신청 하므로 loginUser 를 인자로 전달이 좋지 않은가?
+
+## 두번째 피드백
+
+- [x] : Session 처럼 복잡도가 높은 객체 entity 로 하고
+    - 복잡하지 않는 단순한 Course, EnrolledUser 같이 복잡도와 필드수가 적은 객체는 직접 매핑하기
+- [x] : 별도로 DB 에 insert 할 때 그 유저의 id를 인자로 넣어 Insert
+    - dirty checking 방식과 비교하기!
+
+# 4단계 : 수강신청(요구사항 변경)
+
+## 학습목표
+
+DB 변경 시 스트랭글러 패턴 적용
+
+## 변경 기능 요구사항
+
+- 강의 수강신청은 강의 상태가 모집중에만 가능 (기존)
+    - [x] : 강의가 진행 중에서도 수강신청 가능 해야한다
+        - [x] : 강의 진행 상태(준비중, 진행중, 종료)와 모집 상태(비모집중, 모집중)로 상태 값을 분리
+- 강의는 강의 커버 이미지 정보를 가짐 (기존)
+    - [x] : 강의는 하나 이상의 커버 이미지를 가질 수 있다
+    - [x] : 병행
+  - [x] : 기존 것 제거
+- 강사가 승인하지 않아도 수강 신청하는 모든 사람이 수강 가능 (기존)
+    - 우아한테크코스(무료), 우아한테크캠프 Pro(유료)와 같이 선발된 인원만 수강 가능
+        - [x] : 강사는 수강신청한 사람 중 선발된 인원에 대해서만 수강 승인이 가능해야 한다.
+        - [x] : 강사는 수강신청한 사람 중 선발되지 않은 사람은 수강을 취소할 수 있어야 한다.
+    - [x] : 병행
+  - [x] : 기존 것 제거
+
+## 프로그래밍 요구사항
+
+- [x] : 점진적인 리팩터링 할것
+    - 컴파일 에러와 기존의 단위 테스트의 실패를 최소화
+- [x] : DB 테이블에 데이터가 존재한다는 가정하에 리팩터링
+    - 기존에 쌓인 데이터를 제거하지 않은 상태로 리팩터링
+
+## 계획도
+
+- [x] step 3 의 두번째 피드백 실시 ->
+- [x] 강의 커버 이미지 다중으로 변경 ->
+- [x] 강의 진행상태와 모집 상태 분리 ->
+- [x] 수강생에 대한 승인 및 취소 추가 ->
+
+### 구현
+
+1. 강의 커버 이미지 다중으로 변경 (먼저 스트랭큘러 패턴 이용)
+    - Session 객체 내 필드 중 CoverImage -> CoverImages 일급컬렉션 병행 추가
+2. 수강 승인, 취소 기능
+    - 수강생에 대한 승인 및 취소 -> `EnrolledUsers` 에 수강승인, 취소 필드 추가
+    - `student`객체 추가 후 수강승인여부 필드
+        - long id / ApprovalStatus (PENDING, APPROVED, REJECTED)
+    - 모호한 요구조건 정리
+        - 선발된 인원만 수강 가능 : 선발은 별개의 `users` 도메인에서 해야할 필요가 있다 `courses`에서 할 수 없다
+            - `courses`는 수강신청 과정에서 수강생이 선발됐는지 체크만 가능하다
+            - 방법 : users 도메인에 선발여부 필드 추가 후 courses 에서 체크
+        - 강사의 수강승인, 취소
+            - 강사가 수강 신청, 취소하는 것은 별개의 `instructor` 도메인에서 필요
+            - `courses`는 최초 수강신청은 PENDING 으로 둔다
+            - 추가로 승인(`APPROVED`), 취소(`REJECTED`) 는 수강신청 완료 후 이므로 생략
+                - `instructor` 에서는 session 과 userId 로 수강승인과 취소를 한다
+        - `courses`에서 정리
+            1. 수강생 선발여부체크
+            2. 기본 상태는 `PENDING`

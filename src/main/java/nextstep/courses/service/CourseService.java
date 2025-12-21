@@ -26,6 +26,9 @@ public class CourseService {
     public void enroll(NsUser loginUser, long courseId, long sessionId) throws CanNotJoinException, CanNotCreateException {
         Optional.ofNullable(courseRepository.findById(courseId)).orElseThrow(() -> new CanNotJoinException("기수가 존재하지 않습니다"));
         Payment payment = new PaymentService().payment("0");
+        if (loginUser.isNotSelected()) {
+            return;
+        }
         sessionService.enroll(loginUser.getId(), sessionId, payment);
     }
 }

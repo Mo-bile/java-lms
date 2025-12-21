@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import java.util.Objects;
 import nextstep.courses.CanNotCreateException;
 import nextstep.courses.domain.enumerate.CoverImageType;
 
@@ -41,5 +42,19 @@ public class CoverImage {
     
     public Dimensions getDimensions() {
         return dimensions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CoverImage that = (CoverImage) o;
+        return size == that.size && type == that.type && Objects.equals(dimensions, that.dimensions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(size, type, dimensions);
     }
 }

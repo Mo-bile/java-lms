@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
 import nextstep.courses.domain.enrollment.Enrollment;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.infrastructure.entity.EnrollmentEntity;
 import nextstep.courses.infrastructure.mapper.EnrollmentMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,26 +27,27 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     @Override
     public int save(Long sessionId, Enrollment enrollment) {
         EnrollmentEntity enrollmentEntity = EnrollmentMapper.toEntity(sessionId, enrollment);
-        String sql = "INSERT INTO enrollment (session_id, type, tuition_fee, max_enrollment, session_status, created_date, updated_date) values (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO enrollment (session_id, type, tuition_fee, max_enrollment, progress_status, recruitment_status, created_date, updated_date) values (?,?,?,?,?,?,?,?)";
         return jdbcTemplate.update(sql,
             enrollmentEntity.getSessionId(),
             enrollmentEntity.getType(),
             enrollmentEntity.getTuitionFee(),
             enrollmentEntity.getMaxEnrollment(),
-            enrollmentEntity.getSessionStatus(),
+            enrollmentEntity.getProgressStatus(),
+            enrollmentEntity.getRecruitmentStatus(),
             LocalDateTime.now(),
             LocalDateTime.now());
     }
     
     @Override
     public Enrollment findById(Long id) {
-        String sql = "SELECT e.*, eu.user_id FROM enrollment e LEFT JOIN enrolled_user eu ON e.id = eu.enrollment_id WHERE e.id = ?";
+        String sql = "SELECT e.*, eu.user_id, eu.approval_status FROM enrollment e LEFT JOIN enrolled_user eu ON e.id = eu.enrollment_id WHERE e.id = ?";
         return queryEnrollmentWithUsers(sql, id);
     }
 
     @Override
     public Enrollment findBySessionId(Long sessionId) {
-        String sql = "SELECT e.*, eu.user_id FROM enrollment e LEFT JOIN enrolled_user eu ON e.id = eu.enrollment_id WHERE e.session_id = ?";
+        String sql = "SELECT e.*, eu.user_id, eu.approval_status FROM enrollment e LEFT JOIN enrolled_user eu ON e.id = eu.enrollment_id WHERE e.session_id = ?";
         return queryEnrollmentWithUsers(sql, sessionId);
     }
 
@@ -56,17 +58,17 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
     }
 
     private Enrollment queryEnrollmentWithUsers(String sql, Long param) {
-        List<Long> userIds = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         EnrollmentEntity enrollmentEntity = jdbcTemplate.query(
             sql,
             ps -> ps.setLong(1, param),
-            (ResultSetExtractor<EnrollmentEntity>) rs -> mapEnrollmentWithUsers(rs, userIds)
+            (ResultSetExtractor<EnrollmentEntity>) rs -> mapEnrollmentWithUsers(rs, students)
         );
-        EnrolledUsers enrolledUsers = new EnrolledUsers(userIds);
+        EnrolledUsers enrolledUsers = new EnrolledUsers(students);
         return EnrollmentMapper.toModelWithEnrolledUsers(enrollmentEntity, enrolledUsers);
     }
 
-    private EnrollmentEntity mapEnrollmentWithUsers(ResultSet rs, List<Long> userIds) throws SQLException {
+    private EnrollmentEntity mapEnrollmentWithUsers(ResultSet rs, List<Student> students) throws SQLException {
         EnrollmentEntity enrollment = null;
         while (rs.next()) {
             if (enrollment == null) {
@@ -76,14 +78,17 @@ public class JdbcEnrollmentRepository implements EnrollmentRepository {
                     rs.getString("type"),
                     rs.getLong("tuition_fee"),
                     rs.getInt("max_enrollment"),
-                    rs.getString("session_status"),
+                    rs.getString("progress_status"),
+                    rs.getString("recruitment_status"),
                     toLocalDateTime(rs.getTimestamp("created_date")),
                     toLocalDateTime(rs.getTimestamp("updated_date"))
                 );
             }
-            long userId = rs.getLong("user_id");
-            if (!rs.wasNull()) {
-                userIds.add(userId);
+            Long userId = rs.getObject("user_id", Long.class);
+            if (userId != null) {
+                String approvalStatus = rs.getString("approval_status");
+                Student student = new Student(userId, approvalStatus);
+                students.add(student);
             }
         }
         if (enrollment == null) {

@@ -1,10 +1,10 @@
 package nextstep.courses.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import nextstep.courses.domain.enrollment.EnrolledUsers;
+import nextstep.courses.domain.enrollment.Student;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.infrastructure.repository.enrolleduser.EnrolledUserRepository;
 import nextstep.courses.infrastructure.repository.enrollment.EnrollmentRepository;
@@ -22,19 +22,14 @@ public class EnrolledUserService {
         this.enrolledUserRepository = enrolledUserRepository;
     }
 
-    public void updateEnrolledUsers(Session session) {
-        Long enrollmentId = enrollmentRepository.findIdBySessionId(session.getId());
-        EnrolledUsers savedUsers = enrolledUserRepository.findByEnrollmentId(enrollmentId);
-
-        Set<Long> savedUserIds = new HashSet<>(savedUsers.getEnrolledUserList());
-        
-        List<Long> currentUserIds = extractEnrolledUserIds(session);
-        List<Long> newUserIds = currentUserIds.stream()
-            .filter(userId -> !savedUserIds.contains(userId))
+    public void updateEnrolledUsers(Session session, Set<Long> originalUsers) {
+        List<Student> newStudents = extractEnrolledUserIds(session).stream()
+            .filter(id -> !originalUsers.contains(id))
+            .map(Student::new)
             .collect(Collectors.toList());
 
-        if (!newUserIds.isEmpty()) {
-            enrolledUserRepository.saveAll(enrollmentId, new EnrolledUsers(newUserIds));
+        if (!newStudents.isEmpty()) {
+            enrolledUserRepository.saveAll(session.getEnrollment().getId(), new EnrolledUsers(newStudents));
         }
     }
 
@@ -43,7 +38,10 @@ public class EnrolledUserService {
             .getEnrollment()
             .getPolicy()
             .getEnrolledUsers()
-            .getEnrolledUserList();
+            .getStudents()
+            .stream()
+            .map(Student::getId)
+            .collect(Collectors.toList());
     }
 
 }
